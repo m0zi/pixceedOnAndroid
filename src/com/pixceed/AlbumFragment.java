@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
-import com.pixceed.download.DownloadPictureTask;
+import com.pixceed.download.DownloadJSONPictureTask;
 import com.pixceed.download.OnPostExecuteInterface;
 
 public class AlbumFragment extends Fragment implements OnPostExecuteInterface<Bitmap>
@@ -40,7 +40,7 @@ public class AlbumFragment extends Fragment implements OnPostExecuteInterface<Bi
 		// TODO replace this after "real" implementation
 		textViewAlbumName.setText("ImageNumber:" + imageNumber);
 		// TODO change to real image download
-		new DownloadPictureTask(this, imageViewAlbum.getWidth(), imageViewAlbum.getHeight()).execute(MainActivity.URL_PICTURE + imageNumber);
+		new DownloadJSONPictureTask(this, imageViewAlbum.getWidth(), imageViewAlbum.getHeight()).execute(MainActivity.URL_PUBLIC_PICTURE + "/" + imageNumber);
 		return rootView;
 	}
 

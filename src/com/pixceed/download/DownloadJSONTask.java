@@ -62,9 +62,10 @@ public class DownloadJSONTask extends AsyncTask<String, Void, JSONArray>
 			conn.setRequestMethod("GET");
 			conn.setDoInput(true);
 			// Starts the query
+			Log.d("SEND", myurl);
 			conn.connect();
 			int response = conn.getResponseCode();
-			Log.d("StringTag", "The response is: " + response);
+			Log.d("RECEIVE", "The response is: " + response);
 			is = conn.getInputStream();
 
 			// Convert the InputStream into a string

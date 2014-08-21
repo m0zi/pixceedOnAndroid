@@ -90,7 +90,7 @@ public class GalleryActivity extends FragmentActivity
 
 		public void updateAlbums()
 		{
-			new DownloadJSONTask(this).execute(MainActivity.URL_STRING + MainActivity.URL_HP_IMAGES);
+			new DownloadJSONTask(this).execute(MainActivity.URL_RND_PICTURE);
 		}
 
 		@Override

@@ -20,20 +20,26 @@ import android.widget.Toast;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.SendLoginJSONTask;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity
+{
 
-	public final static String URL_STRING = "https://www.pixceed.com/api/";
-	public final static String URL_LOGIN = "token";
-	public final static String URL_DEBUG_STRING = "homepage/articles";
-	public final static String URL_PICTURE = "https://www.pixceed.com/pixceed/Image/GetImage/";
-	public static final String URL_HP_IMAGES = "homepage/images";
+	public final static String URL_BASE = "https://www.pixceed.com";
+	public final static String URL_API = URL_BASE + "/api";
+	public static final String URL_HP = URL_API + "/homepage";
+	public final static String URL_TOKEN = URL_API + "/token";
+	public final static String URL_ARTICLES = URL_HP + "/articles";
+	public final static String URL_RND_PICTURE = URL_HP + "/images";
+	public final static String URL_PUBLIC_PICTURE = URL_BASE + "/pixceed/Image/GetImage";
+	public static final String URL_IMAGES = null;
+	public static String token = "9QOAE_hGRZ3ikN82cXdl4PcRRqGjcbYoXPZQtRlWoXsxrXmhq2ubS5OCwjpReIUDAQMUrYzabpuo74IpKHnFsT1yqCbrGdfSOVUmL1BBCpy2IfuROluKFZKkY0lB7uFBWsFws8XT_shIZfM1ducghPUw2VePkoui2KpOWJYeBftmGG48rVzTQUN1KvqdG3ach7lix1Ja9Uag60FJjxhKUFcyc6ciMCumLZ60RYPCA9oCdEek2gbzERH5_eYOwbidnOKDDf08wHkFWcNyi8KLGIieJRhbeZ7e8bYlkxFuPfKt8CEtTSdSJvg2ji5IeT6LhZKiODtXqqf99PUeDflD0FeFC5ayTGKS82FMvFwffN7R5phsJWlxmZ0pwi-ss1uquNISqDH3UAqodI1JRkKD4pnLCp6xCEGA6ZaQLOsJL8v5rL22z8G23-vs5UZGIO_2bUUqO7TgxIy0YciGffPSCQ";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		if (savedInstanceState == null) {
+		if (savedInstanceState == null)
+		{
 			getSupportFragmentManager().beginTransaction().add(R.id.container, new LoginFragment()).commit();
 		}
 	}
@@ -51,49 +57,56 @@ public class MainActivity extends ActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
+		if (id == R.id.action_settings) { return true; }
 		return super.onOptionsItemSelected(item);
 	}
 
 	public void login(View view) {
 
-		if (checkConnection(getApplicationContext())) {
+		if (checkConnection(getApplicationContext()))
+		{
 			String username = ((EditText) findViewById(R.id.editTextLoginName)).getText().toString();
 			String password = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
-			if(((CheckBox) findViewById(R.id.checkBoxSaveLoginName)).isChecked())
-				{
-				username = "m.remmos@googlemail.com";
-				password = "Th1s1sthelast4pixceed";
-				}
-			OnPostExecuteInterface<JSONObject> loginExecuter = new OnPostExecuteInterface<JSONObject>() {
+			OnPostExecuteInterface<JSONObject> loginExecuter = new OnPostExecuteInterface<JSONObject>()
+			{
 				@Override
 				public void onPostExecute(JSONObject result) {
-					try {
-						if (result != null) {
+					try
+					{
+						if (result != null)
+						{
 							// login successfully
-							String token = result.getString("access_token");
+							if (!((CheckBox) findViewById(R.id.checkBoxSaveLoginName)).isChecked())
+								token = result.getString("access_token");
 							Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
 							intent.putExtra("com.pixceed.token", token);
 							Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_LONG).show();
 							startActivity(intent);
-						} else {
+						}
+						else
+						{
 							Log.e("LOGIN", "login failed");
 						}
-					} catch (JSONException e) {
+					}
+					catch (JSONException e)
+					{
 						// login failed
-						try {
+						try
+						{
 							Log.e("LOGIN", result.getString("error"));
-						} catch (JSONException e1) {
+						}
+						catch (JSONException e1)
+						{
 							Log.e("LOGIN", "login failed", e1);
 						}
 					}
 				}
 			};
-			new SendLoginJSONTask(loginExecuter, username, password).execute(URL_STRING + URL_LOGIN);
+			new SendLoginJSONTask(loginExecuter, username, password).execute(URL_TOKEN);
 
-		} else {
+		}
+		else
+		{
 			Toast.makeText(getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
 		}
 	}

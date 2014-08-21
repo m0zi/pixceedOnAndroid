@@ -48,7 +48,7 @@ public class LoginFragment extends Fragment {
 					Toast.makeText(rootView.getContext().getApplicationContext(), "Download complete", Toast.LENGTH_SHORT).show();
 				}
 			};
-			new DownloadJSONTask(showDemoText).execute(MainActivity.URL_STRING + MainActivity.URL_DEBUG_STRING);
+			new DownloadJSONTask(showDemoText).execute(MainActivity.URL_ARTICLES);
 			
 			// show sample image
 			final ImageView imageView = (ImageView) rootView.findViewById(R.id.imageViewAlbum);
@@ -60,7 +60,7 @@ public class LoginFragment extends Fragment {
 					Toast.makeText(rootView.getContext().getApplicationContext(), "Download picture complete", Toast.LENGTH_SHORT).show();
 				}
 			};
-			new DownloadPictureTask(showDemoPicture, imageView.getWidth(), imageView.getHeight()).execute(MainActivity.URL_PICTURE+53);
+			new DownloadPictureTask(showDemoPicture, imageView.getWidth(), imageView.getHeight()).execute(MainActivity.URL_PUBLIC_PICTURE+"/53");
 		}
 
 		return rootView;
