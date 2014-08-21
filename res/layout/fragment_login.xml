@@ -1,0 +1,98 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".LoginFragment" >
+
+    <TextView
+        android:id="@+id/textViewLoginName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:text="@string/loginName"
+        android:textSize="@dimen/loginTextDimension" />
+
+    <EditText
+        android:id="@+id/editTextLoginName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textViewLoginName"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/textViewLoginName"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:textSize="@dimen/loginTextDimension" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textViewLoginPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editTextPassword"
+        android:layout_alignLeft="@+id/textViewLoginName"
+        android:layout_alignRight="@+id/textViewLoginName"
+        android:layout_toLeftOf="@+id/editTextPassword"
+        android:gravity="right"
+        android:text="@string/loginPassword"
+        android:textSize="@dimen/loginTextDimension" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextLoginName"
+        android:layout_alignRight="@+id/editTextLoginName"
+        android:layout_below="@+id/editTextLoginName"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textSize="@dimen/loginTextDimension" />
+
+    <CheckBox
+        android:id="@+id/checkBoxSaveLoginName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editTextPassword"
+        android:text="@string/saveLoginName"
+        android:textSize="@dimen/loginTextDimension" />
+
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/checkBoxSaveLoginName"
+        android:layout_alignRight="@+id/editTextPassword"
+        android:layout_below="@+id/checkBoxSaveLoginName"
+        android:onClick="login"
+        android:text="@string/login"
+        android:textSize="@dimen/loginTextDimension" />
+
+    <TextView
+        android:id="@+id/textViewAlbumName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/buttonLogin"
+        android:text="" />
+
+    <ImageView
+        android:id="@+id/imageViewAlbum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewAlbumName"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/textViewAlbumName"
+        android:layout_below="@+id/textViewAlbumName"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_launcher" />
+    
+</RelativeLayout>
