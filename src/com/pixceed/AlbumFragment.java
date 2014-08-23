@@ -1,8 +1,10 @@
 package com.pixceed;
 
-import android.graphics.Bitmap;
+import java.util.Locale;
+
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,15 +14,11 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
-import com.pixceed.download.DownloadJSONPictureTask;
-import com.pixceed.download.OnPostExecuteInterface;
-
-public class AlbumFragment extends Fragment implements OnPostExecuteInterface<Bitmap>
+public class AlbumFragment extends Fragment
 {
 
 	private ImageView imageViewAlbum;
 	private TextView textViewAlbumName;
-	private int imageNumber;
 
 	public AlbumFragment()
 	{}
@@ -30,24 +28,37 @@ public class AlbumFragment extends Fragment implements OnPostExecuteInterface<Bi
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_album, container, false);
 		imageViewAlbum = (ImageView) rootView.findViewById(R.id.imageViewAlbum);
 		textViewAlbumName = (TextView) rootView.findViewById(R.id.textViewAlbumName);
-		if (getArguments() != null && getArguments().containsKey("imageNumber")) imageNumber = getArguments().getInt("imageNumber");
-		else imageNumber = 0;
-		if (imageNumber == 0)
-			// TODO is there an image with number 0 in the database?
-			Log.e("ALBUM", "Image with number 0 loaded. Possible error here!");
-		// TODO implement download of album name
-		// new DownloadJSONTask(new OPEI4AlbumName()).execute(params)
-		// TODO replace this after "real" implementation
-		textViewAlbumName.setText("ImageNumber:" + imageNumber);
-		// TODO change to real image download
-		new DownloadJSONPictureTask(this, imageViewAlbum.getWidth(), imageViewAlbum.getHeight()).execute(MainActivity.URL_PUBLIC_PICTURE + "/" + imageNumber);
+		Bundle args = getArguments();
+		if (args == null)
+		{
+			Log.e("ALBUM", "no album contained");
+		}
+		if (args.containsKey("image"))
+		{
+			imageViewAlbum.setScaleType(ScaleType.CENTER_CROP);
+			byte[] imageByteArray = args.getByteArray("image");
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inJustDecodeBounds = true;
+			BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+//			options.inSampleSize = DownloadPictureTask.calculateInSampleSize(options, imageViewAlbum.getWidth(), imageViewAlbum.getHeight());
+			options.inJustDecodeBounds = false;
+			imageViewAlbum.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
+		}
+		else
+		{
+			imageViewAlbum.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
+		}
+		textViewAlbumName.setText(args.getString("name"));
+		Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
+		Debug.getMemoryInfo(memoryInfo);
+
+		String memMessage = String.format(Locale.GERMAN,
+		    "Memory: Pss=%.2f MB, Private=%.2f MB, Shared=%.2f MB",
+		    memoryInfo.getTotalPss() / 1024.0,
+		    memoryInfo.getTotalPrivateDirty() / 1024.0,
+		    memoryInfo.getTotalSharedDirty() / 1024.0);
+		Log.d("ALBUM", "Remaining memory:"+memMessage);
 		return rootView;
 	}
 
-	@Override
-	public void onPostExecute(Bitmap result) {
-		imageViewAlbum.setScaleType(ScaleType.FIT_CENTER);
-		if (result != null) imageViewAlbum.setImageBitmap(result);
-		else imageViewAlbum.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
-	}
 }

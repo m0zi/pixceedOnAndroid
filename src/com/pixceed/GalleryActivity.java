@@ -1,7 +1,6 @@
 package com.pixceed;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,16 +9,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Base64;
 import android.util.Log;
 
-import com.pixceed.download.DownloadJSONTask;
+import com.pixceed.data.LibraryMonth;
+import com.pixceed.data.LibraryMonth.AlbumPreviewInformation;
+import com.pixceed.download.LibrariesTask;
 import com.pixceed.download.OnPostExecuteInterface;
 
 public class GalleryActivity extends FragmentActivity
 {
 	/**
-	 * The pager widget, which handles animation and allows swiping horizontally
-	 * to access previous and next wizard steps.
+	 * The pager widget, which handles animation and allows swiping horizontally to access previous and next wizard steps.
 	 */
 	private ViewPager pager;
 
@@ -57,17 +58,17 @@ public class GalleryActivity extends FragmentActivity
 	}
 
 	/**
-	 * A simple pager adapter that represents 5 ScreenSlidePageFragment objects,
-	 * in sequence.
+	 * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in sequence.
 	 */
-	private class GalleryPagerAdapter extends FragmentStatePagerAdapter implements OnPostExecuteInterface<JSONArray>
+	private class GalleryPagerAdapter extends FragmentStatePagerAdapter implements OnPostExecuteInterface<ArrayList<LibraryMonth>>
 	{
-		private int[] albums;
+		private ArrayList<AlbumPreviewInformation> albums;
 
 		public GalleryPagerAdapter(
 				FragmentManager fm)
 		{
 			super(fm);
+			albums = new ArrayList<AlbumPreviewInformation>();
 			updateAlbums();
 		}
 
@@ -75,8 +76,38 @@ public class GalleryActivity extends FragmentActivity
 		public Fragment getItem(int position) {
 			AlbumFragment albumFragment = new AlbumFragment();
 			Bundle args = new Bundle();
-			if (albums == null || position < albums.length)
-				args.putInt("imageNumber", albums[position]);
+			if (albums != null && position < albums.size())
+			{
+				AlbumPreviewInformation album = albums.get(position);
+				args.putString("name", album.getAlbumName());
+				args.putByteArray("image", Base64.decode(album.getAlbumIcon(), Base64.DEFAULT));
+			}
+
+			// if (albums == null || position < library.getAlbumInformations().size()) try
+			// {
+			// JSONObject jsonAlbumObject = library.getAlbumInformations().iterator().ge.get(position);
+			// String string = jsonAlbumObject.getString("Name");
+			// String imageBase64 = jsonAlbumObject.getString("IconBase64");
+			// Log.d("ALBUM", imageBase64);
+			// int[] encoding = new int[] { Base64.URL_SAFE, Base64.DEFAULT, Base64.CRLF, Base64.NO_CLOSE, Base64.NO_PADDING, Base64.NO_WRAP };
+			// byte[] decode = null;
+			// for (int i : encoding)
+			// try
+			// {
+			// decode = Base64.decode(imageBase64, i);
+			// }
+			// catch (IllegalArgumentException e)
+			// {
+			//
+			// }
+			// if (decode != null)
+			// args.putByteArray("image", decode);
+			// args.putString("name", string);
+			// }
+			// catch (JSONException e)
+			// {
+			// Log.e("ALBUM", "album data corrupt at position:" + position, e);
+			// }
 			albumFragment.setArguments(args);
 			return albumFragment;
 		}
@@ -85,31 +116,24 @@ public class GalleryActivity extends FragmentActivity
 		public int getCount() {
 			if (albums == null)
 				return 0;
-			return albums.length;
+			return albums.size();
 		}
 
 		public void updateAlbums()
 		{
-			new DownloadJSONTask(this).execute(MainActivity.URL_RND_PICTURE);
+			new LibrariesTask(this).execute();
 		}
 
 		@Override
-		public void onPostExecute(JSONArray result) {
+		public void onPostExecute(ArrayList<LibraryMonth> result) {
 			if (result == null)
 			{
 				Log.e("ALBUM", "No albums received.");
 				return;
 			}
-			albums = new int[result.length()];
-			for (int i = 0; i < albums.length; i++)
-				try
-				{
-					albums[i] = result.getInt(i);
-				}
-				catch (JSONException e)
-				{
-					Log.e("ALBUM", "error retrieving data for albums", e);
-				}
+			albums.clear();
+			for (LibraryMonth libraryMonth : result)
+				albums.addAll(libraryMonth.getAlbumInformations());
 			notifyDataSetChanged();
 		}
 	}

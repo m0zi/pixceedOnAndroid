@@ -1,8 +1,6 @@
 package com.pixceed;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.Collection;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,48 +9,48 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ImageView.ScaleType;
 
-import com.pixceed.download.DownloadJSONTask;
-import com.pixceed.download.DownloadPictureTask;
+import com.pixceed.data.Article;
+import com.pixceed.download.ArticlesTask;
 import com.pixceed.download.OnPostExecuteInterface;
+import com.pixceed.download.PublicPictureListTask;
+import com.pixceed.download.PublicPictureTask;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class LoginFragment extends Fragment {
-
-	public static final String TAG = "LoginFragment";
-
-	public LoginFragment() {
-	}
+public class LoginFragment extends Fragment
+{
+	public LoginFragment()
+	{}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 		final View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
-		if (MainActivity.checkConnection(rootView.getContext().getApplicationContext())) {
+		if (MainActivity.checkConnection(rootView.getContext().getApplicationContext()))
+		{
 			// show sample text
-			OnPostExecuteInterface<JSONArray> showDemoText = new OnPostExecuteInterface<JSONArray>() {
+			final OnPostExecuteInterface<Collection<Article>> showDemoText = new OnPostExecuteInterface<Collection<Article>>()
+			{
 				@Override
-				public void onPostExecute(JSONArray result) {
-					try {
-						JSONObject json = result.getJSONObject(0);
-						String string = json.getString("Html");
-						((TextView) rootView.findViewById(R.id.textViewAlbumName)).setText(string);
-					} catch (JSONException e) {
-						((TextView) rootView.findViewById(R.id.textViewAlbumName)).setText("");
-					}
+				public void onPostExecute(Collection<Article> result) {
+					if (result != null)
+					((TextView) rootView.findViewById(R.id.textViewAlbumName)).setText(result.iterator().next().getHtml());
+					else
+					((TextView) rootView.findViewById(R.id.textViewAlbumName)).setText("");
 					Toast.makeText(rootView.getContext().getApplicationContext(), "Download complete", Toast.LENGTH_SHORT).show();
 				}
 			};
-			new DownloadJSONTask(showDemoText).execute(MainActivity.URL_ARTICLES);
-			
+			new ArticlesTask(showDemoText).execute();
+
 			// show sample image
 			final ImageView imageView = (ImageView) rootView.findViewById(R.id.imageViewAlbum);
-			OnPostExecuteInterface<Bitmap> showDemoPicture = new OnPostExecuteInterface<Bitmap>() {
+			final OnPostExecuteInterface<Bitmap> showDemoPicture = new OnPostExecuteInterface<Bitmap>()
+			{
 				@Override
 				public void onPostExecute(Bitmap result) {
 					imageView.setScaleType(ScaleType.CENTER_CROP);
@@ -60,7 +58,16 @@ public class LoginFragment extends Fragment {
 					Toast.makeText(rootView.getContext().getApplicationContext(), "Download picture complete", Toast.LENGTH_SHORT).show();
 				}
 			};
-			new DownloadPictureTask(showDemoPicture, imageView.getWidth(), imageView.getHeight()).execute(MainActivity.URL_PUBLIC_PICTURE+"/53");
+			final OnPostExecuteInterface<int[]> getRandomPublicPicture = new OnPostExecuteInterface<int[]>()
+			{
+				@Override
+				public void onPostExecute(int[] result) {
+					if (result == null || result.length < 1)
+						return;
+					new PublicPictureTask(showDemoPicture, imageView.getWidth(), imageView.getHeight()).execute("" + result[0]);
+				}
+			};
+			new PublicPictureListTask(getRandomPublicPicture).execute();
 		}
 
 		return rootView;

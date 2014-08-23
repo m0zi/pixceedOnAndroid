@@ -1,8 +1,5 @@
 package com.pixceed;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -17,20 +14,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.pixceed.data.Login;
+import com.pixceed.download.LoginTask;
 import com.pixceed.download.OnPostExecuteInterface;
-import com.pixceed.download.SendLoginJSONTask;
 
 public class MainActivity extends ActionBarActivity
 {
 
-	public final static String URL_BASE = "https://www.pixceed.com";
-	public final static String URL_API = URL_BASE + "/api";
-	public static final String URL_HP = URL_API + "/homepage";
-	public final static String URL_TOKEN = URL_API + "/token";
-	public final static String URL_ARTICLES = URL_HP + "/articles";
-	public final static String URL_RND_PICTURE = URL_HP + "/images";
-	public final static String URL_PUBLIC_PICTURE = URL_BASE + "/pixceed/Image/GetImage";
-	public static final String URL_IMAGES = null;
 	public static String token = "9QOAE_hGRZ3ikN82cXdl4PcRRqGjcbYoXPZQtRlWoXsxrXmhq2ubS5OCwjpReIUDAQMUrYzabpuo74IpKHnFsT1yqCbrGdfSOVUmL1BBCpy2IfuROluKFZKkY0lB7uFBWsFws8XT_shIZfM1ducghPUw2VePkoui2KpOWJYeBftmGG48rVzTQUN1KvqdG3ach7lix1Ja9Uag60FJjxhKUFcyc6ciMCumLZ60RYPCA9oCdEek2gbzERH5_eYOwbidnOKDDf08wHkFWcNyi8KLGIieJRhbeZ7e8bYlkxFuPfKt8CEtTSdSJvg2ji5IeT6LhZKiODtXqqf99PUeDflD0FeFC5ayTGKS82FMvFwffN7R5phsJWlxmZ0pwi-ss1uquNISqDH3UAqodI1JRkKD4pnLCp6xCEGA6ZaQLOsJL8v5rL22z8G23-vs5UZGIO_2bUUqO7TgxIy0YciGffPSCQ";
 
 	@Override
@@ -67,42 +57,29 @@ public class MainActivity extends ActionBarActivity
 		{
 			String username = ((EditText) findViewById(R.id.editTextLoginName)).getText().toString();
 			String password = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
-			OnPostExecuteInterface<JSONObject> loginExecuter = new OnPostExecuteInterface<JSONObject>()
+			OnPostExecuteInterface<Login> loginExecuter = new OnPostExecuteInterface<Login>()
 			{
 				@Override
-				public void onPostExecute(JSONObject result) {
-					try
+				public void onPostExecute(Login result) {
+					if (((CheckBox) findViewById(R.id.checkBoxSaveLoginName)).isChecked())
+						result.setToken(token);
+					if (result != null && result.getToken() != null)
 					{
-						if (result != null)
-						{
-							// login successfully
-							if (!((CheckBox) findViewById(R.id.checkBoxSaveLoginName)).isChecked())
-								token = result.getString("access_token");
-							Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
-							intent.putExtra("com.pixceed.token", token);
-							Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_LONG).show();
-							startActivity(intent);
-						}
-						else
-						{
-							Log.e("LOGIN", "login failed");
-						}
+						// login successfully
+						token = result.getToken();
+						Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
+						intent.putExtra("com.pixceed.token", token);
+						Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_LONG).show();
+						startActivity(intent);
 					}
-					catch (JSONException e)
+					else
 					{
-						// login failed
-						try
-						{
-							Log.e("LOGIN", result.getString("error"));
-						}
-						catch (JSONException e1)
-						{
-							Log.e("LOGIN", "login failed", e1);
-						}
+						Toast.makeText(getApplicationContext(), "Login failed.", Toast.LENGTH_LONG).show();
+						Log.e("LOGIN", "login failed");
 					}
 				}
 			};
-			new SendLoginJSONTask(loginExecuter, username, password).execute(URL_TOKEN);
+			new LoginTask(loginExecuter, username, password).execute();
 
 		}
 		else
