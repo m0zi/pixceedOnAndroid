@@ -1,9 +1,6 @@
 package com.pixceed.data;
 
-import java.util.GregorianCalendar;
 import java.util.List;
-
-import android.graphics.Bitmap;
 
 /**
  * A {@link PixceedPicture} is an image or picture from pixceed with several additional information.
@@ -17,14 +14,15 @@ public class PixceedPicture
 	public static final String IMAGE_INFORMATION_TAG = "Image";
 	public static final String IMAGE_TAG = "ImageBase64";
 
-	private Bitmap folderIcon;
+	private String folderIcon;
 	private ImageInformation imageInformation;
-	private Bitmap image;
+	private String image;
 
 	/**
 	 * @return the folderIcon
 	 */
-	public Bitmap getFolderIcon() {
+	public String getFolderIcon()
+	{
 		return folderIcon;
 	}
 
@@ -32,14 +30,16 @@ public class PixceedPicture
 	 * @param folderIcon
 	 *            the folderIcon to set
 	 */
-	public void setFolderIcon(Bitmap folderIcon) {
+	public void setFolderIcon(String folderIcon)
+	{
 		this.folderIcon = folderIcon;
 	}
 
 	/**
 	 * @return the imageInformation
 	 */
-	public ImageInformation getImageInformation() {
+	public ImageInformation getImageInformation()
+	{
 		return imageInformation;
 	}
 
@@ -47,14 +47,16 @@ public class PixceedPicture
 	 * @param imageInformation
 	 *            the imageInformation to set
 	 */
-	public void setImageInformation(ImageInformation imageInformation) {
+	public void setImageInformation(ImageInformation imageInformation)
+	{
 		this.imageInformation = imageInformation;
 	}
 
 	/**
 	 * @return the image
 	 */
-	public Bitmap getImage() {
+	public String getImage()
+	{
 		return image;
 	}
 
@@ -62,11 +64,12 @@ public class PixceedPicture
 	 * @param image
 	 *            the image to set
 	 */
-	public void setImage(Bitmap image) {
+	public void setImage(String image)
+	{
 		this.image = image;
 	}
 
-	public class ImageInformation
+	public static class ImageInformation
 	{
 		public static final String VIEW_MODE_TAG = "ViewMode";
 		public static final String ADDED_ON_TAG = "Added";
@@ -106,7 +109,7 @@ public class PixceedPicture
 		public static final String VIEW_COUNT_TAG = "ViewCount";
 
 		private int viewMode;
-		private GregorianCalendar addedOn;
+		private String addedOn;
 		private List<Comment> comments;
 		private String description;
 		private String sEXIFExposureTime;
@@ -139,7 +142,8 @@ public class PixceedPicture
 		/**
 		 * @return the viewMode
 		 */
-		public int getViewMode() {
+		public int getViewMode()
+		{
 			return viewMode;
 		}
 
@@ -147,14 +151,16 @@ public class PixceedPicture
 		 * @param viewMode
 		 *            the viewMode to set
 		 */
-		public void setViewMode(int viewMode) {
+		public void setViewMode(int viewMode)
+		{
 			this.viewMode = viewMode;
 		}
 
 		/**
 		 * @return the addedOn
 		 */
-		public GregorianCalendar getAddedOn() {
+		public String getAddedOn()
+		{
 			return addedOn;
 		}
 
@@ -162,14 +168,16 @@ public class PixceedPicture
 		 * @param addedOn
 		 *            the addedOn to set
 		 */
-		public void setAddedOn(GregorianCalendar addedOn) {
+		public void setAddedOn(String addedOn)
+		{
 			this.addedOn = addedOn;
 		}
 
 		/**
 		 * @return the comments
 		 */
-		public List<Comment> getComments() {
+		public List<Comment> getComments()
+		{
 			return comments;
 		}
 
@@ -177,14 +185,16 @@ public class PixceedPicture
 		 * @param comments
 		 *            the comments to set
 		 */
-		public void setComments(List<Comment> comments) {
+		public void setComments(List<Comment> comments)
+		{
 			this.comments = comments;
 		}
 
 		/**
 		 * @return the description
 		 */
-		public String getDescription() {
+		public String getDescription()
+		{
 			return description;
 		}
 
@@ -192,14 +202,16 @@ public class PixceedPicture
 		 * @param description
 		 *            the description to set
 		 */
-		public void setDescription(String description) {
+		public void setDescription(String description)
+		{
 			this.description = description;
 		}
 
 		/**
 		 * @return the sEXIFExposureTime
 		 */
-		public String getsEXIFExposureTime() {
+		public String getsEXIFExposureTime()
+		{
 			return sEXIFExposureTime;
 		}
 
@@ -207,14 +219,16 @@ public class PixceedPicture
 		 * @param sEXIFExposureTime
 		 *            the sEXIFExposureTime to set
 		 */
-		public void setsEXIFExposureTime(String sEXIFExposureTime) {
+		public void setsEXIFExposureTime(String sEXIFExposureTime)
+		{
 			this.sEXIFExposureTime = sEXIFExposureTime;
 		}
 
 		/**
 		 * @return the sEXIFFNumber
 		 */
-		public String getsEXIFFNumber() {
+		public String getsEXIFFNumber()
+		{
 			return sEXIFFNumber;
 		}
 
@@ -222,14 +236,16 @@ public class PixceedPicture
 		 * @param sEXIFFNumber
 		 *            the sEXIFFNumber to set
 		 */
-		public void setsEXIFFNumber(String sEXIFFNumber) {
+		public void setsEXIFFNumber(String sEXIFFNumber)
+		{
 			this.sEXIFFNumber = sEXIFFNumber;
 		}
 
 		/**
 		 * @return the sEXIFFocalLength
 		 */
-		public String getsEXIFFocalLength() {
+		public String getsEXIFFocalLength()
+		{
 			return sEXIFFocalLength;
 		}
 
@@ -237,14 +253,16 @@ public class PixceedPicture
 		 * @param sEXIFFocalLength
 		 *            the sEXIFFocalLength to set
 		 */
-		public void setsEXIFFocalLength(String sEXIFFocalLength) {
+		public void setsEXIFFocalLength(String sEXIFFocalLength)
+		{
 			this.sEXIFFocalLength = sEXIFFocalLength;
 		}
 
 		/**
 		 * @return the sEXIFISO
 		 */
-		public String getsEXIFISO() {
+		public String getsEXIFISO()
+		{
 			return sEXIFISO;
 		}
 
@@ -252,14 +270,16 @@ public class PixceedPicture
 		 * @param sEXIFISO
 		 *            the sEXIFISO to set
 		 */
-		public void setsEXIFISO(String sEXIFISO) {
+		public void setsEXIFISO(String sEXIFISO)
+		{
 			this.sEXIFISO = sEXIFISO;
 		}
 
 		/**
 		 * @return the sEXIFLens
 		 */
-		public String getsEXIFLens() {
+		public String getsEXIFLens()
+		{
 			return sEXIFLens;
 		}
 
@@ -267,14 +287,16 @@ public class PixceedPicture
 		 * @param sEXIFLens
 		 *            the sEXIFLens to set
 		 */
-		public void setsEXIFLens(String sEXIFLens) {
+		public void setsEXIFLens(String sEXIFLens)
+		{
 			this.sEXIFLens = sEXIFLens;
 		}
 
 		/**
 		 * @return the sEXIFMake
 		 */
-		public String getsEXIFMake() {
+		public String getsEXIFMake()
+		{
 			return sEXIFMake;
 		}
 
@@ -282,14 +304,16 @@ public class PixceedPicture
 		 * @param sEXIFMake
 		 *            the sEXIFMake to set
 		 */
-		public void setsEXIFMake(String sEXIFMake) {
+		public void setsEXIFMake(String sEXIFMake)
+		{
 			this.sEXIFMake = sEXIFMake;
 		}
 
 		/**
 		 * @return the sEXIFModel
 		 */
-		public String getsEXIFModel() {
+		public String getsEXIFModel()
+		{
 			return sEXIFModel;
 		}
 
@@ -297,14 +321,16 @@ public class PixceedPicture
 		 * @param sEXIFModel
 		 *            the sEXIFModel to set
 		 */
-		public void setsEXIFModel(String sEXIFModel) {
+		public void setsEXIFModel(String sEXIFModel)
+		{
 			this.sEXIFModel = sEXIFModel;
 		}
 
 		/**
 		 * @return the fileSize
 		 */
-		public float getFileSize() {
+		public float getFileSize()
+		{
 			return fileSize;
 		}
 
@@ -312,14 +338,16 @@ public class PixceedPicture
 		 * @param fileSize
 		 *            the fileSize to set
 		 */
-		public void setFileSize(float fileSize) {
+		public void setFileSize(float fileSize)
+		{
 			this.fileSize = fileSize;
 		}
 
 		/**
 		 * @return the fileName
 		 */
-		public String getFileName() {
+		public String getFileName()
+		{
 			return fileName;
 		}
 
@@ -327,14 +355,16 @@ public class PixceedPicture
 		 * @param fileName
 		 *            the fileName to set
 		 */
-		public void setFileName(String fileName) {
+		public void setFileName(String fileName)
+		{
 			this.fileName = fileName;
 		}
 
 		/**
 		 * @return the folderId
 		 */
-		public int getFolderId() {
+		public int getFolderId()
+		{
 			return folderId;
 		}
 
@@ -342,14 +372,16 @@ public class PixceedPicture
 		 * @param folderId
 		 *            the folderId to set
 		 */
-		public void setFolderId(int folderId) {
+		public void setFolderId(int folderId)
+		{
 			this.folderId = folderId;
 		}
 
 		/**
 		 * @return the folderName
 		 */
-		public String getFolderName() {
+		public String getFolderName()
+		{
 			return folderName;
 		}
 
@@ -357,14 +389,16 @@ public class PixceedPicture
 		 * @param folderName
 		 *            the folderName to set
 		 */
-		public void setFolderName(String folderName) {
+		public void setFolderName(String folderName)
+		{
 			this.folderName = folderName;
 		}
 
 		/**
 		 * @return the sGPSLatitude
 		 */
-		public String getsGPSLatitude() {
+		public String getsGPSLatitude()
+		{
 			return sGPSLatitude;
 		}
 
@@ -372,14 +406,16 @@ public class PixceedPicture
 		 * @param sGPSLatitude
 		 *            the sGPSLatitude to set
 		 */
-		public void setsGPSLatitude(String sGPSLatitude) {
+		public void setsGPSLatitude(String sGPSLatitude)
+		{
 			this.sGPSLatitude = sGPSLatitude;
 		}
 
 		/**
 		 * @return the sGPSLongitude
 		 */
-		public String getsGPSLongitude() {
+		public String getsGPSLongitude()
+		{
 			return sGPSLongitude;
 		}
 
@@ -387,14 +423,16 @@ public class PixceedPicture
 		 * @param sGPSLongitude
 		 *            the sGPSLongitude to set
 		 */
-		public void setsGPSLongitude(String sGPSLongitude) {
+		public void setsGPSLongitude(String sGPSLongitude)
+		{
 			this.sGPSLongitude = sGPSLongitude;
 		}
 
 		/**
 		 * @return the groups
 		 */
-		public List<Group> getGroups() {
+		public List<Group> getGroups()
+		{
 			return groups;
 		}
 
@@ -402,14 +440,16 @@ public class PixceedPicture
 		 * @param groups
 		 *            the groups to set
 		 */
-		public void setGroups(List<Group> groups) {
+		public void setGroups(List<Group> groups)
+		{
 			this.groups = groups;
 		}
 
 		/**
 		 * @return the id
 		 */
-		public int getId() {
+		public int getId()
+		{
 			return id;
 		}
 
@@ -417,14 +457,16 @@ public class PixceedPicture
 		 * @param id
 		 *            the id to set
 		 */
-		public void setId(int id) {
+		public void setId(int id)
+		{
 			this.id = id;
 		}
 
 		/**
 		 * @return the imageWidth
 		 */
-		public int getImageWidth() {
+		public int getImageWidth()
+		{
 			return imageWidth;
 		}
 
@@ -432,14 +474,16 @@ public class PixceedPicture
 		 * @param imageWidth
 		 *            the imageWidth to set
 		 */
-		public void setImageWidth(int imageWidth) {
+		public void setImageWidth(int imageWidth)
+		{
 			this.imageWidth = imageWidth;
 		}
 
 		/**
 		 * @return the imageHeight
 		 */
-		public int getImageHeight() {
+		public int getImageHeight()
+		{
 			return imageHeight;
 		}
 
@@ -447,14 +491,16 @@ public class PixceedPicture
 		 * @param imageHeight
 		 *            the imageHeight to set
 		 */
-		public void setImageHeight(int imageHeight) {
+		public void setImageHeight(int imageHeight)
+		{
 			this.imageHeight = imageHeight;
 		}
 
 		/**
 		 * @return the imageIndex
 		 */
-		public int getImageIndex() {
+		public int getImageIndex()
+		{
 			return imageIndex;
 		}
 
@@ -462,14 +508,16 @@ public class PixceedPicture
 		 * @param imageIndex
 		 *            the imageIndex to set
 		 */
-		public void setImageIndex(int imageIndex) {
+		public void setImageIndex(int imageIndex)
+		{
 			this.imageIndex = imageIndex;
 		}
 
 		/**
 		 * @return the licence
 		 */
-		public String getLicence() {
+		public String getLicence()
+		{
 			return licence;
 		}
 
@@ -477,14 +525,16 @@ public class PixceedPicture
 		 * @param licence
 		 *            the licence to set
 		 */
-		public void setLicence(String licence) {
+		public void setLicence(String licence)
+		{
 			this.licence = licence;
 		}
 
 		/**
 		 * @return the name
 		 */
-		public String getName() {
+		public String getName()
+		{
 			return name;
 		}
 
@@ -492,14 +542,16 @@ public class PixceedPicture
 		 * @param name
 		 *            the name to set
 		 */
-		public void setName(String name) {
+		public void setName(String name)
+		{
 			this.name = name;
 		}
 
 		/**
 		 * @return the nextImageId
 		 */
-		public int getNextImageId() {
+		public int getNextImageId()
+		{
 			return nextImageId;
 		}
 
@@ -507,14 +559,16 @@ public class PixceedPicture
 		 * @param nextImageId
 		 *            the nextImageId to set
 		 */
-		public void setNextImageId(int nextImageId) {
+		public void setNextImageId(int nextImageId)
+		{
 			this.nextImageId = nextImageId;
 		}
 
 		/**
 		 * @return the previousImageId
 		 */
-		public int getPreviousImageId() {
+		public int getPreviousImageId()
+		{
 			return previousImageId;
 		}
 
@@ -522,14 +576,16 @@ public class PixceedPicture
 		 * @param previousImageId
 		 *            the previousImageId to set
 		 */
-		public void setPreviousImageId(int previousImageId) {
+		public void setPreviousImageId(int previousImageId)
+		{
 			this.previousImageId = previousImageId;
 		}
 
 		/**
 		 * @return the public_
 		 */
-		public boolean isPublic_() {
+		public boolean isPublic_()
+		{
 			return public_;
 		}
 
@@ -537,14 +593,16 @@ public class PixceedPicture
 		 * @param public_
 		 *            the public_ to set
 		 */
-		public void setPublic_(boolean public_) {
+		public void setPublic_(boolean public_)
+		{
 			this.public_ = public_;
 		}
 
 		/**
 		 * @return the owner
 		 */
-		public Owner getOwner() {
+		public Owner getOwner()
+		{
 			return owner;
 		}
 
@@ -552,14 +610,16 @@ public class PixceedPicture
 		 * @param owner
 		 *            the owner to set
 		 */
-		public void setOwner(Owner owner) {
+		public void setOwner(Owner owner)
+		{
 			this.owner = owner;
 		}
 
 		/**
 		 * @return the sharedTos
 		 */
-		public List<SharedTo> getSharedTos() {
+		public List<SharedTo> getSharedTos()
+		{
 			return sharedTos;
 		}
 
@@ -567,14 +627,16 @@ public class PixceedPicture
 		 * @param sharedTos
 		 *            the sharedTos to set
 		 */
-		public void setSharedTos(List<SharedTo> sharedTos) {
+		public void setSharedTos(List<SharedTo> sharedTos)
+		{
 			this.sharedTos = sharedTos;
 		}
 
 		/**
 		 * @return the sourceName
 		 */
-		public String getSourceName() {
+		public String getSourceName()
+		{
 			return sourceName;
 		}
 
@@ -582,14 +644,16 @@ public class PixceedPicture
 		 * @param sourceName
 		 *            the sourceName to set
 		 */
-		public void setSourceName(String sourceName) {
+		public void setSourceName(String sourceName)
+		{
 			this.sourceName = sourceName;
 		}
 
 		/**
 		 * @return the tags
 		 */
-		public List<Tag> getTags() {
+		public List<Tag> getTags()
+		{
 			return tags;
 		}
 
@@ -597,14 +661,16 @@ public class PixceedPicture
 		 * @param tags
 		 *            the tags to set
 		 */
-		public void setTags(List<Tag> tags) {
+		public void setTags(List<Tag> tags)
+		{
 			this.tags = tags;
 		}
 
 		/**
 		 * @return the suggestedTags
 		 */
-		public List<Tag> getSuggestedTags() {
+		public List<Tag> getSuggestedTags()
+		{
 			return suggestedTags;
 		}
 
@@ -612,14 +678,16 @@ public class PixceedPicture
 		 * @param suggestedTags
 		 *            the suggestedTags to set
 		 */
-		public void setSuggestedTags(List<Tag> suggestedTags) {
+		public void setSuggestedTags(List<Tag> suggestedTags)
+		{
 			this.suggestedTags = suggestedTags;
 		}
 
 		/**
 		 * @return the suggestedPublicTags
 		 */
-		public List<Tag> getSuggestedPublicTags() {
+		public List<Tag> getSuggestedPublicTags()
+		{
 			return suggestedPublicTags;
 		}
 
@@ -627,14 +695,16 @@ public class PixceedPicture
 		 * @param suggestedPublicTags
 		 *            the suggestedPublicTags to set
 		 */
-		public void setSuggestedPublicTags(List<Tag> suggestedPublicTags) {
+		public void setSuggestedPublicTags(List<Tag> suggestedPublicTags)
+		{
 			this.suggestedPublicTags = suggestedPublicTags;
 		}
 
 		/**
 		 * @return the takenOn
 		 */
-		public GregorianCalendar getTakenOn() {
+		public String getTakenOn()
+		{
 			return takenOn;
 		}
 
@@ -642,14 +712,16 @@ public class PixceedPicture
 		 * @param takenOn
 		 *            the takenOn to set
 		 */
-		public void setTakenOn(GregorianCalendar takenOn) {
+		public void setTakenOn(String takenOn)
+		{
 			this.takenOn = takenOn;
 		}
 
 		/**
 		 * @return the viewCount
 		 */
-		public int getViewCount() {
+		public int getViewCount()
+		{
 			return viewCount;
 		}
 
@@ -657,22 +729,23 @@ public class PixceedPicture
 		 * @param viewCount
 		 *            the viewCount to set
 		 */
-		public void setViewCount(int viewCount) {
+		public void setViewCount(int viewCount)
+		{
 			this.viewCount = viewCount;
 		}
 
 		private List<Tag> tags;
 		private List<Tag> suggestedTags;
 		private List<Tag> suggestedPublicTags;
-		private GregorianCalendar takenOn;
+		private String takenOn;
 		private int viewCount;
 
-		public class Comment
+		public static class Comment
 		{
 			// TODO Inhalt füllen
 		}
 
-		public class Group
+		public static class Group
 		{
 			public static final String GROUP_ICON_TAG = "IconBase64";
 			public static final String FIRST_NAME_TAG = "FirstName";
@@ -682,7 +755,7 @@ public class PixceedPicture
 			public static final String OWNER_TAG = "Owner";
 			public static final String PUBLIC_TAG = "Public";
 
-			private Bitmap groupIcon;
+			private String groupIcon;
 			private String firstName;
 			private String lastName;
 			private String name;
@@ -693,7 +766,8 @@ public class PixceedPicture
 			/**
 			 * @return the groupIcon
 			 */
-			public Bitmap getGroupIcon() {
+			public String getGroupIcon()
+			{
 				return groupIcon;
 			}
 
@@ -701,14 +775,16 @@ public class PixceedPicture
 			 * @param groupIcon
 			 *            the groupIcon to set
 			 */
-			public void setGroupIcon(Bitmap groupIcon) {
+			public void setGroupIcon(String groupIcon)
+			{
 				this.groupIcon = groupIcon;
 			}
 
 			/**
 			 * @return the firstName
 			 */
-			public String getFirstName() {
+			public String getFirstName()
+			{
 				return firstName;
 			}
 
@@ -716,14 +792,16 @@ public class PixceedPicture
 			 * @param firstName
 			 *            the firstName to set
 			 */
-			public void setFirstName(String firstName) {
+			public void setFirstName(String firstName)
+			{
 				this.firstName = firstName;
 			}
 
 			/**
 			 * @return the lastName
 			 */
-			public String getLastName() {
+			public String getLastName()
+			{
 				return lastName;
 			}
 
@@ -731,14 +809,16 @@ public class PixceedPicture
 			 * @param lastName
 			 *            the lastName to set
 			 */
-			public void setLastName(String lastName) {
+			public void setLastName(String lastName)
+			{
 				this.lastName = lastName;
 			}
 
 			/**
 			 * @return the name
 			 */
-			public String getName() {
+			public String getName()
+			{
 				return name;
 			}
 
@@ -746,14 +826,16 @@ public class PixceedPicture
 			 * @param name
 			 *            the name to set
 			 */
-			public void setName(String name) {
+			public void setName(String name)
+			{
 				this.name = name;
 			}
 
 			/**
 			 * @return the id
 			 */
-			public int getId() {
+			public int getId()
+			{
 				return id;
 			}
 
@@ -761,14 +843,16 @@ public class PixceedPicture
 			 * @param id
 			 *            the id to set
 			 */
-			public void setId(int id) {
+			public void setId(int id)
+			{
 				this.id = id;
 			}
 
 			/**
 			 * @return the owner
 			 */
-			public String getOwner() {
+			public String getOwner()
+			{
 				return owner;
 			}
 
@@ -776,14 +860,16 @@ public class PixceedPicture
 			 * @param owner
 			 *            the owner to set
 			 */
-			public void setOwner(String owner) {
+			public void setOwner(String owner)
+			{
 				this.owner = owner;
 			}
 
 			/**
 			 * @return the public_
 			 */
-			public boolean isPublic_() {
+			public boolean isPublic_()
+			{
 				return public_;
 			}
 
@@ -791,12 +877,13 @@ public class PixceedPicture
 			 * @param public_
 			 *            the public_ to set
 			 */
-			public void setPublic_(boolean public_) {
+			public void setPublic_(boolean public_)
+			{
 				this.public_ = public_;
 			}
 		}
 
-		public class Owner
+		public static class Owner
 		{
 			public static final String OWNER_ICON_TAG = "IconBase64";
 			public static final String EMAIL_TAG = "Email";
@@ -804,7 +891,7 @@ public class PixceedPicture
 			public static final String LAST_NAME_TAG = "LastName";
 			public static final String ID_TAG = "Id";
 
-			private Bitmap ownerIcon;
+			private String ownerIcon;
 			private String email;
 			private String firstName;
 			private String lastName;
@@ -813,7 +900,8 @@ public class PixceedPicture
 			/**
 			 * @return the ownerIcon
 			 */
-			public Bitmap getOwnerIcon() {
+			public String getOwnerIcon()
+			{
 				return ownerIcon;
 			}
 
@@ -821,14 +909,16 @@ public class PixceedPicture
 			 * @param ownerIcon
 			 *            the ownerIcon to set
 			 */
-			public void setOwnerIcon(Bitmap ownerIcon) {
+			public void setOwnerIcon(String ownerIcon)
+			{
 				this.ownerIcon = ownerIcon;
 			}
 
 			/**
 			 * @return the email
 			 */
-			public String getEmail() {
+			public String getEmail()
+			{
 				return email;
 			}
 
@@ -836,14 +926,16 @@ public class PixceedPicture
 			 * @param email
 			 *            the email to set
 			 */
-			public void setEmail(String email) {
+			public void setEmail(String email)
+			{
 				this.email = email;
 			}
 
 			/**
 			 * @return the firstName
 			 */
-			public String getFirstName() {
+			public String getFirstName()
+			{
 				return firstName;
 			}
 
@@ -851,14 +943,16 @@ public class PixceedPicture
 			 * @param firstName
 			 *            the firstName to set
 			 */
-			public void setFirstName(String firstName) {
+			public void setFirstName(String firstName)
+			{
 				this.firstName = firstName;
 			}
 
 			/**
 			 * @return the lastName
 			 */
-			public String getLastName() {
+			public String getLastName()
+			{
 				return lastName;
 			}
 
@@ -866,14 +960,16 @@ public class PixceedPicture
 			 * @param lastName
 			 *            the lastName to set
 			 */
-			public void setLastName(String lastName) {
+			public void setLastName(String lastName)
+			{
 				this.lastName = lastName;
 			}
 
 			/**
 			 * @return the id
 			 */
-			public int getId() {
+			public int getId()
+			{
 				return id;
 			}
 
@@ -881,12 +977,13 @@ public class PixceedPicture
 			 * @param id
 			 *            the id to set
 			 */
-			public void setId(int id) {
+			public void setId(int id)
+			{
 				this.id = id;
 			}
 		}
 
-		public class SharedTo
+		public static class SharedTo
 		{
 			public static final String SHARED_TO_ICON_TAG = "IconBase64";
 			public static final String FIRST_NAME_TAG = "FirstName";
@@ -896,7 +993,7 @@ public class PixceedPicture
 			public static final String OWNER_TAG = "Owner";
 			public static final String PUBLIC_TAG = "Public";
 
-			private Bitmap sharedToIcon;
+			private String sharedToIcon;
 			private String firstName;
 			private String lastName;
 			private String name;
@@ -907,7 +1004,8 @@ public class PixceedPicture
 			/**
 			 * @return the sharedToIcon
 			 */
-			public Bitmap getSharedToIcon() {
+			public String getSharedToIcon()
+			{
 				return sharedToIcon;
 			}
 
@@ -915,14 +1013,16 @@ public class PixceedPicture
 			 * @param sharedToIcon
 			 *            the sharedToIcon to set
 			 */
-			public void setSharedToIcon(Bitmap sharedToIcon) {
+			public void setSharedToIcon(String sharedToIcon)
+			{
 				this.sharedToIcon = sharedToIcon;
 			}
 
 			/**
 			 * @return the firstName
 			 */
-			public String getFirstName() {
+			public String getFirstName()
+			{
 				return firstName;
 			}
 
@@ -930,14 +1030,16 @@ public class PixceedPicture
 			 * @param firstName
 			 *            the firstName to set
 			 */
-			public void setFirstName(String firstName) {
+			public void setFirstName(String firstName)
+			{
 				this.firstName = firstName;
 			}
 
 			/**
 			 * @return the lastName
 			 */
-			public String getLastName() {
+			public String getLastName()
+			{
 				return lastName;
 			}
 
@@ -945,14 +1047,16 @@ public class PixceedPicture
 			 * @param lastName
 			 *            the lastName to set
 			 */
-			public void setLastName(String lastName) {
+			public void setLastName(String lastName)
+			{
 				this.lastName = lastName;
 			}
 
 			/**
 			 * @return the name
 			 */
-			public String getName() {
+			public String getName()
+			{
 				return name;
 			}
 
@@ -960,14 +1064,16 @@ public class PixceedPicture
 			 * @param name
 			 *            the name to set
 			 */
-			public void setName(String name) {
+			public void setName(String name)
+			{
 				this.name = name;
 			}
 
 			/**
 			 * @return the id
 			 */
-			public int getId() {
+			public int getId()
+			{
 				return id;
 			}
 
@@ -975,14 +1081,16 @@ public class PixceedPicture
 			 * @param id
 			 *            the id to set
 			 */
-			public void setId(int id) {
+			public void setId(int id)
+			{
 				this.id = id;
 			}
 
 			/**
 			 * @return the owner
 			 */
-			public String getOwner() {
+			public String getOwner()
+			{
 				return owner;
 			}
 
@@ -990,14 +1098,16 @@ public class PixceedPicture
 			 * @param owner
 			 *            the owner to set
 			 */
-			public void setOwner(String owner) {
+			public void setOwner(String owner)
+			{
 				this.owner = owner;
 			}
 
 			/**
 			 * @return the public_
 			 */
-			public boolean isPublic_() {
+			public boolean isPublic_()
+			{
 				return public_;
 			}
 
@@ -1005,12 +1115,13 @@ public class PixceedPicture
 			 * @param public_
 			 *            the public_ to set
 			 */
-			public void setPublic_(boolean public_) {
+			public void setPublic_(boolean public_)
+			{
 				this.public_ = public_;
 			}
 		}
 
-		public class Tag
+		public static class Tag
 		{
 			public static final String ID_TAG = "Id";
 			public static final String NAME_TAG = "Name";
@@ -1033,7 +1144,8 @@ public class PixceedPicture
 			/**
 			 * @return the id
 			 */
-			public int getId() {
+			public int getId()
+			{
 				return id;
 			}
 
@@ -1041,14 +1153,16 @@ public class PixceedPicture
 			 * @param id
 			 *            the id to set
 			 */
-			public void setId(int id) {
+			public void setId(int id)
+			{
 				this.id = id;
 			}
 
 			/**
 			 * @return the name
 			 */
-			public String getName() {
+			public String getName()
+			{
 				return name;
 			}
 
@@ -1056,14 +1170,16 @@ public class PixceedPicture
 			 * @param name
 			 *            the name to set
 			 */
-			public void setName(String name) {
+			public void setName(String name)
+			{
 				this.name = name;
 			}
 
 			/**
 			 * @return the public_
 			 */
-			public boolean isPublic_() {
+			public boolean isPublic_()
+			{
 				return public_;
 			}
 
@@ -1071,14 +1187,16 @@ public class PixceedPicture
 			 * @param public_
 			 *            the public_ to set
 			 */
-			public void setPublic_(boolean public_) {
+			public void setPublic_(boolean public_)
+			{
 				this.public_ = public_;
 			}
 
 			/**
 			 * @return the userId
 			 */
-			public String getUserId() {
+			public String getUserId()
+			{
 				return userId;
 			}
 
@@ -1086,14 +1204,16 @@ public class PixceedPicture
 			 * @param userId
 			 *            the userId to set
 			 */
-			public void setUserId(String userId) {
+			public void setUserId(String userId)
+			{
 				this.userId = userId;
 			}
 
 			/**
 			 * @return the width
 			 */
-			public int getWidth() {
+			public int getWidth()
+			{
 				return width;
 			}
 
@@ -1101,14 +1221,16 @@ public class PixceedPicture
 			 * @param width
 			 *            the width to set
 			 */
-			public void setWidth(int width) {
+			public void setWidth(int width)
+			{
 				this.width = width;
 			}
 
 			/**
 			 * @return the height
 			 */
-			public int getHeight() {
+			public int getHeight()
+			{
 				return height;
 			}
 
@@ -1116,14 +1238,16 @@ public class PixceedPicture
 			 * @param height
 			 *            the height to set
 			 */
-			public void setHeight(int height) {
+			public void setHeight(int height)
+			{
 				this.height = height;
 			}
 
 			/**
 			 * @return the x
 			 */
-			public int getX() {
+			public int getX()
+			{
 				return x;
 			}
 
@@ -1131,14 +1255,16 @@ public class PixceedPicture
 			 * @param x
 			 *            the x to set
 			 */
-			public void setX(int x) {
+			public void setX(int x)
+			{
 				this.x = x;
 			}
 
 			/**
 			 * @return the y
 			 */
-			public int getY() {
+			public int getY()
+			{
 				return y;
 			}
 
@@ -1146,7 +1272,8 @@ public class PixceedPicture
 			 * @param y
 			 *            the y to set
 			 */
-			public void setY(int y) {
+			public void setY(int y)
+			{
 				this.y = y;
 			}
 		}

@@ -1,9 +1,6 @@
 package com.pixceed.data;
 
 import java.util.Collection;
-import java.util.GregorianCalendar;
-
-import android.graphics.Bitmap;
 
 /**
  * An album contains several pictures which are collected under a certain user defined topic.
@@ -16,18 +13,29 @@ public class Album
 	public static final String DESCRIPTION_TAG = "Description";
 	public static final String HAS_ICON_TAG = "HasIcon";
 	public static final String ID_TAG = "Id";
-	public static final String IMAGES_MONTH_TAG = "Images";
+	public static final String IMAGES_ORDERED_BY_DAY_TAG = "Images";
+	public static final String ADMIN_TAG = "IsAdmin";
+	public static final String NAME_TAG = "Name";
+	public static final String ORDER_TYPE_TAG = "OrderType";
+	public static final String OWNER_TAG = "Owner";
+	public static final String TRACKS_TAG = "Tracks";
 
 	private int viewMode;
 	private String description;
 	private boolean hasIcon;
 	private int id;
-	private Collection<ImageMonth> imagesOrderedbyMonth;
+	private Collection<ImageDay> imagesOrderedByDay;
+	private boolean admin;
+	private String name;
+	private int orderType;
+	private Owner owner;
+	private Collection<Track> tracks;
 
 	/**
 	 * @return the viewMode
 	 */
-	public int getViewMode() {
+	public int getViewMode()
+	{
 		return viewMode;
 	}
 
@@ -35,14 +43,16 @@ public class Album
 	 * @param viewMode
 	 *            the viewMode to set
 	 */
-	public void setViewMode(int viewMode) {
+	public void setViewMode(int viewMode)
+	{
 		this.viewMode = viewMode;
 	}
 
 	/**
 	 * @return the description
 	 */
-	public String getDescription() {
+	public String getDescription()
+	{
 		return description;
 	}
 
@@ -50,14 +60,16 @@ public class Album
 	 * @param description
 	 *            the description to set
 	 */
-	public void setDescription(String description) {
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
 
 	/**
 	 * @return the hasIcon
 	 */
-	public boolean isHasIcon() {
+	public boolean isHasIcon()
+	{
 		return hasIcon;
 	}
 
@@ -65,14 +77,16 @@ public class Album
 	 * @param hasIcon
 	 *            the hasIcon to set
 	 */
-	public void setHasIcon(boolean hasIcon) {
+	public void setHasIcon(boolean hasIcon)
+	{
 		this.hasIcon = hasIcon;
 	}
 
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public int getId()
+	{
 		return id;
 	}
 
@@ -80,37 +94,126 @@ public class Album
 	 * @param id
 	 *            the id to set
 	 */
-	public void setId(int id) {
+	public void setId(int id)
+	{
 		this.id = id;
 	}
 
 	/**
 	 * @return the imagesOrderedbyMonth
 	 */
-	public Collection<ImageMonth> getImagesOrderedbyMonth() {
-		return imagesOrderedbyMonth;
+	public Collection<ImageDay> getImagesOrderedByDay()
+	{
+		return imagesOrderedByDay;
 	}
 
 	/**
-	 * @param imagesOrderedbyMonth
+	 * @param imagesOrderedByDay
 	 *            the imagesOrderedbyMonth to set
 	 */
-	public void setImagesOrderedbyMonth(Collection<ImageMonth> imagesOrderedbyMonth) {
-		this.imagesOrderedbyMonth = imagesOrderedbyMonth;
+	public void setImagesOrderedByDay(Collection<ImageDay> imagesOrderedByDay)
+	{
+		this.imagesOrderedByDay = imagesOrderedByDay;
 	}
 
-	public class ImageMonth
+	/**
+	 * @return the isAdmin
+	 */
+	public boolean isAdmin()
+	{
+		return admin;
+	}
+
+	/**
+	 * @param isAdmin
+	 *            the isAdmin to set
+	 */
+	public void setAdmin(boolean isAdmin)
+	{
+		this.admin = isAdmin;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName()
+	{
+		return name;
+	}
+
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	/**
+	 * @return the orderType
+	 */
+	public int getOrderType()
+	{
+		return orderType;
+	}
+
+	/**
+	 * @param orderType
+	 *            the orderType to set
+	 */
+	public void setOrderType(int orderType)
+	{
+		this.orderType = orderType;
+	}
+
+	/**
+	 * @return the owner
+	 */
+	public Owner getOwner()
+	{
+		return owner;
+	}
+
+	/**
+	 * @param owner
+	 *            the owner to set
+	 */
+	public void setOwner(Owner owner)
+	{
+		this.owner = owner;
+	}
+
+	/**
+	 * @return the tracks
+	 */
+	public Collection<Track> getTracks()
+	{
+		return tracks;
+	}
+
+	/**
+	 * @param tracks
+	 *            the tracks to set
+	 */
+	public void setTracks(Collection<Track> tracks)
+	{
+		this.tracks = tracks;
+	}
+
+	public static class ImageDay
 	{
 		public static final String MONTH_TAG = "Key";
-		public static final String IMAGE_INFORMATION_TAG = "Value";
+		public static final String IMAGE_PREVIEW_INFORMATIONS_TAG = "Value";
 
 		private String month;
-		private Collection<ImagePreviewInformation> images;
+		private Collection<ImagePreviewInformation> imagePreviewInformations;
 
 		/**
 		 * @return the month
 		 */
-		public String getMonth() {
+		public String getMonth()
+		{
 			return month;
 		}
 
@@ -118,47 +221,51 @@ public class Album
 		 * @param month
 		 *            the month to set
 		 */
-		public void setMonth(String month) {
+		public void setMonth(String month)
+		{
 			this.month = month;
 		}
 
 		/**
 		 * @return the images
 		 */
-		public Collection<ImagePreviewInformation> getImages() {
-			return images;
+		public Collection<ImagePreviewInformation> getImagePreviewInformations()
+		{
+			return imagePreviewInformations;
 		}
 
 		/**
-		 * @param images
+		 * @param imagePreviewInformations
 		 *            the images to set
 		 */
-		public void setImages(Collection<ImagePreviewInformation> images) {
-			this.images = images;
+		public void setImagePreviewInformations(Collection<ImagePreviewInformation> imagePreviewInformations)
+		{
+			this.imagePreviewInformations = imagePreviewInformations;
 		}
 
-		public class ImagePreviewInformation
+		public static class ImagePreviewInformation
 		{
-			public static final String IMAGE_PREVIEW_TAG = "IconBase64";
+			public static final String IMAGE_ICON_TAG = "IconBase64";
 			public static final String ADDED_ON_TAG = "Added";
 			public static final String COMMENT_COUNT_TAG = "CommentCount";
 			public static final String ID_TAG = "Id";
 			public static final String NAME_TAG = "Name";
-			public static final String SHARED_TYPE_TAG = "SharedType";
+			public static final String SHARE_TYPE_TAG = "ShareType";
 			public static final String TAKEN_ON_TAG = "Taken";
 
-			private Bitmap imageIcon;
-			private GregorianCalendar addedOn;
+			private String imageIcon;
+			private String addedOn;
 			private int commentCount;
 			private int id;
 			private String name;
-			private SharedType sharedType;
-			private GregorianCalendar takenOn;
+			private ShareType shareType;
+			private String takenOn;
 
 			/**
 			 * @return the imageIcon
 			 */
-			public Bitmap getImageIcon() {
+			public String getImageIcon()
+			{
 				return imageIcon;
 			}
 
@@ -166,14 +273,16 @@ public class Album
 			 * @param imageIcon
 			 *            the imageIcon to set
 			 */
-			public void setImageIcon(Bitmap imageIcon) {
+			public void setImageIcon(String imageIcon)
+			{
 				this.imageIcon = imageIcon;
 			}
 
 			/**
 			 * @return the addedOn
 			 */
-			public GregorianCalendar getAddedOn() {
+			public String getAddedOn()
+			{
 				return addedOn;
 			}
 
@@ -181,14 +290,16 @@ public class Album
 			 * @param addedOn
 			 *            the addedOn to set
 			 */
-			public void setAddedOn(GregorianCalendar addedOn) {
+			public void setAddedOn(String addedOn)
+			{
 				this.addedOn = addedOn;
 			}
 
 			/**
 			 * @return the commentCount
 			 */
-			public int getCommentCount() {
+			public int getCommentCount()
+			{
 				return commentCount;
 			}
 
@@ -196,14 +307,16 @@ public class Album
 			 * @param commentCount
 			 *            the commentCount to set
 			 */
-			public void setCommentCount(int commentCount) {
+			public void setCommentCount(int commentCount)
+			{
 				this.commentCount = commentCount;
 			}
 
 			/**
 			 * @return the id
 			 */
-			public int getId() {
+			public int getId()
+			{
 				return id;
 			}
 
@@ -211,14 +324,16 @@ public class Album
 			 * @param id
 			 *            the id to set
 			 */
-			public void setId(int id) {
+			public void setId(int id)
+			{
 				this.id = id;
 			}
 
 			/**
 			 * @return the name
 			 */
-			public String getName() {
+			public String getName()
+			{
 				return name;
 			}
 
@@ -226,29 +341,33 @@ public class Album
 			 * @param name
 			 *            the name to set
 			 */
-			public void setName(String name) {
+			public void setName(String name)
+			{
 				this.name = name;
 			}
 
 			/**
 			 * @return the sharedType
 			 */
-			public SharedType getSharedType() {
-				return sharedType;
+			public ShareType getShareType()
+			{
+				return shareType;
 			}
 
 			/**
-			 * @param sharedType
+			 * @param shareType
 			 *            the sharedType to set
 			 */
-			public void setSharedType(SharedType sharedType) {
-				this.sharedType = sharedType;
+			public void setShareType(ShareType shareType)
+			{
+				this.shareType = shareType;
 			}
 
 			/**
 			 * @return the takenOn
 			 */
-			public GregorianCalendar getTakenOn() {
+			public String getTakenOn()
+			{
 				return takenOn;
 			}
 
@@ -256,9 +375,116 @@ public class Album
 			 * @param takenOn
 			 *            the takenOn to set
 			 */
-			public void setTakenOn(GregorianCalendar takenOn) {
+			public void setTakenOn(String takenOn)
+			{
 				this.takenOn = takenOn;
 			}
 		}
+	}
+
+	public static class Owner
+	{
+		public static final String OWNER_ICON_TAG = "IconBase64";
+		public static final String EMAIL_TAG = "Email";
+		public static final String ID_TAG = "Id";
+		public static final String FIRST_NAME_TAG = "FirstName";
+		public static final String LAST_NAME_TAG = "LastName";
+
+		private String ownerIcon;
+		private String email;
+		private int id;
+		private String firstName;
+		private String lastName;
+
+		/**
+		 * @return the ownerIcon
+		 */
+		public String getOwnerIcon()
+		{
+			return ownerIcon;
+		}
+
+		/**
+		 * @param ownerIcon
+		 *            the ownerIcon to set
+		 */
+		public void setOwnerIcon(String ownerIcon)
+		{
+			this.ownerIcon = ownerIcon;
+		}
+
+		/**
+		 * @return the email
+		 */
+		public String getEmail()
+		{
+			return email;
+		}
+
+		/**
+		 * @param email
+		 *            the email to set
+		 */
+		public void setEmail(String email)
+		{
+			this.email = email;
+		}
+
+		/**
+		 * @return the id
+		 */
+		public int getId()
+		{
+			return id;
+		}
+
+		/**
+		 * @param id
+		 *            the id to set
+		 */
+		public void setId(int id)
+		{
+			this.id = id;
+		}
+
+		/**
+		 * @return the firstName
+		 */
+		public String getFirstName()
+		{
+			return firstName;
+		}
+
+		/**
+		 * @param firstName
+		 *            the firstName to set
+		 */
+		public void setFirstName(String firstName)
+		{
+			this.firstName = firstName;
+		}
+
+		/**
+		 * @return the lastName
+		 */
+		public String getLastName()
+		{
+			return lastName;
+		}
+
+		/**
+		 * @param lastName
+		 *            the lastName to set
+		 */
+		public void setLastName(String lastName)
+		{
+			this.lastName = lastName;
+		}
+
+	}
+
+	public static class Track
+	{
+		// TODO Inhalt füllen
 	}
 }

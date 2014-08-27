@@ -1,4 +1,4 @@
-package com.pixceed.download;
+package com.pixceed.download.data;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +11,8 @@ import android.util.Log;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.pixceed.data.Article;
 import com.pixceed.data.PixceedObjectsNamingStrategy;
+import com.pixceed.download.HttpGetRequestTask;
+import com.pixceed.download.OnPostExecuteInterface;
 
 public class ArticlesTask extends HttpGetRequestTask<Void, Collection<Article>>
 {

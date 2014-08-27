@@ -1,4 +1,4 @@
-package com.pixceed;
+package com.pixceed.fragment;
 
 import java.util.Collection;
 
@@ -13,11 +13,13 @@ import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pixceed.LoginActivity;
+import com.pixceed.R;
 import com.pixceed.data.Article;
-import com.pixceed.download.ArticlesTask;
 import com.pixceed.download.OnPostExecuteInterface;
-import com.pixceed.download.PublicPictureListTask;
-import com.pixceed.download.PublicPictureTask;
+import com.pixceed.download.data.ArticlesTask;
+import com.pixceed.download.data.PublicPictureListTask;
+import com.pixceed.download.data.PublicPictureTask;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -31,7 +33,7 @@ public class LoginFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 		final View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
-		if (MainActivity.checkConnection(rootView.getContext().getApplicationContext()))
+		if (LoginActivity.checkConnection(rootView.getContext().getApplicationContext()))
 		{
 			// show sample text
 			final OnPostExecuteInterface<Collection<Article>> showDemoText = new OnPostExecuteInterface<Collection<Article>>()
@@ -39,16 +41,16 @@ public class LoginFragment extends Fragment
 				@Override
 				public void onPostExecute(Collection<Article> result) {
 					if (result != null)
-					((TextView) rootView.findViewById(R.id.textViewAlbumName)).setText(result.iterator().next().getHtml());
+					((TextView) rootView.findViewById(R.id.textViewArticle)).setText(result.iterator().next().getHtml());
 					else
-					((TextView) rootView.findViewById(R.id.textViewAlbumName)).setText("");
+					((TextView) rootView.findViewById(R.id.textViewArticle)).setText("");
 					Toast.makeText(rootView.getContext().getApplicationContext(), "Download complete", Toast.LENGTH_SHORT).show();
 				}
 			};
 			new ArticlesTask(showDemoText).execute();
 
 			// show sample image
-			final ImageView imageView = (ImageView) rootView.findViewById(R.id.imageViewAlbum);
+			final ImageView imageView = (ImageView) rootView.findViewById(R.id.imageViewRndPicture);
 			final OnPostExecuteInterface<Bitmap> showDemoPicture = new OnPostExecuteInterface<Bitmap>()
 			{
 				@Override

@@ -1,9 +1,12 @@
-package com.pixceed.download;
+package com.pixceed.download.data;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import com.pixceed.download.HttpGetRequestTask;
+import com.pixceed.download.OnPostExecuteInterface;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

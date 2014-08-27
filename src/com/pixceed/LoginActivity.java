@@ -15,10 +15,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.pixceed.data.Login;
-import com.pixceed.download.LoginTask;
 import com.pixceed.download.OnPostExecuteInterface;
+import com.pixceed.download.data.LoginTask;
+import com.pixceed.fragment.LoginFragment;
 
-public class MainActivity extends ActionBarActivity
+public class LoginActivity extends ActionBarActivity
 {
 
 	public static String token = "9QOAE_hGRZ3ikN82cXdl4PcRRqGjcbYoXPZQtRlWoXsxrXmhq2ubS5OCwjpReIUDAQMUrYzabpuo74IpKHnFsT1yqCbrGdfSOVUmL1BBCpy2IfuROluKFZKkY0lB7uFBWsFws8XT_shIZfM1ducghPUw2VePkoui2KpOWJYeBftmGG48rVzTQUN1KvqdG3ach7lix1Ja9Uag60FJjxhKUFcyc6ciMCumLZ60RYPCA9oCdEek2gbzERH5_eYOwbidnOKDDf08wHkFWcNyi8KLGIieJRhbeZ7e8bYlkxFuPfKt8CEtTSdSJvg2ji5IeT6LhZKiODtXqqf99PUeDflD0FeFC5ayTGKS82FMvFwffN7R5phsJWlxmZ0pwi-ss1uquNISqDH3UAqodI1JRkKD4pnLCp6xCEGA6ZaQLOsJL8v5rL22z8G23-vs5UZGIO_2bUUqO7TgxIy0YciGffPSCQ";
@@ -26,11 +27,11 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_login);
 
 		if (savedInstanceState == null)
 		{
-			getSupportFragmentManager().beginTransaction().add(R.id.container, new LoginFragment()).commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.login, new LoginFragment()).commit();
 		}
 	}
 
@@ -67,8 +68,7 @@ public class MainActivity extends ActionBarActivity
 					{
 						// login successfully
 						token = result.getToken();
-						Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
-						intent.putExtra("com.pixceed.token", token);
+						Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
 						Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_LONG).show();
 						startActivity(intent);
 					}

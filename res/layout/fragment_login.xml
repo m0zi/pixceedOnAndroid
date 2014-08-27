@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".LoginFragment" >
+    tools:context="com.pixceed.fragment.LoginFragment" >
 
     <TextView
         android:id="@+id/textViewLoginName"
@@ -76,7 +76,7 @@
         android:textSize="@dimen/loginTextDimension" />
 
     <TextView
-        android:id="@+id/textViewAlbumName"
+        android:id="@+id/textViewArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -85,13 +85,13 @@
         android:text="" />
 
     <ImageView
-        android:id="@+id/imageViewAlbum"
+        android:id="@+id/imageViewRndPicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewAlbumName"
+        android:layout_alignLeft="@+id/textViewArticle"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/textViewAlbumName"
-        android:layout_below="@+id/textViewAlbumName"
+        android:layout_alignRight="@+id/textViewArticle"
+        android:layout_below="@+id/textViewArticle"
         android:contentDescription="@null"
         android:src="@drawable/ic_launcher" />
     

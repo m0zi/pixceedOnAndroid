@@ -1,4 +1,4 @@
-package com.pixceed.download;
+package com.pixceed.download.data;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +8,8 @@ import java.net.URL;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pixceed.download.HttpGetRequestTask;
+import com.pixceed.download.OnPostExecuteInterface;
 
 public class PublicPictureListTask extends HttpGetRequestTask<Void, int[]>
 {

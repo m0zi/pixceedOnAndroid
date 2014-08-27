@@ -11,10 +11,10 @@ import java.util.Collection;
 public class LibraryMonth
 {
 	public static final String MONTH_TAG = "Key";
-	public static final String ALBUM_INFORMATIONS_TAG = "Value";
+	public static final String ALBUM_PREVIEW_TAG = "Value";
 
 	private String month;
-	private Collection<AlbumPreviewInformation> albumInformations;
+	private Collection<AlbumPreview> albumPreview;
 
 	/**
 	 * @return the month
@@ -34,19 +34,19 @@ public class LibraryMonth
 	/**
 	 * @return the albumInformations
 	 */
-	public Collection<AlbumPreviewInformation> getAlbumInformations() {
-		return albumInformations;
+	public Collection<AlbumPreview> getAlbumPreview() {
+		return albumPreview;
 	}
 
 	/**
-	 * @param albumInformations
+	 * @param albumPreview
 	 *            the albumInformations to set
 	 */
-	public void setAlbumInformations(Collection<AlbumPreviewInformation> albumInformations) {
-		this.albumInformations = albumInformations;
+	public void setAlbumPreview(Collection<AlbumPreview> albumPreview) {
+		this.albumPreview = albumPreview;
 	}
 
-	public static class AlbumPreviewInformation
+	public static class AlbumPreview
 	{
 		public static final String ALBUM_ICON_TAG = "IconBase64";
 		public static final String ALBUM_DATE_TAG = "Date";

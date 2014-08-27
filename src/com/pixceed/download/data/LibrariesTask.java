@@ -1,4 +1,4 @@
-package com.pixceed.download;
+package com.pixceed.download.data;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +11,8 @@ import android.util.Log;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.pixceed.data.LibraryMonth;
 import com.pixceed.data.PixceedObjectsNamingStrategy;
+import com.pixceed.download.OnPostExecuteInterface;
+import com.pixceed.download.TokenRequestTask;
 
 public class LibrariesTask extends TokenRequestTask<Void, ArrayList<LibraryMonth>>
 {

@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="10"
+        android:minSdkVersion="11"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.pixceed.MainActivity"
+            android:name="com.pixceed.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,8 +26,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="GalleryActivity"
+            android:name="com.pixceed.LibraryActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.pixceed.AlbumActivity"
+            android:label="@string/title_activity_album" >
         </activity>
     </application>
 

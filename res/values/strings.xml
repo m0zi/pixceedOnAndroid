@@ -9,4 +9,9 @@
     <string name="saveLoginName">E-Mail-Adresse merken</string>
     <string name="login">Anmelden</string>
 
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <string name="title_activity_album">AlbumActivity</string>
+
 </resources>
