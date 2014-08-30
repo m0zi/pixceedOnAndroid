@@ -15,57 +15,56 @@ import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.pixceed.R;
-import com.pixceed.data.Album;
-import com.pixceed.data.Album.ImageDay;
-import com.pixceed.data.Album.ImageDay.ImagePreviewInformation;
+import com.pixceed.data.LibraryMonth;
+import com.pixceed.data.LibraryMonth.AlbumPreview;
 import com.pixceed.download.OnPostExecuteInterface;
-import com.pixceed.download.data.AlbumTask;
+import com.pixceed.download.data.LibrariesTask;
 import com.pixceed.download.data.PublicPictureTask;
 
-public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implements OnPostExecuteInterface<Album>
+public class LibraryAdapter extends ArrayAdapter<AlbumPreview> implements OnPostExecuteInterface<ArrayList<LibraryMonth>>
 {
-	private int albumId;
-	private LayoutInflater inflater;
-	private ArrayList<ImagePreviewInformation> albumImages;
 
-	public AlbumAdapter(Context context, int albumId)
+	private LayoutInflater inflater;
+	private ArrayList<AlbumPreview> library;
+
+	public LibraryAdapter(Context context)
 	{
 		super(context, R.drawable.ic_launcher);
 		inflater = LayoutInflater.from(context);
-		this.albumImages = new ArrayList<ImagePreviewInformation>();
-		this.albumId = albumId;
+		this.library = new ArrayList<AlbumPreview>();
 		update();
 	}
 
 	@Override
 	public int getCount()
 	{
-		if (albumImages.isEmpty())
+		if (library.isEmpty())
 			return super.getCount();
-		return albumImages.size();
+		return library.size();
 	}
 
 	@Override
-	public ImagePreviewInformation getItem(int position)
+	public AlbumPreview getItem(int position)
 	{
-		if (albumImages.isEmpty())
+		if (library.isEmpty())
 			return super.getItem(position);
-		return albumImages.get(position);
+		return library.get(position);
 	}
-
+	
 	@Override
 	public long getItemId(int position)
 	{
-		if (albumImages.isEmpty())
+		if(library.isEmpty())
 			return super.getItemId(position);
-		return getItem(position).getId();
+		return getItem(position).getAlbumId();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		if (albumImages.isEmpty())
+		if (library.isEmpty())
 			return super.getView(position, convertView, parent);
+
 		View v = convertView;
 		ImageView picture;
 		TextView name;
@@ -79,13 +78,13 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 		picture = (ImageView) v.getTag(R.id.picture);
 		name = (TextView) v.getTag(R.id.text);
 
-		ImagePreviewInformation item = getItem(position);
+		AlbumPreview item = getItem(position);
 
-		name.setText(item.getName());
+		name.setText(item.getAlbumName());
 
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
-		byte[] imageByteArray = Base64.decode(item.getImageIcon().getBytes(), Base64.DEFAULT);
+		byte[] imageByteArray = Base64.decode(item.getAlbumIcon().getBytes(), Base64.DEFAULT);
 		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
 		options.inSampleSize = PublicPictureTask.calculateInSampleSize(options, picture.getWidth(), picture.getHeight());
 		options.inJustDecodeBounds = false;
@@ -96,23 +95,21 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 
 	public void update()
 	{
-		new AlbumTask(this).execute("/" + albumId);
+		new LibrariesTask(this).execute();
 	}
 
 	@Override
-	public void onPostExecute(Album album)
+	public void onPostExecute(ArrayList<LibraryMonth> library)
 	{
-		if (album == null)
+		if (library == null)
 		{
-			Log.e("ALBUM", String.format("Album with number %s not received.", albumId));
+			Log.e("LIBRARY", "Library not received.");
 			return;
 		}
-		if (album.getId() != albumId)
-			Log.w("ALBUM", String.format("Received album id (%s) does not match expected (%s).", album.getId(), albumId));
-		albumImages.clear();
+		this.library.clear();
 		// add up all picture icons once
-		for (ImageDay imageDay : album.getImagesOrderedByDay())
-			albumImages.addAll(imageDay.getImagePreviewInformations());
+		for (LibraryMonth libraryMonth : library)
+			this.library.addAll(libraryMonth.getAlbumPreview());
 		notifyDataSetChanged();
 	}
 

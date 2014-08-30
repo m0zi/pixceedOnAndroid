@@ -1,53 +1,45 @@
 package com.pixceed;
 
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.pixceed.adapter.GalleryPagerAdapter;
-import com.pixceed.view.ZoomOutPageTransformer;
+import com.pixceed.fragment.LibraryFragment;
 
 public class LibraryActivity extends ActionBarActivity
 {
-	/**
-	 * The pager widget, which handles animation and allows swiping horizontally to access previous and next wizard steps.
-	 */
-	private ViewPager pager;
-
-	/**
-	 * The pager adapter, which provides the pages to the view pager widget.
-	 */
-	private PagerAdapter pagerAdapter;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_library);
 
-		// Instantiate a ViewPager and a PagerAdapter.
-		pager = (ViewPager) findViewById(R.id.gallery);
-		pagerAdapter = new GalleryPagerAdapter(getSupportFragmentManager());
-		pager.setPageTransformer(true, new ZoomOutPageTransformer());
-		pager.setAdapter(pagerAdapter);
+		if (savedInstanceState == null)
+		{
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.library, new LibraryFragment())
+					.commit();
+		}
 	}
 
 	@Override
-	public void onBackPressed()
+	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		if (pager.getCurrentItem() == 0)
-		{
-			// If the user is currently looking at the first step, allow the
-			// system to handle the
-			// Back button. This calls finish() on this activity and pops the
-			// back stack.
-			super.onBackPressed();
-		}
-		else
-		{
-			// Otherwise, select the previous step.
-			pager.setCurrentItem(pager.getCurrentItem() - 1);
-		}
+
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.album, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) { return true; }
+		return super.onOptionsItemSelected(item);
 	}
 }

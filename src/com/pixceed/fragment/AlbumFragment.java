@@ -78,19 +78,19 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		return rootView;
 	}
 
-	public void onItemClick(AdapterView<? extends Adapter> parent, View v, int position, long id)
+	public void onItemClick(AdapterView<? extends Adapter> parent, View itemView, int position, long id)
 	{
 		Toast.makeText(rootView.getContext(), "" + position, Toast.LENGTH_SHORT).show();
 
 		if (parent.getAdapter() instanceof AlbumAdapter)
 		{
-			ImagePreviewInformation ipi = (ImagePreviewInformation) parent.getAdapter().getItem(position);
-			currentTask = new PictureTask(this).execute("/" + ipi.getId());
+			currentTask = new PictureTask(this).execute("/" + id);
 			// start the animation
 			final ImageView expandedIconView = (ImageView) rootView.findViewById(R.id.expandedView);
-			final ImageView iconThumb = (ImageView) v.findViewById(R.id.picture);
-			zoomIcon(iconThumb, expandedIconView, ipi.getImageIcon().getBytes());
+			final ImageView iconThumb = (ImageView) itemView.findViewById(R.id.picture);
+			zoomIcon(iconThumb, expandedIconView, ((ImagePreviewInformation) parent.getAdapter().getItem(position)).getImageIcon().getBytes());
 		}
+		else Log.e("ALBUM", String.format("Unexpected call to onItemClick. Given %s.getAdapter() does not return instance of %s.", parent.getClass(), AlbumAdapter.class.getName()));
 	}
 
 	private void zoomIcon(final ImageView thumbView, final ImageView expandedView, byte[] imageBase64Encoded)
