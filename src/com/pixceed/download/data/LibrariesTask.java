@@ -23,17 +23,20 @@ public class LibrariesTask extends TokenRequestTask<Void, ArrayList<LibraryMonth
 	}
 
 	@Override
-	protected URL getURL(String... params) throws MalformedURLException, IllegalArgumentException {
+	protected URL getURL(String... params) throws MalformedURLException, IllegalArgumentException
+	{
 		return new URL(URL_FOLDERS);
 	}
 
 	@Override
-	protected ArrayList<LibraryMonth> readIt(InputStream stream) throws IOException {
+	protected ArrayList<LibraryMonth> readIt(InputStream stream) throws IOException
+	{
 		try
 		{
 			return PixceedObjectsNamingStrategy.getMapper(LibraryMonth.class).readValue(stream, new TypeReference<ArrayList<LibraryMonth>>()
 			{});
 		}
+
 		catch (Exception e)
 		{
 			Log.e("LIBRARY", "Error during parsing JSON", e);

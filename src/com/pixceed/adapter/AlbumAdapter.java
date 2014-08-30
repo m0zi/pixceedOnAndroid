@@ -6,10 +6,13 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.TextView;
 
 import com.pixceed.R;
 import com.pixceed.data.Album;
@@ -21,15 +24,15 @@ import com.pixceed.download.data.PublicPictureTask;
 
 public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implements OnPostExecuteInterface<Album>
 {
-	private Context context;
 	private int albumId;
+	private LayoutInflater inflater;
 	private ArrayList<ImagePreviewInformation> albumImages;
 
 	public AlbumAdapter(Context context, int albumId)
 	{
 		super(context, R.drawable.ic_launcher);
+		inflater = LayoutInflater.from(context);
 		this.albumImages = new ArrayList<ImagePreviewInformation>();
-		this.context = context;
 		this.albumId = albumId;
 		update();
 	}
@@ -55,23 +58,34 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		ImageView imageViewPictureIcon;
-		if (convertView == null)
-		{ // if it's not recycled, initialize some attributes
-			imageViewPictureIcon = new ImageView(context);
-//			imageViewPictureIcon.setLayoutParams(new GridView.LayoutParams(85, 85));
-			imageViewPictureIcon.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			imageViewPictureIcon.setPadding(8, 8, 8, 8);
+		View v = convertView;
+		ImageView picture;
+		TextView name;
+
+		if (v == null)
+		{
+			v = inflater.inflate(R.layout.gridview_item, parent, false);
+			v.setTag(R.id.picture, v.findViewById(R.id.picture));
+			TextView textView = (TextView) v.findViewById(R.id.text);
+//			textView.setMovementMethod(new ScrollingMovementMethod());
+			v.setTag(R.id.text, textView);
 		}
-		else imageViewPictureIcon = (ImageView) convertView;
+		picture = (ImageView) v.getTag(R.id.picture);
+		name = (TextView) v.getTag(R.id.text);
+
+		ImagePreviewInformation item = getItem(position);
+
+		name.setText(item.getName());
+
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
-		byte[] imageByteArray = Base64.decode(albumImages.get(position).getImageIcon().getBytes(), Base64.DEFAULT);
+		byte[] imageByteArray = Base64.decode(item.getImageIcon().getBytes(), Base64.DEFAULT);
 		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-		options.inSampleSize = PublicPictureTask.calculateInSampleSize(options, imageViewPictureIcon.getWidth(), imageViewPictureIcon.getHeight());
+		options.inSampleSize = PublicPictureTask.calculateInSampleSize(options, picture.getWidth(), picture.getHeight());
 		options.inJustDecodeBounds = false;
-		imageViewPictureIcon.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
-		return imageViewPictureIcon;
+		picture.setScaleType(ScaleType.CENTER_CROP);
+		picture.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
+		return v;
 	}
 
 	private void update()

@@ -20,15 +20,21 @@ public class PublicPictureListTask extends HttpGetRequestTask<Void, int[]>
 	}
 
 	@Override
-	protected URL getURL(String... params) throws MalformedURLException, IllegalArgumentException {
+	protected URL getURL(String... params) throws MalformedURLException, IllegalArgumentException
+	{
 		return new URL(URL_RND_PICTURE);
 	}
 
 	@Override
-	protected int[] readIt(InputStream stream) throws IOException {
+	protected int[] readIt(InputStream stream) throws IOException
+	{
 		try
 		{
 			return new ObjectMapper().readValue(stream, int[].class);
+		}
+		catch (IOException e)
+		{
+			throw e;
 		}
 		catch (Exception e)
 		{

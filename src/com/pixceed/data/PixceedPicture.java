@@ -1,5 +1,6 @@
 package com.pixceed.data;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -83,9 +84,9 @@ public class PixceedPicture
 		public static final String MAKE_TAG = "EXIFMake";
 		public static final String MODEL_TAG = "EXIFModel";
 		public static final String FILE_SIZE_TAG = "FileSize";
-		public static final String FILENAME_TAG = "Filename";
+		public static final String FILE_NAME_TAG = "Filename";
 		public static final String FOLDER_ID_TAG = "FolderId";
-		public static final String FOLDER_NAME_TAG = "FolderName";
+		public static final String FOLDER_NAME_TAG = "Foldername";
 		public static final String GPS_LATITUDE_TAG = "GPSLatitude";
 		public static final String GPS_LONGITUDE_TAG = "GPSLongitude";
 		public static final String GROUPS_TAG = "Groups";
@@ -100,7 +101,7 @@ public class PixceedPicture
 		public static final String OWNER_TAG = "Owner";
 		public static final String PREVIOUS_IMAGE_ID_TAG = "PreviousImageId";
 		public static final String PUBLIC_TAG = "Public";
-		public static final String SHARED_TO_TAG = "SharedTo";
+		public static final String SHARED_TOS_TAG = "SharedTo";
 		public static final String SOURCE_NAME_TAG = "SourceName";
 		public static final String SUGGESTED_PUBLIC_TAGS_TAG = "SuggestedPublicTags";
 		public static final String SUGGESTED_TAGS_TAG = "SuggestedTags";
@@ -112,32 +113,38 @@ public class PixceedPicture
 		private String addedOn;
 		private List<Comment> comments;
 		private String description;
-		private String sEXIFExposureTime;
-		private String sEXIFFNumber;
-		private String sEXIFFocalLength;
-		private String sEXIFISO;
-		private String sEXIFLens;
-		private String sEXIFMake;
-		private String sEXIFModel;
+		private String exposureTime;
+		private String fNumber;
+		private String focalLength;
+		private String iso;
+		private String lens;
+		private String make;
+		private String model;
 		private float fileSize;
 		private String fileName;
 		private int folderId;
 		private String folderName;
-		private String sGPSLatitude;
-		private String sGPSLongitude;
+		private String gpsLatitude;
+		private String gpsLongitude;
 		private List<Group> groups;
 		private int id;
+		private int imageIndex;
+		private int imageCount;
 		private int imageWidth;
 		private int imageHeight;
-		private int imageIndex;
 		private String licence;
 		private String name;
 		private int nextImageId;
 		private int previousImageId;
-		private boolean public_;
+		private boolean _public;
 		private Owner owner;
-		private List<SharedTo> sharedTos;
+		private Collection<SharedTo> sharedTos;
 		private String sourceName;
+		private Collection<Tag> tags;
+		private Collection<Tag> suggestedPublicTags;
+		private Collection<Tag> suggestedTags;
+		private String takenOn;
+		private int viewCount;
 
 		/**
 		 * @return the viewMode
@@ -208,122 +215,122 @@ public class PixceedPicture
 		}
 
 		/**
-		 * @return the sEXIFExposureTime
+		 * @return the exposureTime
 		 */
-		public String getsEXIFExposureTime()
+		public String getExposureTime()
 		{
-			return sEXIFExposureTime;
+			return exposureTime;
 		}
 
 		/**
-		 * @param sEXIFExposureTime
-		 *            the sEXIFExposureTime to set
+		 * @param exposureTime
+		 *            the exposureTime to set
 		 */
-		public void setsEXIFExposureTime(String sEXIFExposureTime)
+		public void setExposureTime(String exposureTime)
 		{
-			this.sEXIFExposureTime = sEXIFExposureTime;
+			this.exposureTime = exposureTime;
 		}
 
 		/**
-		 * @return the sEXIFFNumber
+		 * @return the fNumber
 		 */
-		public String getsEXIFFNumber()
+		public String getfNumber()
 		{
-			return sEXIFFNumber;
+			return fNumber;
 		}
 
 		/**
-		 * @param sEXIFFNumber
-		 *            the sEXIFFNumber to set
+		 * @param fNumber
+		 *            the fNumber to set
 		 */
-		public void setsEXIFFNumber(String sEXIFFNumber)
+		public void setfNumber(String fNumber)
 		{
-			this.sEXIFFNumber = sEXIFFNumber;
+			this.fNumber = fNumber;
 		}
 
 		/**
-		 * @return the sEXIFFocalLength
+		 * @return the focalLength
 		 */
-		public String getsEXIFFocalLength()
+		public String getFocalLength()
 		{
-			return sEXIFFocalLength;
+			return focalLength;
 		}
 
 		/**
-		 * @param sEXIFFocalLength
-		 *            the sEXIFFocalLength to set
+		 * @param focalLength
+		 *            the focalLength to set
 		 */
-		public void setsEXIFFocalLength(String sEXIFFocalLength)
+		public void setFocalLength(String focalLength)
 		{
-			this.sEXIFFocalLength = sEXIFFocalLength;
+			this.focalLength = focalLength;
 		}
 
 		/**
-		 * @return the sEXIFISO
+		 * @return the iso
 		 */
-		public String getsEXIFISO()
+		public String getIso()
 		{
-			return sEXIFISO;
+			return iso;
 		}
 
 		/**
-		 * @param sEXIFISO
-		 *            the sEXIFISO to set
+		 * @param iso
+		 *            the iso to set
 		 */
-		public void setsEXIFISO(String sEXIFISO)
+		public void setIso(String iso)
 		{
-			this.sEXIFISO = sEXIFISO;
+			this.iso = iso;
 		}
 
 		/**
-		 * @return the sEXIFLens
+		 * @return the lens
 		 */
-		public String getsEXIFLens()
+		public String getLens()
 		{
-			return sEXIFLens;
+			return lens;
 		}
 
 		/**
-		 * @param sEXIFLens
-		 *            the sEXIFLens to set
+		 * @param lens
+		 *            the lens to set
 		 */
-		public void setsEXIFLens(String sEXIFLens)
+		public void setLens(String lens)
 		{
-			this.sEXIFLens = sEXIFLens;
+			this.lens = lens;
 		}
 
 		/**
-		 * @return the sEXIFMake
+		 * @return the make
 		 */
-		public String getsEXIFMake()
+		public String getMake()
 		{
-			return sEXIFMake;
+			return make;
 		}
 
 		/**
-		 * @param sEXIFMake
-		 *            the sEXIFMake to set
+		 * @param make
+		 *            the make to set
 		 */
-		public void setsEXIFMake(String sEXIFMake)
+		public void setMake(String make)
 		{
-			this.sEXIFMake = sEXIFMake;
+			this.make = make;
 		}
 
 		/**
-		 * @return the sEXIFModel
+		 * @return the model
 		 */
-		public String getsEXIFModel()
+		public String getModel()
 		{
-			return sEXIFModel;
+			return model;
 		}
 
 		/**
-		 * @param sEXIFModel
-		 *            the sEXIFModel to set
+		 * @param model
+		 *            the model to set
 		 */
-		public void setsEXIFModel(String sEXIFModel)
+		public void setModel(String model)
 		{
-			this.sEXIFModel = sEXIFModel;
+			this.model = model;
 		}
 
 		/**
@@ -395,37 +402,37 @@ public class PixceedPicture
 		}
 
 		/**
-		 * @return the sGPSLatitude
+		 * @return the gpsLatitude
 		 */
-		public String getsGPSLatitude()
+		public String getGpsLatitude()
 		{
-			return sGPSLatitude;
+			return gpsLatitude;
 		}
 
 		/**
-		 * @param sGPSLatitude
-		 *            the sGPSLatitude to set
+		 * @param gpsLatitude
+		 *            the gpsLatitude to set
 		 */
-		public void setsGPSLatitude(String sGPSLatitude)
+		public void setGpsLatitude(String gpsLatitude)
 		{
-			this.sGPSLatitude = sGPSLatitude;
+			this.gpsLatitude = gpsLatitude;
 		}
 
 		/**
-		 * @return the sGPSLongitude
+		 * @return the gpsLongitude
 		 */
-		public String getsGPSLongitude()
+		public String getGpsLongitude()
 		{
-			return sGPSLongitude;
+			return gpsLongitude;
 		}
 
 		/**
-		 * @param sGPSLongitude
-		 *            the sGPSLongitude to set
+		 * @param gpsLongitude
+		 *            the gpsLongitude to set
 		 */
-		public void setsGPSLongitude(String sGPSLongitude)
+		public void setGpsLongitude(String gpsLongitude)
 		{
-			this.sGPSLongitude = sGPSLongitude;
+			this.gpsLongitude = gpsLongitude;
 		}
 
 		/**
@@ -463,6 +470,40 @@ public class PixceedPicture
 		}
 
 		/**
+		 * @return the imageIndex
+		 */
+		public int getImageIndex()
+		{
+			return imageIndex;
+		}
+
+		/**
+		 * @param imageIndex
+		 *            the imageIndex to set
+		 */
+		public void setImageIndex(int imageIndex)
+		{
+			this.imageIndex = imageIndex;
+		}
+
+		/**
+		 * @return the imageCount
+		 */
+		public int getImageCount()
+		{
+			return imageCount;
+		}
+
+		/**
+		 * @param imageCount
+		 *            the imageCount to set
+		 */
+		public void setImageCount(int imageCount)
+		{
+			this.imageCount = imageCount;
+		}
+
+		/**
 		 * @return the imageWidth
 		 */
 		public int getImageWidth()
@@ -494,23 +535,6 @@ public class PixceedPicture
 		public void setImageHeight(int imageHeight)
 		{
 			this.imageHeight = imageHeight;
-		}
-
-		/**
-		 * @return the imageIndex
-		 */
-		public int getImageIndex()
-		{
-			return imageIndex;
-		}
-
-		/**
-		 * @param imageIndex
-		 *            the imageIndex to set
-		 */
-		public void setImageIndex(int imageIndex)
-		{
-			this.imageIndex = imageIndex;
 		}
 
 		/**
@@ -582,20 +606,20 @@ public class PixceedPicture
 		}
 
 		/**
-		 * @return the public_
+		 * @return the _public
 		 */
-		public boolean isPublic_()
+		public boolean isPublic()
 		{
-			return public_;
+			return _public;
 		}
 
 		/**
-		 * @param public_
-		 *            the public_ to set
+		 * @param _public
+		 *            the _public to set
 		 */
-		public void setPublic_(boolean public_)
+		public void setPublic(boolean _public)
 		{
-			this.public_ = public_;
+			this._public = _public;
 		}
 
 		/**
@@ -616,23 +640,6 @@ public class PixceedPicture
 		}
 
 		/**
-		 * @return the sharedTos
-		 */
-		public List<SharedTo> getSharedTos()
-		{
-			return sharedTos;
-		}
-
-		/**
-		 * @param sharedTos
-		 *            the sharedTos to set
-		 */
-		public void setSharedTos(List<SharedTo> sharedTos)
-		{
-			this.sharedTos = sharedTos;
-		}
-
-		/**
 		 * @return the sourceName
 		 */
 		public String getSourceName()
@@ -647,57 +654,6 @@ public class PixceedPicture
 		public void setSourceName(String sourceName)
 		{
 			this.sourceName = sourceName;
-		}
-
-		/**
-		 * @return the tags
-		 */
-		public List<Tag> getTags()
-		{
-			return tags;
-		}
-
-		/**
-		 * @param tags
-		 *            the tags to set
-		 */
-		public void setTags(List<Tag> tags)
-		{
-			this.tags = tags;
-		}
-
-		/**
-		 * @return the suggestedTags
-		 */
-		public List<Tag> getSuggestedTags()
-		{
-			return suggestedTags;
-		}
-
-		/**
-		 * @param suggestedTags
-		 *            the suggestedTags to set
-		 */
-		public void setSuggestedTags(List<Tag> suggestedTags)
-		{
-			this.suggestedTags = suggestedTags;
-		}
-
-		/**
-		 * @return the suggestedPublicTags
-		 */
-		public List<Tag> getSuggestedPublicTags()
-		{
-			return suggestedPublicTags;
-		}
-
-		/**
-		 * @param suggestedPublicTags
-		 *            the suggestedPublicTags to set
-		 */
-		public void setSuggestedPublicTags(List<Tag> suggestedPublicTags)
-		{
-			this.suggestedPublicTags = suggestedPublicTags;
 		}
 
 		/**
@@ -734,11 +690,73 @@ public class PixceedPicture
 			this.viewCount = viewCount;
 		}
 
-		private List<Tag> tags;
-		private List<Tag> suggestedTags;
-		private List<Tag> suggestedPublicTags;
-		private String takenOn;
-		private int viewCount;
+		/**
+		 * @return the sharedTos
+		 */
+		public Collection<SharedTo> getSharedTos()
+		{
+			return sharedTos;
+		}
+
+		/**
+		 * @param sharedTos
+		 *            the sharedTos to set
+		 */
+		public void setSharedTos(Collection<SharedTo> sharedTos)
+		{
+			this.sharedTos = sharedTos;
+		}
+
+		/**
+		 * @return the tags
+		 */
+		public Collection<Tag> getTags()
+		{
+			return tags;
+		}
+
+		/**
+		 * @param tags
+		 *            the tags to set
+		 */
+		public void setTags(Collection<Tag> tags)
+		{
+			this.tags = tags;
+		}
+
+		/**
+		 * @return the suggestedPublicTags
+		 */
+		public Collection<Tag> getSuggestedPublicTags()
+		{
+			return suggestedPublicTags;
+		}
+
+		/**
+		 * @param suggestedPublicTags
+		 *            the suggestedPublicTags to set
+		 */
+		public void setSuggestedPublicTags(Collection<Tag> suggestedPublicTags)
+		{
+			this.suggestedPublicTags = suggestedPublicTags;
+		}
+
+		/**
+		 * @return the suggestedTags
+		 */
+		public Collection<Tag> getSuggestedTags()
+		{
+			return suggestedTags;
+		}
+
+		/**
+		 * @param suggestedTags
+		 *            the suggestedTags to set
+		 */
+		public void setSuggestedTags(Collection<Tag> suggestedTags)
+		{
+			this.suggestedTags = suggestedTags;
+		}
 
 		public static class Comment
 		{
@@ -761,7 +779,7 @@ public class PixceedPicture
 			private String name;
 			private int id;
 			private String owner;
-			private boolean public_;
+			private boolean _public;
 
 			/**
 			 * @return the groupIcon
@@ -866,20 +884,20 @@ public class PixceedPicture
 			}
 
 			/**
-			 * @return the public_
+			 * @return the public
 			 */
-			public boolean isPublic_()
+			public boolean isPublic()
 			{
-				return public_;
+				return _public;
 			}
 
 			/**
-			 * @param public_
-			 *            the public_ to set
+			 * @param _public
+			 *            the public to set
 			 */
-			public void setPublic_(boolean public_)
+			public void setPublic(boolean _public)
 			{
-				this.public_ = public_;
+				this._public = _public;
 			}
 		}
 
@@ -999,7 +1017,7 @@ public class PixceedPicture
 			private String name;
 			private int id;
 			private String owner;
-			private boolean public_;
+			private boolean _public;
 
 			/**
 			 * @return the sharedToIcon
@@ -1104,20 +1122,19 @@ public class PixceedPicture
 			}
 
 			/**
-			 * @return the public_
+			 * @return the public
 			 */
-			public boolean isPublic_()
+			public boolean isPublic()
 			{
-				return public_;
+				return _public;
 			}
 
 			/**
-			 * @param public_
-			 *            the public_ to set
+			 * @param public the public to set
 			 */
-			public void setPublic_(boolean public_)
+			public void setPublic(boolean _public)
 			{
-				this.public_ = public_;
+				this._public = _public;
 			}
 		}
 
@@ -1134,7 +1151,7 @@ public class PixceedPicture
 
 			private int id;
 			private String name;
-			private boolean public_;
+			private boolean _public;
 			private String userId;
 			private int width;
 			private int height;
@@ -1176,20 +1193,20 @@ public class PixceedPicture
 			}
 
 			/**
-			 * @return the public_
+			 * @return the public
 			 */
-			public boolean isPublic_()
+			public boolean isPublic()
 			{
-				return public_;
+				return _public;
 			}
 
 			/**
-			 * @param public_
-			 *            the public_ to set
+			 * @param public
+			 *            the public to set
 			 */
-			public void setPublic_(boolean public_)
+			public void setPublic(boolean _public)
 			{
-				this.public_ = public_;
+				this._public = _public;
 			}
 
 			/**

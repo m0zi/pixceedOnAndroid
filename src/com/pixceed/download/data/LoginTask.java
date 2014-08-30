@@ -23,15 +23,21 @@ public class LoginTask extends HttpPostRequestTask<Void, Login>
 	}
 
 	@Override
-	protected URL getURL(String... params) throws MalformedURLException, IllegalArgumentException {
+	protected URL getURL(String... params) throws MalformedURLException, IllegalArgumentException
+	{
 		return new URL(URL_LOGIN);
 	}
 
 	@Override
-	protected Login readIt(InputStream stream) throws IOException {
+	protected Login readIt(InputStream stream) throws IOException
+	{
 		try
 		{
 			return PixceedObjectsNamingStrategy.getMapper(Login.class).readValue(stream, Login.class);
+		}
+		catch (IOException e)
+		{
+			throw e;
 		}
 		catch (Exception e)
 		{

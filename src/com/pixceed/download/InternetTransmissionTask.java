@@ -21,8 +21,7 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 	public static final String URL_ARTICLES = URL_HP + "/articles";
 	public static final String URL_RND_PICTURE = URL_HP + "/images";
 	/* private pictures */
-	public static final String URL_IMAGES_BASE = URL_BASE + "/images";
-	public static final String URL_IMAGE = URL_IMAGES_BASE + "/id";
+	public static final String URL_IMAGE = URL_API + "/image";
 	/* alben */
 	public static final String URL_FOLDERS = URL_API + "/folder";
 	public static final String URL_PICTURES_IN_FOLDER = URL_FOLDERS + "/id";
@@ -37,12 +36,14 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 	}
 
 	@Override
-	protected void onPostExecute(R result) {
+	protected void onPostExecute(R result)
+	{
 		opei.onPostExecute(result);
 	}
 
 	@Override
-	protected R doInBackground(String... params) {
+	protected R doInBackground(String... params)
+	{
 		try
 		{
 			return download(getURL(params));

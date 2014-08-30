@@ -23,16 +23,22 @@ public class ArticlesTask extends HttpGetRequestTask<Void, Collection<Article>>
 	}
 
 	@Override
-	protected URL getURL(String... params) throws MalformedURLException, IllegalArgumentException {
+	protected URL getURL(String... params) throws MalformedURLException, IllegalArgumentException
+	{
 		return new URL(URL_ARTICLES);
 	}
 
 	@Override
-	protected Collection<Article> readIt(InputStream stream) throws IOException {
+	protected Collection<Article> readIt(InputStream stream) throws IOException
+	{
 		try
 		{
 			return PixceedObjectsNamingStrategy.getMapper(Article.class).readValue(stream, new TypeReference<Collection<Article>>()
 			{});
+		}
+		catch (IOException e)
+		{
+			throw e;
 		}
 		catch (Exception e)
 		{

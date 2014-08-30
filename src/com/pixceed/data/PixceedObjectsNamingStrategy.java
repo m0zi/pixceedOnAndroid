@@ -25,22 +25,33 @@ public class PixceedObjectsNamingStrategy extends PropertyNamingStrategy
 	}
 
 	@Override
-	public String nameForGetterMethod(MapperConfig<?> config, AnnotatedMethod method, String defaultName) {
+	public String nameForGetterMethod(MapperConfig<?> config, AnnotatedMethod method, String defaultName)
+	{
 		return translate(defaultName);
 	}
 
 	@Override
-	public String nameForSetterMethod(MapperConfig<?> config, AnnotatedMethod method, String defaultName) {
+	public String nameForSetterMethod(MapperConfig<?> config, AnnotatedMethod method, String defaultName)
+	{
 		return translate(defaultName);
 	}
 
 	@Override
-	public String nameForField(MapperConfig<?> config, AnnotatedField field, String defaultName) {
+	public String nameForField(MapperConfig<?> config, AnnotatedField field, String defaultName)
+	{
 		return translate(defaultName);
 	}
 
+	/**
+	 * Gets the name of the field in Java class and returns the String which occurs in the JSON object.
+	 * @param defaultName
+	 * @return
+	 */
 	private String translate(String defaultName)
 	{
+		// if tag name is some of Java's language reserved words, it will be escaped by an underline (e.g. applies to the word "public")
+		if (defaultName.startsWith("_"))
+			defaultName = defaultName.substring(1);
 		char[] nameChars = defaultName.toCharArray();
 		StringBuilder nameTranslated =
 				new StringBuilder(nameChars.length * 2);

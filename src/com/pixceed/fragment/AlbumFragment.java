@@ -7,9 +7,11 @@ import android.animation.ObjectAnimator;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,18 +27,23 @@ import android.widget.Toast;
 import com.pixceed.R;
 import com.pixceed.adapter.AlbumAdapter;
 import com.pixceed.data.Album.ImageDay.ImagePreviewInformation;
+import com.pixceed.data.PixceedPicture;
+import com.pixceed.download.OnPostExecuteInterface;
+import com.pixceed.download.data.PictureTask;
 import com.pixceed.download.data.PublicPictureTask;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AlbumFragment extends Fragment implements OnItemClickListener
+public class AlbumFragment extends Fragment implements OnItemClickListener, OnPostExecuteInterface<PixceedPicture>
 {
+
+	private boolean isMaximizedPicture;
 
 	/**
 	 * Hold a reference to the current animator, so that it can be canceled mid-way.
 	 */
-	private Animator mCurrentAnimator;
+	private Animator currentAnimator;
 
 	public AlbumFragment()
 	{}
@@ -50,6 +57,8 @@ public class AlbumFragment extends Fragment implements OnItemClickListener
 	private View rootView;
 
 	private GridView gridViewAlbum;
+
+	private AsyncTask<String, Void, PixceedPicture> currentTask;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,31 +80,35 @@ public class AlbumFragment extends Fragment implements OnItemClickListener
 
 	public void onItemClick(AdapterView<? extends Adapter> parent, View v, int position, long id)
 	{
-		Toast.makeText(getActivity(), "" + position, Toast.LENGTH_SHORT).show();
+		Toast.makeText(rootView.getContext(), "" + position, Toast.LENGTH_SHORT).show();
 
 		if (parent.getAdapter() instanceof AlbumAdapter)
 		{
-			zoomPictureFromIcon((ImageView) v, (ImagePreviewInformation) parent.getAdapter().getItem(position));
+			ImagePreviewInformation ipi = (ImagePreviewInformation) parent.getAdapter().getItem(position);
+			currentTask = new PictureTask(this).execute("/" + ipi.getId());
+			// start the animation
+			final ImageView expandedIconView = (ImageView) rootView.findViewById(R.id.expandedView);
+			final ImageView iconThumb = (ImageView) v.findViewById(R.id.picture);
+			zoomIcon(iconThumb, expandedIconView, ipi.getImageIcon().getBytes());
 		}
 	}
 
-	private void zoomPictureFromIcon(final ImageView v, ImagePreviewInformation ipi)
+	private void zoomIcon(final ImageView thumbView, final ImageView expandedView, byte[] imageBase64Encoded)
 	{
 		// If there's an animation in progress, cancel it
 		// immediately and proceed with this one.
-		if (mCurrentAnimator != null)
-			mCurrentAnimator.cancel();
+		if (currentAnimator != null)
+			currentAnimator.cancel();
 
-		// Load the high-resolution "zoomed-in" image.
-		final ImageView expandedImageView = (ImageView) getActivity().findViewById(R.id.expanded_picture);
+		// Load the low-resolution "zoomed-in" image/icon.
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
-		byte[] imageByteArray = Base64.decode(ipi.getImageIcon().getBytes(), Base64.DEFAULT);
+		byte[] imageByteArray = Base64.decode(imageBase64Encoded, Base64.DEFAULT);
 		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-		options.inSampleSize = PublicPictureTask.calculateInSampleSize(options, expandedImageView.getWidth(), expandedImageView.getHeight());
+		options.inSampleSize = PublicPictureTask.calculateInSampleSize(options, expandedView.getWidth(), expandedView.getHeight());
 		options.inJustDecodeBounds = false;
-		expandedImageView.setScaleType(ScaleType.FIT_CENTER);
-		expandedImageView.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
+		expandedView.setScaleType(ScaleType.FIT_CENTER);
+		expandedView.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
 
 		// Calculate the starting and ending bounds for the zoomed-in image.
 		// This step involves lots of math. Yay, math.
@@ -108,9 +121,8 @@ public class AlbumFragment extends Fragment implements OnItemClickListener
 		// view. Also set the container view's offset as the origin for the
 		// bounds, since that's the origin for the positioning animation
 		// properties (X, Y).
-		v.getGlobalVisibleRect(startBounds);
-		View findViewById = getActivity().findViewById(R.id.albumContainer);
-		findViewById.getGlobalVisibleRect(finalBounds, globalOffset);
+		thumbView.getGlobalVisibleRect(startBounds);
+		getActivity().findViewById(R.id.albumContainer).getGlobalVisibleRect(finalBounds, globalOffset);
 		startBounds.offset(-globalOffset.x, -globalOffset.y);
 		finalBounds.offset(-globalOffset.x, -globalOffset.y);
 
@@ -142,26 +154,24 @@ public class AlbumFragment extends Fragment implements OnItemClickListener
 		// Hide the thumbnail and show the zoomed-in view. When the animation
 		// begins, it will position the zoomed-in view in the place of the
 		// thumbnail.
-		v.setAlpha(0f);
-		expandedImageView.setVisibility(View.VISIBLE);
+		thumbView.setAlpha(0f);
+		expandedView.setVisibility(View.VISIBLE);
 
 		// Set the pivot point for SCALE_X and SCALE_Y transformations
 		// to the top-left corner of the zoomed-in view (the default
 		// is the center of the view).
-		expandedImageView.setPivotX(0f);
-		expandedImageView.setPivotY(0f);
+		expandedView.setPivotX(0f);
+		expandedView.setPivotY(0f);
 
 		// Construct and run the parallel animation of the four translation and
 		// scale properties (X, Y, SCALE_X, and SCALE_Y).
 		AnimatorSet set = new AnimatorSet();
-		set
-				.play(ObjectAnimator.ofFloat(expandedImageView, "translationX",
-						startBounds.left, finalBounds.left))
-				.with(ObjectAnimator.ofFloat(expandedImageView, "translationY",
-						startBounds.top, finalBounds.top))
-				.with(ObjectAnimator.ofFloat(expandedImageView, "scaleX",
-						startScale, 1f)).with(ObjectAnimator.ofFloat(expandedImageView,
-						"scaleY", startScale, 1f));
+		//@formatter:off
+		set.play(ObjectAnimator.ofFloat(expandedView, "translationX", startBounds.left, finalBounds.left))
+		   .with(ObjectAnimator.ofFloat(expandedView, "translationY", startBounds.top, finalBounds.top))
+		   .with(ObjectAnimator.ofFloat(expandedView, "scaleX", startScale, 1f))
+		   .with(ObjectAnimator.ofFloat(expandedView, "scaleY", startScale, 1f));
+		//@formatter:on
 		set.setDuration(mShortAnimationDuration);
 		set.setInterpolator(new DecelerateInterpolator());
 		set.addListener(new AnimatorListenerAdapter()
@@ -169,47 +179,42 @@ public class AlbumFragment extends Fragment implements OnItemClickListener
 			@Override
 			public void onAnimationEnd(Animator animation)
 			{
-				mCurrentAnimator = null;
+				currentAnimator = null;
+				isMaximizedPicture = true;
 			}
 
 			@Override
 			public void onAnimationCancel(Animator animation)
 			{
-				mCurrentAnimator = null;
+				currentAnimator = null;
+				isMaximizedPicture = true;
 			}
 		});
 
 		set.start();
-		mCurrentAnimator = set;
+		currentAnimator = set;
 
 		// Upon clicking the zoomed-in image, it should zoom back down
-		// to the original bounds and show the thumbnail instead of
-		// the expanded image.
+		// to the return bounds and show the returnView instead of
+		// the expanded icon.
 		final float startScaleFinal = startScale;
-		expandedImageView.setOnClickListener(new View.OnClickListener()
+		expandedView.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
 			{
-				if (mCurrentAnimator != null)
-				{
-					mCurrentAnimator.cancel();
-				}
+				if (currentAnimator != null) currentAnimator.cancel();
+				if (currentTask != null) currentTask.cancel(true);
 
 				// Animate the four positioning/sizing properties in parallel,
 				// back to their original values.
 				AnimatorSet set = new AnimatorSet();
-				set.play(ObjectAnimator
-						.ofFloat(expandedImageView, "translationX", startBounds.left))
-						.with(ObjectAnimator
-								.ofFloat(expandedImageView,
-										"translationY", startBounds.top))
-						.with(ObjectAnimator
-								.ofFloat(expandedImageView,
-										"scaleX", startScaleFinal))
-						.with(ObjectAnimator
-								.ofFloat(expandedImageView,
-										"scaleY", startScaleFinal));
+				//@formatter:off
+				set.play(ObjectAnimator.ofFloat(expandedView, "translationX", startBounds.left))
+				   .with(ObjectAnimator.ofFloat(expandedView, "translationY", startBounds.top))
+				   .with(ObjectAnimator.ofFloat(expandedView, "scaleX", startScaleFinal))
+				   .with(ObjectAnimator.ofFloat(expandedView, "scaleY", startScaleFinal));
+				//@formatter:on
 				set.setDuration(mShortAnimationDuration);
 				set.setInterpolator(new DecelerateInterpolator());
 				set.addListener(new AnimatorListenerAdapter()
@@ -217,22 +222,64 @@ public class AlbumFragment extends Fragment implements OnItemClickListener
 					@Override
 					public void onAnimationEnd(Animator animation)
 					{
-						v.setAlpha(1f);
-						expandedImageView.setVisibility(View.GONE);
-						mCurrentAnimator = null;
+						thumbView.setAlpha(1f);
+						expandedView.setVisibility(View.GONE);
+						isMaximizedPicture = false;
+						currentAnimator = null;
 					}
 
 					@Override
 					public void onAnimationCancel(Animator animation)
 					{
-						v.setAlpha(1f);
-						expandedImageView.setVisibility(View.GONE);
-						mCurrentAnimator = null;
+						thumbView.setAlpha(1f);
+						expandedView.setVisibility(View.GONE);
+						isMaximizedPicture = false;
+						currentAnimator = null;
 					}
 				});
 				set.start();
-				mCurrentAnimator = set;
+				currentAnimator = set;
 			}
 		});
+	}
+
+	@Override
+	public void onPostExecute(PixceedPicture result)
+	{
+		if (result == null)
+		{
+			Log.e("PICTURE", "No picture received.");
+			return;
+		}
+		// task has been done completely
+		currentTask = null;
+		// Load the high-resolution "zoomed-in" image.
+		final ImageView expandedView = (ImageView) rootView.findViewById(R.id.expandedView);
+		// Load the low-resolution "zoomed-in" image/icon.
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		byte[] imageByteArray = Base64.decode(result.getImage().getBytes(), Base64.DEFAULT);
+		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+		options.inSampleSize = PublicPictureTask.calculateInSampleSize(options, expandedView.getWidth(), expandedView.getHeight());
+		options.inJustDecodeBounds = false;
+		expandedView.setScaleType(ScaleType.FIT_CENTER);
+		expandedView.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
+	}
+
+	public boolean isMaximizedPicture()
+	{
+		return isMaximizedPicture;
+	}
+
+	/**
+	 * Minimizes the picture currently shown. If picture is not maximized currently, nothing is done.
+	 */
+	public void minimizePicture()
+	{
+		if (isMaximizedPicture)
+		{
+			final ImageView expandedView = (ImageView) rootView.findViewById(R.id.expandedView);
+			expandedView.performClick();
+		}
 	}
 }

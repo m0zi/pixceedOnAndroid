@@ -7,15 +7,15 @@ import java.net.URL;
 
 import android.util.Log;
 
-import com.pixceed.data.Album;
 import com.pixceed.data.PixceedObjectsNamingStrategy;
+import com.pixceed.data.PixceedPicture;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.TokenRequestTask;
 
-public class AlbumTask extends TokenRequestTask<Void, Album>
+public class PictureTask extends TokenRequestTask<Void, PixceedPicture>
 {
 
-	public AlbumTask(OnPostExecuteInterface<Album> opei)
+	public PictureTask(OnPostExecuteInterface<PixceedPicture> opei)
 	{
 		super(opei);
 	}
@@ -25,24 +25,24 @@ public class AlbumTask extends TokenRequestTask<Void, Album>
 	{
 		if (params == null || params.length < 1)
 			throw new IllegalArgumentException("Not enougth parameters.");
-		return new URL(URL_FOLDERS + params[0]);
+		return new URL(URL_IMAGE + params[0]);
 	}
 
 	@Override
-	protected Album readIt(InputStream stream) throws IOException
+	protected PixceedPicture readIt(InputStream stream) throws IOException
 	{
 		try
 		{
-			Log.d("LIBRARY", "Start JSON parsing");
-			Album readValue = PixceedObjectsNamingStrategy.getMapper(Album.class).readValue(stream, Album.class);
-			Log.d("LIBRARY", "End JSON parsing");
-			return readValue;
+			return PixceedObjectsNamingStrategy.getMapper(PixceedPicture.class).readValue(stream, PixceedPicture.class);
+		}
+		catch (IOException e)
+		{
+			throw e;
 		}
 		catch (Exception e)
 		{
-			Log.e("LIBRARY", "Error during parsing JSON", e);
+			Log.e("PUBLIC_PICTURE", "Error during parsing JSON", e);
 			return null;
 		}
 	}
-
 }

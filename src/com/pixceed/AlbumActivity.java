@@ -10,16 +10,17 @@ import com.pixceed.fragment.AlbumFragment;
 public class AlbumActivity extends ActionBarActivity
 {
 
+	private AlbumFragment albumFragment;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_album);
 
-		
 		if (savedInstanceState == null)
 		{
-			AlbumFragment albumFragment = new AlbumFragment();
+			albumFragment = new AlbumFragment();
 			Bundle bundle = new Bundle();
 			bundle.putInt("id", getIntent().getExtras().getInt("com.pixceed.AlbumId"));
 			albumFragment.setArguments(bundle);
@@ -47,5 +48,14 @@ public class AlbumActivity extends ActionBarActivity
 		int id = item.getItemId();
 		if (id == R.id.action_settings) { return true; }
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		if (albumFragment.isMaximizedPicture())
+			albumFragment.minimizePicture();
+		else
+			super.onBackPressed();
 	}
 }
