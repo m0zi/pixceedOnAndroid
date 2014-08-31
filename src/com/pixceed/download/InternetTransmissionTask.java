@@ -24,8 +24,9 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 	public static final String URL_IMAGE = URL_API + "/image";
 	/* alben */
 	public static final String URL_FOLDERS = URL_API + "/folder";
-	public static final String URL_PICTURES_IN_FOLDER = URL_FOLDERS + "/id";
-
+	/* groups */
+	public static final String URL_GROUPS = URL_API + "/group";
+	
 	private static final String LOG_TAG = "DOWNLOAD";
 
 	protected OnPostExecuteInterface<R> opei;

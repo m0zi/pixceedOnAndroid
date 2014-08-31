@@ -16,10 +16,10 @@ import com.pixceed.download.TokenRequestTask;
 import com.pixceed.util.Memory;
 import com.pixceed.util.PixceedObjectsNamingStrategy;
 
-public class LibrariesTask extends TokenRequestTask<Void, Collection<LibraryMonth>>
+public class UserLibrariesTask extends TokenRequestTask<Void, Collection<LibraryMonth>>
 {
 
-	public LibrariesTask(OnPostExecuteInterface<Collection<LibraryMonth>> opei)
+	public UserLibrariesTask(OnPostExecuteInterface<Collection<LibraryMonth>> opei)
 	{
 		super(opei);
 	}

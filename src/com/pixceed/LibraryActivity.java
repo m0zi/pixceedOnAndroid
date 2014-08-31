@@ -1,26 +1,51 @@
 package com.pixceed;
 
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.pixceed.fragment.LibraryFragment;
+import com.pixceed.adapter.LibraryAdapter;
 
 public class LibraryActivity extends ActionBarActivity
 {
+	private ViewPager pager;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+//		final ActionBar actionBar = getActionBar();
 		setContentView(R.layout.activity_library);
+		LibraryAdapter adapter = new LibraryAdapter(getSupportFragmentManager());
+		pager = (ViewPager) findViewById(R.id.library_pager);
+		pager.setAdapter(adapter);
+//		pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
+//		{
+//			public void onPageSelected(int position)
+//			{
+//				actionBar.setSelectedNavigationItem(position);
+//			}
+//		});
 
-		if (savedInstanceState == null)
-		{
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.library, new LibraryFragment())
-					.commit();
-		}
+//		// Specify that tabs should be displayed in the action bar.
+//		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+//		ActionBar.TabListener tabListener = new ActionBar.TabListener()
+//		{
+//			public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
+//			{
+//				pager.setCurrentItem(tab.getPosition());
+//			}
+//
+//			public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft)
+//			{}
+//
+//			public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft)
+//			{}
+//		};
 	}
 
 	@Override

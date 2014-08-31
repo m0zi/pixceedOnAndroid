@@ -12,23 +12,22 @@ import android.widget.GridView;
 
 import com.pixceed.AlbumActivity;
 import com.pixceed.R;
-import com.pixceed.adapter.LibraryAdapter;
+import com.pixceed.adapter.GroupAdapter;
 
-public class LibraryFragment extends Fragment implements OnItemClickListener
+public class GroupFragment extends Fragment implements OnItemClickListener
 {
+
 	private View rootView;
-	private GridView gridViewLibrary;
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState)
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		rootView = inflater.inflate(R.layout.fragment_library, container, false);
-
-		gridViewLibrary = (GridView) rootView.findViewById(R.id.gridViewLibrary);
-		LibraryAdapter albumAdapter = new LibraryAdapter(rootView.getContext());
-		gridViewLibrary.setAdapter(albumAdapter);
-		gridViewLibrary.setOnItemClickListener(this);
+		rootView = inflater.inflate(R.layout.fragment_group, container, false);
+		
+		GridView gridViewGroup = (GridView) rootView.findViewById(R.id.gridViewGroup);
+		GroupAdapter albumAdapter = new GroupAdapter(rootView.getContext(), getArguments().getLong("id"));
+		gridViewGroup.setAdapter(albumAdapter);
+		gridViewGroup.setOnItemClickListener(this);
 		
 		return rootView;
 	}
@@ -38,6 +37,7 @@ public class LibraryFragment extends Fragment implements OnItemClickListener
 	{
 		Intent intent = new Intent(rootView.getContext(), AlbumActivity.class);
 		intent.putExtra("com.pixceed.AlbumId", (int)id);
-		startActivity(intent);
+		startActivity(intent);		
 	}
+
 }

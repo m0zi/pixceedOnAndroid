@@ -3,120 +3,87 @@ package com.pixceed.adapter;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.pixceed.R;
-import com.pixceed.data.LibraryMonth;
-import com.pixceed.data.LibraryMonth.AlbumPreview;
+import com.pixceed.data.GroupDescription;
 import com.pixceed.download.OnPostExecuteInterface;
-import com.pixceed.download.data.LibrariesTask;
+import com.pixceed.download.data.GroupDescriptionsTask;
+import com.pixceed.fragment.GroupFragment;
+import com.pixceed.fragment.UserLibraryFragment;
 import com.pixceed.util.Memory;
 
-public class LibraryAdapter extends ArrayAdapter<AlbumPreview> implements OnPostExecuteInterface<Collection<LibraryMonth>>
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
+
+public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecuteInterface<Collection<GroupDescription>>
 {
+	private ArrayList<GroupDescription> groups;
 
-	private LayoutInflater inflater;
-	private ArrayList<AlbumPreview> library;
-
-	public LibraryAdapter(Context context)
+	public LibraryAdapter(FragmentManager fm)
 	{
-		super(context, R.drawable.ic_launcher);
-		inflater = LayoutInflater.from(context);
-		this.library = new ArrayList<AlbumPreview>();
+		super(fm);
+		groups = new ArrayList<GroupDescription>();
 		update();
 	}
 
 	@Override
-	public int getCount()
+	public Fragment getItem(int position)
 	{
-		if (library.isEmpty())
-			return super.getCount();
-		return library.size();
-	}
-
-	@Override
-	public AlbumPreview getItem(int position)
-	{
-		if (library.isEmpty())
-			return super.getItem(position);
-		return library.get(position);
+		Fragment fragment;
+		if (position == 0) fragment = new UserLibraryFragment();
+		else
+		{
+			fragment = new GroupFragment();
+			Bundle bundle = new Bundle();
+			bundle.putLong("id", getItemId(position));
+			fragment.setArguments(bundle);
+		}
+		return fragment;
 	}
 
 	@Override
 	public long getItemId(int position)
 	{
-		if (library.isEmpty())
+		if (position == 0)
+			return 0;
+		if (groups.isEmpty())
 			return super.getItemId(position);
-		return getItem(position).getAlbumId();
+		return groups.get(position - 1).getId();
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent)
+	public int getCount()
 	{
-		if (library.isEmpty())
-			return super.getView(position, convertView, parent);
-
-		View v = convertView;
-		ImageView picture;
-		TextView name;
-
-		if (v == null)
-		{
-			v = inflater.inflate(R.layout.gridview_item, parent, false);
-			v.setTag(R.id.picture, v.findViewById(R.id.picture));
-			v.setTag(R.id.text, (TextView) v.findViewById(R.id.text));
-		}
-		picture = (ImageView) v.getTag(R.id.picture);
-		name = (TextView) v.getTag(R.id.text);
-
-		AlbumPreview item = getItem(position);
-
-		name.setText(item.getAlbumName());
-
-		//@formatter:off
-		Memory.loadBitmap(item.getAlbumIcon(), picture);
-		/*
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		byte[] imageByteArray = Base64.decode(item.getAlbumIcon().getBytes(), Base64.DEFAULT);
-		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-		options.inSampleSize = BitmapWorkerTask.calculateInSampleSize(options, picture.getWidth(), picture.getHeight());
-		options.inJustDecodeBounds = false;
-		picture.setScaleType(ScaleType.CENTER_CROP);
-		picture.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
-		//*/
-		//@formatter:on
-		return v;
-	}
-
-	public void update()
-	{
-		Collection<LibraryMonth> library = Memory.getLibraryFromMemoryCache();
-		if (library == null)
-			new LibrariesTask(this).execute();
-		else
-			onPostExecute(library);
+		return groups.size() + 1;
 	}
 
 	@Override
-	public void onPostExecute(Collection<LibraryMonth> library)
+	public CharSequence getPageTitle(int position)
 	{
-		if (library == null)
+		if (position == 0)
+			return "Deine Alben";
+		final GroupDescription groupDescription = groups.get(position - 1);
+		return groupDescription.getName() + " (" + groupDescription.getFirstName() + " " + groupDescription.getLastName() + ")";
+	}
+
+	private void update()
+	{
+		Collection<GroupDescription> groups = Memory.getGroupDescriptionsFromMemoryCache();
+		if (groups == null) new GroupDescriptionsTask(this).execute();
+		else onPostExecute(groups);
+	}
+
+	@Override
+	public void onPostExecute(Collection<GroupDescription> groups)
+	{
+		if (groups == null)
 		{
 			Log.e("LIBRARY", "Library not received.");
 			return;
 		}
-		this.library.clear();
-		// add up all picture icons once
-		for (LibraryMonth libraryMonth : library)
-			this.library.addAll(libraryMonth.getAlbumPreview());
+		this.groups.clear();
+		this.groups.addAll(groups);
 		notifyDataSetChanged();
 	}
 

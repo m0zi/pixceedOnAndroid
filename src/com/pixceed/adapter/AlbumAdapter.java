@@ -80,19 +80,7 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 
 		name.setText(item.getName());
 
-		//@formatter:off
 		Memory.loadBitmap(item.getImageIcon(), picture);
-		/*
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		byte[] imageByteArray = Base64.decode(item.getImageIcon().getBytes(), Base64.DEFAULT);
-		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-		options.inSampleSize = BitmapWorkerTask.calculateInSampleSize(options, picture.getWidth(), picture.getHeight());
-		options.inJustDecodeBounds = false;
-		picture.setScaleType(ScaleType.CENTER_CROP);
-		picture.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
-		//@formatter:on
-		*/
 		return v;
 	}
 
