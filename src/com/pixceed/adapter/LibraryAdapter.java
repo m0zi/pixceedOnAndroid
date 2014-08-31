@@ -1,17 +1,15 @@
 package com.pixceed.adapter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.pixceed.R;
@@ -19,9 +17,9 @@ import com.pixceed.data.LibraryMonth;
 import com.pixceed.data.LibraryMonth.AlbumPreview;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.data.LibrariesTask;
-import com.pixceed.download.data.PublicPictureTask;
+import com.pixceed.util.Memory;
 
-public class LibraryAdapter extends ArrayAdapter<AlbumPreview> implements OnPostExecuteInterface<ArrayList<LibraryMonth>>
+public class LibraryAdapter extends ArrayAdapter<AlbumPreview> implements OnPostExecuteInterface<Collection<LibraryMonth>>
 {
 
 	private LayoutInflater inflater;
@@ -50,11 +48,11 @@ public class LibraryAdapter extends ArrayAdapter<AlbumPreview> implements OnPost
 			return super.getItem(position);
 		return library.get(position);
 	}
-	
+
 	@Override
 	public long getItemId(int position)
 	{
-		if(library.isEmpty())
+		if (library.isEmpty())
 			return super.getItemId(position);
 		return getItem(position).getAlbumId();
 	}
@@ -82,24 +80,33 @@ public class LibraryAdapter extends ArrayAdapter<AlbumPreview> implements OnPost
 
 		name.setText(item.getAlbumName());
 
+		//@formatter:off
+		Memory.loadBitmap(item.getAlbumIcon(), picture);
+		/*
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		byte[] imageByteArray = Base64.decode(item.getAlbumIcon().getBytes(), Base64.DEFAULT);
 		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-		options.inSampleSize = PublicPictureTask.calculateInSampleSize(options, picture.getWidth(), picture.getHeight());
+		options.inSampleSize = BitmapWorkerTask.calculateInSampleSize(options, picture.getWidth(), picture.getHeight());
 		options.inJustDecodeBounds = false;
 		picture.setScaleType(ScaleType.CENTER_CROP);
 		picture.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
+		//*/
+		//@formatter:on
 		return v;
 	}
 
 	public void update()
 	{
-		new LibrariesTask(this).execute();
+		Collection<LibraryMonth> library = Memory.getLibraryFromMemoryCache();
+		if (library == null)
+			new LibrariesTask(this).execute();
+		else
+			onPostExecute(library);
 	}
 
 	@Override
-	public void onPostExecute(ArrayList<LibraryMonth> library)
+	public void onPostExecute(Collection<LibraryMonth> library)
 	{
 		if (library == null)
 		{

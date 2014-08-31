@@ -1,6 +1,7 @@
 package com.pixceed;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,14 +19,16 @@ public class AlbumActivity extends ActionBarActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_album);
 
-		if (savedInstanceState == null)
+		final FragmentManager fragmentManager = getSupportFragmentManager();
+		albumFragment = (AlbumFragment) fragmentManager.findFragmentByTag(AlbumFragment.TAG);
+		if (albumFragment == null)
 		{
 			albumFragment = new AlbumFragment();
 			Bundle bundle = new Bundle();
 			bundle.putInt("id", getIntent().getExtras().getInt("com.pixceed.AlbumId"));
 			albumFragment.setArguments(bundle);
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.album, albumFragment)
+			fragmentManager.beginTransaction()
+					.add(R.id.album, albumFragment, AlbumFragment.TAG)
 					.commit();
 		}
 	}
@@ -53,9 +56,7 @@ public class AlbumActivity extends ActionBarActivity
 	@Override
 	public void onBackPressed()
 	{
-		if (albumFragment.isMaximizedPicture())
-			albumFragment.minimizePicture();
-		else
-			super.onBackPressed();
+		if (albumFragment.isMaximizedPicture()) albumFragment.minimizePicture();
+		else super.onBackPressed();
 	}
 }

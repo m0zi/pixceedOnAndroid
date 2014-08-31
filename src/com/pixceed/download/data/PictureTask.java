@@ -7,10 +7,11 @@ import java.net.URL;
 
 import android.util.Log;
 
-import com.pixceed.data.PixceedObjectsNamingStrategy;
 import com.pixceed.data.PixceedPicture;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.TokenRequestTask;
+import com.pixceed.util.Memory;
+import com.pixceed.util.PixceedObjectsNamingStrategy;
 
 public class PictureTask extends TokenRequestTask<Void, PixceedPicture>
 {
@@ -33,7 +34,9 @@ public class PictureTask extends TokenRequestTask<Void, PixceedPicture>
 	{
 		try
 		{
-			return PixceedObjectsNamingStrategy.getMapper(PixceedPicture.class).readValue(stream, PixceedPicture.class);
+			final PixceedPicture readValue = PixceedObjectsNamingStrategy.getMapper(PixceedPicture.class).readValue(stream, PixceedPicture.class);
+			Memory.addPixceedPictureToMemoryCache(readValue);
+			return readValue;
 		}
 		catch (IOException e)
 		{

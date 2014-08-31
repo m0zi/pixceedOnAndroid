@@ -127,7 +127,7 @@ public class PixceedPicture
 		private String gpsLatitude;
 		private String gpsLongitude;
 		private List<Group> groups;
-		private int id;
+		private long id;
 		private int imageIndex;
 		private int imageCount;
 		private int imageWidth;
@@ -455,7 +455,7 @@ public class PixceedPicture
 		/**
 		 * @return the id
 		 */
-		public int getId()
+		public long getId()
 		{
 			return id;
 		}
@@ -464,7 +464,7 @@ public class PixceedPicture
 		 * @param id
 		 *            the id to set
 		 */
-		public void setId(int id)
+		public void setId(long id)
 		{
 			this.id = id;
 		}

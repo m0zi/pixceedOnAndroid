@@ -5,19 +5,21 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.pixceed.data.LibraryMonth;
-import com.pixceed.data.PixceedObjectsNamingStrategy;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.TokenRequestTask;
+import com.pixceed.util.Memory;
+import com.pixceed.util.PixceedObjectsNamingStrategy;
 
-public class LibrariesTask extends TokenRequestTask<Void, ArrayList<LibraryMonth>>
+public class LibrariesTask extends TokenRequestTask<Void, Collection<LibraryMonth>>
 {
 
-	public LibrariesTask(OnPostExecuteInterface<ArrayList<LibraryMonth>> opei)
+	public LibrariesTask(OnPostExecuteInterface<Collection<LibraryMonth>> opei)
 	{
 		super(opei);
 	}
@@ -33,8 +35,10 @@ public class LibrariesTask extends TokenRequestTask<Void, ArrayList<LibraryMonth
 	{
 		try
 		{
-			return PixceedObjectsNamingStrategy.getMapper(LibraryMonth.class).readValue(stream, new TypeReference<ArrayList<LibraryMonth>>()
+			final ArrayList<LibraryMonth> readValue = PixceedObjectsNamingStrategy.getMapper(LibraryMonth.class).readValue(stream, new TypeReference<ArrayList<LibraryMonth>>()
 			{});
+			Memory.addLibraryToMemoryCache(readValue);
+			return readValue;
 		}
 
 		catch (Exception e)

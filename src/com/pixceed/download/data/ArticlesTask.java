@@ -10,9 +10,9 @@ import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.pixceed.data.Article;
-import com.pixceed.data.PixceedObjectsNamingStrategy;
 import com.pixceed.download.HttpGetRequestTask;
 import com.pixceed.download.OnPostExecuteInterface;
+import com.pixceed.util.PixceedObjectsNamingStrategy;
 
 public class ArticlesTask extends HttpGetRequestTask<Void, Collection<Article>>
 {

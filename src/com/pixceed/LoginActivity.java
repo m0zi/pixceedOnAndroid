@@ -18,17 +18,18 @@ import com.pixceed.data.Login;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.data.LoginTask;
 import com.pixceed.fragment.LoginFragment;
+import com.pixceed.util.Memory;
 
 public class LoginActivity extends ActionBarActivity
 {
-
-	public static String token = "9QOAE_hGRZ3ikN82cXdl4PcRRqGjcbYoXPZQtRlWoXsxrXmhq2ubS5OCwjpReIUDAQMUrYzabpuo74IpKHnFsT1yqCbrGdfSOVUmL1BBCpy2IfuROluKFZKkY0lB7uFBWsFws8XT_shIZfM1ducghPUw2VePkoui2KpOWJYeBftmGG48rVzTQUN1KvqdG3ach7lix1Ja9Uag60FJjxhKUFcyc6ciMCumLZ60RYPCA9oCdEek2gbzERH5_eYOwbidnOKDDf08wHkFWcNyi8KLGIieJRhbeZ7e8bYlkxFuPfKt8CEtTSdSJvg2ji5IeT6LhZKiODtXqqf99PUeDflD0FeFC5ayTGKS82FMvFwffN7R5phsJWlxmZ0pwi-ss1uquNISqDH3UAqodI1JRkKD4pnLCp6xCEGA6ZaQLOsJL8v5rL22z8G23-vs5UZGIO_2bUUqO7TgxIy0YciGffPSCQ";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-
+		
+		Memory.init(getApplicationContext());
+		
 		if (savedInstanceState == null)
 		{
 			getSupportFragmentManager().beginTransaction().add(R.id.login, new LoginFragment()).commit();
@@ -63,11 +64,11 @@ public class LoginActivity extends ActionBarActivity
 				@Override
 				public void onPostExecute(Login result) {
 					if (((CheckBox) findViewById(R.id.checkBoxSaveLoginName)).isChecked())
-						result.setToken(token);
+						result.setToken(Memory.token);
 					if (result != null && result.getToken() != null)
 					{
 						// login successfully
-						token = result.getToken();
+						Memory.token = result.getToken();
 						Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
 						Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_LONG).show();
 						startActivity(intent);

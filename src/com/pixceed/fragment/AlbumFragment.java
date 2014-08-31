@@ -4,13 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,15 +28,16 @@ import com.pixceed.data.Album.ImageDay.ImagePreviewInformation;
 import com.pixceed.data.PixceedPicture;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.data.PictureTask;
-import com.pixceed.download.data.PublicPictureTask;
+import com.pixceed.util.Memory;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class AlbumFragment extends Fragment implements OnItemClickListener, OnPostExecuteInterface<PixceedPicture>
 {
+	public static final String TAG = "com.pixceed.fragment.AlbumFragment";
 
-	private boolean isMaximizedPicture;
+	private boolean isMaximizedPicture = false;
 
 	/**
 	 * Hold a reference to the current animator, so that it can be canceled mid-way.
@@ -56,8 +55,6 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 
 	private View rootView;
 
-	private GridView gridViewAlbum;
-
 	private AsyncTask<String, Void, PixceedPicture> currentTask;
 
 	@Override
@@ -66,7 +63,7 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 	{
 		rootView = inflater.inflate(R.layout.fragment_album, container, false);
 
-		gridViewAlbum = (GridView) rootView.findViewById(R.id.gridViewAlbum);
+		GridView gridViewAlbum = (GridView) rootView.findViewById(R.id.gridViewAlbum);
 		AlbumAdapter albumAdapter = new AlbumAdapter(rootView.getContext(), getArguments().getInt("id"));
 		gridViewAlbum.setAdapter(albumAdapter);
 		gridViewAlbum.setOnItemClickListener(this);
@@ -84,16 +81,25 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 
 		if (parent.getAdapter() instanceof AlbumAdapter)
 		{
-			currentTask = new PictureTask(this).execute("/" + id);
-			// start the animation
 			final ImageView expandedIconView = (ImageView) rootView.findViewById(R.id.expandedView);
 			final ImageView iconThumb = (ImageView) itemView.findViewById(R.id.picture);
-			zoomIcon(iconThumb, expandedIconView, ((ImagePreviewInformation) parent.getAdapter().getItem(position)).getImageIcon().getBytes());
+			final String imageBase64Encoded;
+			PixceedPicture picture = Memory.getPixceedPictureFromMemoryCache(id);
+			if (picture == null)
+			{
+				// if picture is not in cache, take the icon and download afterwards
+				currentTask = new PictureTask(this).execute("/" + id);
+				imageBase64Encoded = ((ImagePreviewInformation) parent.getAdapter().getItem(position)).getImageIcon();
+			}
+			// if picture is in cache, take the high res image
+			else imageBase64Encoded = picture.getImage();
+			// start the animation
+			zoomIcon(iconThumb, expandedIconView, imageBase64Encoded);
 		}
 		else Log.e("ALBUM", String.format("Unexpected call to onItemClick. Given %s.getAdapter() does not return instance of %s.", parent.getClass(), AlbumAdapter.class.getName()));
 	}
 
-	private void zoomIcon(final ImageView thumbView, final ImageView expandedView, byte[] imageBase64Encoded)
+	private void zoomIcon(final ImageView thumbView, final ImageView expandedView, String imageBase64Encoded)
 	{
 		// If there's an animation in progress, cancel it
 		// immediately and proceed with this one.
@@ -101,14 +107,20 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 			currentAnimator.cancel();
 
 		// Load the low-resolution "zoomed-in" image/icon.
+		expandedView.setScaleType(ScaleType.FIT_CENTER);
+		Memory.loadBitmap(imageBase64Encoded, expandedView);
+		//@formatter:off
+		/*
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		byte[] imageByteArray = Base64.decode(imageBase64Encoded, Base64.DEFAULT);
 		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-		options.inSampleSize = PublicPictureTask.calculateInSampleSize(options, expandedView.getWidth(), expandedView.getHeight());
+		options.inSampleSize = BitmapWorkerTask.calculateInSampleSize(options, expandedView.getWidth(), expandedView.getHeight());
 		options.inJustDecodeBounds = false;
 		expandedView.setScaleType(ScaleType.FIT_CENTER);
 		expandedView.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
+		 */
+		//@formatter:on
 
 		// Calculate the starting and ending bounds for the zoomed-in image.
 		// This step involves lots of math. Yay, math.
@@ -256,14 +268,19 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		// Load the high-resolution "zoomed-in" image.
 		final ImageView expandedView = (ImageView) rootView.findViewById(R.id.expandedView);
 		// Load the low-resolution "zoomed-in" image/icon.
+		Memory.loadBitmap(result.getImage(), expandedView);
+		//@formatter:off
+		/*
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		byte[] imageByteArray = Base64.decode(result.getImage().getBytes(), Base64.DEFAULT);
 		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-		options.inSampleSize = PublicPictureTask.calculateInSampleSize(options, expandedView.getWidth(), expandedView.getHeight());
+		options.inSampleSize = BitmapWorkerTask.calculateInSampleSize(options, expandedView.getWidth(), expandedView.getHeight());
 		options.inJustDecodeBounds = false;
 		expandedView.setScaleType(ScaleType.FIT_CENTER);
 		expandedView.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
+		*/
+		//@formatter:on
 	}
 
 	public boolean isMaximizedPicture()

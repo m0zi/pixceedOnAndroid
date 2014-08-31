@@ -8,9 +8,10 @@ import java.net.URL;
 import android.util.Log;
 
 import com.pixceed.data.Album;
-import com.pixceed.data.PixceedObjectsNamingStrategy;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.TokenRequestTask;
+import com.pixceed.util.Memory;
+import com.pixceed.util.PixceedObjectsNamingStrategy;
 
 public class AlbumTask extends TokenRequestTask<Void, Album>
 {
@@ -35,6 +36,7 @@ public class AlbumTask extends TokenRequestTask<Void, Album>
 		{
 			Log.d("LIBRARY", "Start JSON parsing");
 			Album readValue = PixceedObjectsNamingStrategy.getMapper(Album.class).readValue(stream, Album.class);
+			Memory.addAlbumToMemoryCache(readValue);
 			Log.d("LIBRARY", "End JSON parsing");
 			return readValue;
 		}

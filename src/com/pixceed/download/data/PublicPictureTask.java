@@ -7,6 +7,7 @@ import java.net.URL;
 
 import com.pixceed.download.HttpGetRequestTask;
 import com.pixceed.download.OnPostExecuteInterface;
+import com.pixceed.util.BitmapWorkerTask;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,42 +53,10 @@ public class PublicPictureTask extends HttpGetRequestTask<Void, Bitmap>
 			options.inJustDecodeBounds = true;
 			BitmapFactory.decodeStream(stream, null, options);
 
-			options.inSampleSize = calculateInSampleSize(options, onScreenWidth, onScreenHeight);
+			options.inSampleSize = BitmapWorkerTask.calculateInSampleSize(options, onScreenWidth, onScreenHeight);
 			stream.reset();
 		}
 		options.inJustDecodeBounds = false;
 		return BitmapFactory.decodeStream(stream, null, options);
-	}
-
-	/**
-	 * Calculates the sample size for this picture and takes the required width and height into account. In order to reduce the used memory space in
-	 * the device, pictures should not always be download in native resolution.
-	 * 
-	 * @param options
-	 *            the previously used {@link BitmapFactory.Options} instance with which the actual size has been calculated.
-	 * @param reqWidth
-	 *            the actual width on which the picture shall be rendered.
-	 * @param reqHeight
-	 *            the actual height on which the picture shall be rendered.
-	 * @return
-	 */
-	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-		// Raw height and width of image
-		final int actHeight = options.outHeight;
-		final int actWidth = options.outWidth;
-		int inSampleSize = 1;
-
-		if (actHeight > reqHeight || actWidth > reqWidth)
-		{
-			final int halfHeight = actHeight / 2;
-			final int halfWidth = actWidth / 2;
-
-			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
-			// height and width larger than the requested height and width.
-			while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth)
-				inSampleSize *= 2;
-		}
-
-		return inSampleSize;
 	}
 }

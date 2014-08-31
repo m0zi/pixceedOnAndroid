@@ -2,6 +2,7 @@ package com.pixceed.data;
 
 import java.util.Date;
 
+
 public class Article
 {
 	public static final String ADDED_ON_TAG = "Added";
@@ -17,7 +18,8 @@ public class Article
 	/**
 	 * @return the added
 	 */
-	public Date getAddedOn() {
+	public Date getAddedOn()
+	{
 		return addedOn;
 	}
 
@@ -25,14 +27,16 @@ public class Article
 	 * @param added
 	 *            the added to set
 	 */
-	public void setAddedOn(String addedOn) {
+	public void setAddedOn(String addedOn)
+	{
 		this.addedOn = new Date();
 	}
 
 	/**
 	 * @return the html
 	 */
-	public String getHtml() {
+	public String getHtml()
+	{
 		return html;
 	}
 
@@ -40,14 +44,16 @@ public class Article
 	 * @param html
 	 *            the html to set
 	 */
-	public void setHtml(String html) {
+	public void setHtml(String html)
+	{
 		this.html = html;
 	}
 
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public int getId()
+	{
 		return id;
 	}
 
@@ -55,14 +61,16 @@ public class Article
 	 * @param id
 	 *            the id to set
 	 */
-	public void setId(int id) {
+	public void setId(int id)
+	{
 		this.id = id;
 	}
 
 	/**
 	 * @return the name
 	 */
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
@@ -70,7 +78,8 @@ public class Article
 	 * @param name
 	 *            the name to set
 	 */
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		this.name = name;
 	}
 }

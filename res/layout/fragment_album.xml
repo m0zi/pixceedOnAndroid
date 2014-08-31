@@ -22,6 +22,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@null"
         android:background="@color/black_transparent"
+        android:scaleType="fitCenter"
         android:paddingBottom="2dp"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"

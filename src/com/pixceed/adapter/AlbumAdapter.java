@@ -3,15 +3,12 @@ package com.pixceed.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.pixceed.R;
@@ -20,7 +17,7 @@ import com.pixceed.data.Album.ImageDay;
 import com.pixceed.data.Album.ImageDay.ImagePreviewInformation;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.data.AlbumTask;
-import com.pixceed.download.data.PublicPictureTask;
+import com.pixceed.util.Memory;
 
 public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implements OnPostExecuteInterface<Album>
 {
@@ -83,20 +80,27 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 
 		name.setText(item.getName());
 
+		//@formatter:off
+		Memory.loadBitmap(item.getImageIcon(), picture);
+		/*
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		byte[] imageByteArray = Base64.decode(item.getImageIcon().getBytes(), Base64.DEFAULT);
 		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-		options.inSampleSize = PublicPictureTask.calculateInSampleSize(options, picture.getWidth(), picture.getHeight());
+		options.inSampleSize = BitmapWorkerTask.calculateInSampleSize(options, picture.getWidth(), picture.getHeight());
 		options.inJustDecodeBounds = false;
 		picture.setScaleType(ScaleType.CENTER_CROP);
 		picture.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
+		//@formatter:on
+		*/
 		return v;
 	}
 
 	public void update()
 	{
-		new AlbumTask(this).execute("/" + albumId);
+		Album album = Memory.getAlbumFromMemoryCache(albumId);
+		if (album == null) new AlbumTask(this).execute("/" + albumId);
+		else onPostExecute(album);
 	}
 
 	@Override
