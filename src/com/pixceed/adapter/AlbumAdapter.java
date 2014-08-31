@@ -22,13 +22,13 @@ import com.pixceed.util.Memory;
 public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implements OnPostExecuteInterface<Album>
 {
 	private int albumId;
-	private LayoutInflater inflater;
+	private Context context;
 	private ArrayList<ImagePreviewInformation> albumImages;
 
 	public AlbumAdapter(Context context, int albumId)
 	{
 		super(context, R.drawable.ic_launcher);
-		inflater = LayoutInflater.from(context);
+		this.context = context;
 		this.albumImages = new ArrayList<ImagePreviewInformation>();
 		this.albumId = albumId;
 		update();
@@ -69,7 +69,7 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 
 		if (v == null)
 		{
-			v = inflater.inflate(R.layout.gridview_item, parent, false);
+			v = LayoutInflater.from(context).inflate(R.layout.gridview_item, parent, false);
 			v.setTag(R.id.picture, v.findViewById(R.id.picture));
 			v.setTag(R.id.text, (TextView) v.findViewById(R.id.text));
 		}
@@ -87,7 +87,7 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 	public void update()
 	{
 		Album album = Memory.getAlbumFromMemoryCache(albumId);
-		if (album == null) new AlbumTask(this).execute("/" + albumId);
+		if (album == null) new AlbumTask(context, this).execute("/" + albumId);
 		else onPostExecute(album);
 	}
 

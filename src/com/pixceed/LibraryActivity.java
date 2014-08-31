@@ -1,7 +1,5 @@
 package com.pixceed;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -18,34 +16,11 @@ public class LibraryActivity extends ActionBarActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-//		final ActionBar actionBar = getActionBar();
+		// final ActionBar actionBar = getActionBar();
 		setContentView(R.layout.activity_library);
-		LibraryAdapter adapter = new LibraryAdapter(getSupportFragmentManager());
+		LibraryAdapter adapter = new LibraryAdapter(getApplicationContext(), getSupportFragmentManager());
 		pager = (ViewPager) findViewById(R.id.library_pager);
 		pager.setAdapter(adapter);
-//		pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
-//		{
-//			public void onPageSelected(int position)
-//			{
-//				actionBar.setSelectedNavigationItem(position);
-//			}
-//		});
-
-//		// Specify that tabs should be displayed in the action bar.
-//		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-//		ActionBar.TabListener tabListener = new ActionBar.TabListener()
-//		{
-//			public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
-//			{
-//				pager.setCurrentItem(tab.getPosition());
-//			}
-//
-//			public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft)
-//			{}
-//
-//			public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft)
-//			{}
-//		};
 	}
 
 	@Override

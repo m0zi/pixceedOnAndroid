@@ -22,13 +22,13 @@ import com.pixceed.util.Memory;
 public class UserLibraryAdapter extends ArrayAdapter<AlbumPreview> implements OnPostExecuteInterface<Collection<LibraryMonth>>
 {
 
-	private LayoutInflater inflater;
+	private Context context;
 	private ArrayList<AlbumPreview> userLibrary;
 
 	public UserLibraryAdapter(Context context)
 	{
 		super(context, R.drawable.ic_launcher);
-		inflater = LayoutInflater.from(context);
+		this.context = context;
 		this.userLibrary = new ArrayList<AlbumPreview>();
 		update();
 	}
@@ -69,7 +69,7 @@ public class UserLibraryAdapter extends ArrayAdapter<AlbumPreview> implements On
 
 		if (v == null)
 		{
-			v = inflater.inflate(R.layout.gridview_item, parent, false);
+			v = LayoutInflater.from(context).inflate(R.layout.gridview_item, parent, false);
 			v.setTag(R.id.picture, v.findViewById(R.id.picture));
 			v.setTag(R.id.text, (TextView) v.findViewById(R.id.text));
 		}
@@ -87,7 +87,7 @@ public class UserLibraryAdapter extends ArrayAdapter<AlbumPreview> implements On
 	public void update()
 	{
 		Collection<LibraryMonth> library = Memory.getUserLibraryFromMemoryCache();
-		if (library == null) new UserLibrariesTask(this).execute();
+		if (library == null) new UserLibrariesTask(context, this).execute();
 		else onPostExecute(library);
 	}
 

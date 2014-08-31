@@ -7,6 +7,7 @@ import java.net.URL;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.pixceed.data.Login;
@@ -17,9 +18,9 @@ import com.pixceed.util.PixceedObjectsNamingStrategy;
 public class LoginTask extends HttpPostRequestTask<Void, Login>
 {
 
-	public LoginTask(OnPostExecuteInterface<Login> opei, String username, String password)
+	public LoginTask(Context context, OnPostExecuteInterface<Login> opei, String username, String password)
 	{
-		super(opei, new BasicNameValuePair("grant_type", "password"), new BasicNameValuePair("username", username), new BasicNameValuePair("password", password));
+		super(context, opei, new BasicNameValuePair("grant_type", "password"), new BasicNameValuePair("username", username), new BasicNameValuePair("password", password));
 	}
 
 	@Override

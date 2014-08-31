@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.pixceed.data.Album;
@@ -16,9 +17,9 @@ import com.pixceed.util.PixceedObjectsNamingStrategy;
 public class AlbumTask extends TokenRequestTask<Void, Album>
 {
 
-	public AlbumTask(OnPostExecuteInterface<Album> opei)
+	public AlbumTask(Context context, OnPostExecuteInterface<Album> opei)
 	{
-		super(opei);
+		super(context, opei);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -17,9 +18,9 @@ import com.pixceed.util.PixceedObjectsNamingStrategy;
 public class ArticlesTask extends HttpGetRequestTask<Void, Collection<Article>>
 {
 
-	public ArticlesTask(OnPostExecuteInterface<Collection<Article>> opei)
+	public ArticlesTask(Context context, OnPostExecuteInterface<Collection<Article>> opei)
 	{
-		super(opei);
+		super(context, opei);
 	}
 
 	@Override

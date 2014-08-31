@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.pixceed.data.Group;
@@ -16,9 +17,9 @@ import com.pixceed.util.PixceedObjectsNamingStrategy;
 public class GroupTask extends TokenRequestTask<Void, Group>
 {
 
-	public GroupTask(OnPostExecuteInterface<Group> opei)
+	public GroupTask(Context context, OnPostExecuteInterface<Group> opei)
 	{
-		super(opei);
+		super(context, opei);
 	}
 
 	@Override

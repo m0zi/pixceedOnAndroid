@@ -20,7 +20,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.Toast;
 
 import com.pixceed.R;
 import com.pixceed.adapter.AlbumAdapter;
@@ -77,8 +76,6 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 
 	public void onItemClick(AdapterView<? extends Adapter> parent, View itemView, int position, long id)
 	{
-		Toast.makeText(rootView.getContext(), "" + position, Toast.LENGTH_SHORT).show();
-
 		if (parent.getAdapter() instanceof AlbumAdapter)
 		{
 			final ImageView expandedIconView = (ImageView) rootView.findViewById(R.id.expandedView);
@@ -88,7 +85,7 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 			if (picture == null)
 			{
 				// if picture is not in cache, take the icon and download afterwards
-				currentTask = new PictureTask(this).execute("/" + id);
+				currentTask = new PictureTask(rootView.getContext(), this).execute("/" + id);
 				imageBase64Encoded = ((ImagePreviewInformation) parent.getAdapter().getItem(position)).getImageIcon();
 			}
 			// if picture is in cache, take the high res image

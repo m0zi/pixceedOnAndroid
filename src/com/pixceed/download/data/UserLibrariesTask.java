@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -19,9 +20,9 @@ import com.pixceed.util.PixceedObjectsNamingStrategy;
 public class UserLibrariesTask extends TokenRequestTask<Void, Collection<LibraryMonth>>
 {
 
-	public UserLibrariesTask(OnPostExecuteInterface<Collection<LibraryMonth>> opei)
+	public UserLibrariesTask(Context context, OnPostExecuteInterface<Collection<LibraryMonth>> opei)
 	{
-		super(opei);
+		super(context, opei);
 	}
 
 	@Override

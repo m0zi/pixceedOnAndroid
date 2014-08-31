@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.pixceed.data.PixceedPicture;
@@ -16,9 +17,9 @@ import com.pixceed.util.PixceedObjectsNamingStrategy;
 public class PictureTask extends TokenRequestTask<Void, PixceedPicture>
 {
 
-	public PictureTask(OnPostExecuteInterface<PixceedPicture> opei)
+	public PictureTask(Context context, OnPostExecuteInterface<PixceedPicture> opei)
 	{
-		super(opei);
+		super(context, opei);
 	}
 
 	@Override

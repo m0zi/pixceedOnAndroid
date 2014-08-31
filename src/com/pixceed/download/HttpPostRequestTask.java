@@ -12,6 +12,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.Context;
 import android.util.Log;
 
 public abstract class HttpPostRequestTask<S, R> extends InternetTransmissionTask<S, R>
@@ -19,9 +20,9 @@ public abstract class HttpPostRequestTask<S, R> extends InternetTransmissionTask
 
 	private NameValuePair[] requestProperties;
 
-	protected HttpPostRequestTask(OnPostExecuteInterface<R> opei, NameValuePair... requestProperties)
+	protected HttpPostRequestTask(Context context, OnPostExecuteInterface<R> opei, NameValuePair... requestProperties)
 	{
-		super(opei);
+		super(context, opei);
 		this.requestProperties = requestProperties;
 	}
 

@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,9 +19,9 @@ import com.pixceed.util.PixceedObjectsNamingStrategy;
 public class GroupDescriptionsTask extends TokenRequestTask<Void, Collection<GroupDescription>>
 {
 
-	public GroupDescriptionsTask(OnPostExecuteInterface<Collection<GroupDescription>> opei)
+	public GroupDescriptionsTask(Context context, OnPostExecuteInterface<Collection<GroupDescription>> opei)
 	{
-		super(opei);
+		super(context, opei);
 	}
 
 	@Override

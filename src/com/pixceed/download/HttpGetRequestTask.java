@@ -7,15 +7,16 @@ import java.net.URL;
 
 import org.apache.http.NameValuePair;
 
+import android.content.Context;
 import android.util.Log;
 
 public abstract class HttpGetRequestTask<S, R> extends InternetTransmissionTask<S, R>
 {
 	private NameValuePair[] requestProperties;
 
-	protected HttpGetRequestTask(OnPostExecuteInterface<R> opei, NameValuePair... requestProperties)
+	protected HttpGetRequestTask(Context context, OnPostExecuteInterface<R> opei, NameValuePair... requestProperties)
 	{
-		super(opei);
+		super(context, opei);
 		this.requestProperties = requestProperties;
 	}
 

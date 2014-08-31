@@ -5,8 +5,12 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S, R>
 {
@@ -26,13 +30,16 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 	public static final String URL_FOLDERS = URL_API + "/folder";
 	/* groups */
 	public static final String URL_GROUPS = URL_API + "/group";
-	
+
 	private static final String LOG_TAG = "DOWNLOAD";
 
 	protected OnPostExecuteInterface<R> opei;
 
-	protected InternetTransmissionTask(OnPostExecuteInterface<R> opei)
+	protected Context context;
+
+	protected InternetTransmissionTask(Context context, OnPostExecuteInterface<R> opei)
 	{
+		this.context = context;
 		this.opei = opei;
 	}
 
@@ -45,6 +52,12 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 	@Override
 	protected R doInBackground(String... params)
 	{
+		if (!checkConnection(context))
+		{
+			Log.w(LOG_TAG, "No conntection to the internet.");
+			Toast.makeText(context, "No connection.", Toast.LENGTH_LONG).show();
+			return null;
+		}
 		try
 		{
 			return download(getURL(params));
@@ -59,6 +72,13 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 			Log.e(LOG_TAG, "Task cannot be executed with the given set of parameters.", e);
 			return null;
 		}
+	}
+
+	public static boolean checkConnection(Context context)
+	{
+		ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
+		return networkInfo != null && networkInfo.isConnected();
 	}
 
 	protected abstract URL getURL(String... params) throws MalformedURLException, IllegalArgumentException;

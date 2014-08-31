@@ -21,13 +21,13 @@ import com.pixceed.util.Memory;
 public class GroupAdapter extends ArrayAdapter<GroupFolder> implements OnPostExecuteInterface<Group>
 {
 	private ArrayList<GroupFolder> groupLibrary;
-	private LayoutInflater inflater;
+	private Context context;
 	private long groupId;
 
 	public GroupAdapter(Context context, long groupId)
 	{
 		super(context, R.drawable.ic_launcher);
-		inflater = LayoutInflater.from(context);
+		this.context = context;
 		groupLibrary = new ArrayList<GroupFolder>();
 		this.groupId = groupId;
 		update();
@@ -69,7 +69,7 @@ public class GroupAdapter extends ArrayAdapter<GroupFolder> implements OnPostExe
 
 		if (v == null)
 		{
-			v = inflater.inflate(R.layout.gridview_item, parent, false);
+			v = LayoutInflater.from(context).inflate(R.layout.gridview_item, parent, false);
 			v.setTag(R.id.picture, v.findViewById(R.id.picture));
 			v.setTag(R.id.text, (TextView) v.findViewById(R.id.text));
 		}
@@ -87,7 +87,7 @@ public class GroupAdapter extends ArrayAdapter<GroupFolder> implements OnPostExe
 	private void update()
 	{
 		Group group = Memory.getGroupFromMemoryCache(groupId);
-		if (group == null) new GroupTask(this).execute("/" + groupId);
+		if (group == null) new GroupTask(context, this).execute("/" + groupId);
 		else onPostExecute(group);
 	}
 

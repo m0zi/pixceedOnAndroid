@@ -5,12 +5,13 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.pixceed.download.HttpGetRequestTask;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.util.BitmapWorkerTask;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 public class PublicPictureTask extends HttpGetRequestTask<Void, Bitmap>
 {
@@ -20,9 +21,9 @@ public class PublicPictureTask extends HttpGetRequestTask<Void, Bitmap>
 	/* public pictures */
 	public static final String URL_PUBLIC_PICTURE = URL_BASE + "/pixceed/Image/GetImage/";
 
-	public PublicPictureTask(OnPostExecuteInterface<Bitmap> opei, int onScreenWidth, int onScreenHeight)
+	public PublicPictureTask(Context context, OnPostExecuteInterface<Bitmap> opei, int onScreenWidth, int onScreenHeight)
 	{
-		super(opei);
+		super(context, opei);
 		this.onScreenWidth = onScreenWidth;
 		this.onScreenHeight = onScreenHeight;
 	}

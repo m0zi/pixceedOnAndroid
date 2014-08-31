@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,9 +15,9 @@ import com.pixceed.download.OnPostExecuteInterface;
 public class PublicPictureListTask extends HttpGetRequestTask<Void, int[]>
 {
 
-	public PublicPictureListTask(OnPostExecuteInterface<int[]> opei)
+	public PublicPictureListTask(Context context, OnPostExecuteInterface<int[]> opei)
 	{
-		super(opei);
+		super(context, opei);
 	}
 
 	@Override

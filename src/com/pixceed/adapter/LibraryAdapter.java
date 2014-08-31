@@ -3,6 +3,13 @@ package com.pixceed.adapter;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
+
 import com.pixceed.data.GroupDescription;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.data.GroupDescriptionsTask;
@@ -10,19 +17,15 @@ import com.pixceed.fragment.GroupFragment;
 import com.pixceed.fragment.UserLibraryFragment;
 import com.pixceed.util.Memory;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
-
 public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecuteInterface<Collection<GroupDescription>>
 {
 	private ArrayList<GroupDescription> groups;
+	private Context context;
 
-	public LibraryAdapter(FragmentManager fm)
+	public LibraryAdapter(Context context, FragmentManager fm)
 	{
 		super(fm);
+		this.context = context;
 		groups = new ArrayList<GroupDescription>();
 		update();
 	}
@@ -70,7 +73,7 @@ public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecut
 	private void update()
 	{
 		Collection<GroupDescription> groups = Memory.getGroupDescriptionsFromMemoryCache();
-		if (groups == null) new GroupDescriptionsTask(this).execute();
+		if (groups == null) new GroupDescriptionsTask(context, this).execute();
 		else onPostExecute(groups);
 	}
 
