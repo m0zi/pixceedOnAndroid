@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/imageContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.pixceed.fragment.ImageFragment" >
+
+    <ImageView
+        android:id="@+id/imageViewImagePicture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_transparent"
+        android:contentDescription="@null"
+        android:paddingBottom="2dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/textViewImageText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/black_transparent"
+        android:paddingBottom="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingTop="3dp"
+        android:singleLine="true"
+        android:textColor="@android:color/white" />
+
+</FrameLayout>

@@ -4,13 +4,13 @@
     android:layout_height="match_parent" >
 
     <com.pixceed.view.SquareImageView
-        android:id="@+id/picture"
+        android:id="@+id/squaredImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/textViewSquarePicture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

@@ -69,12 +69,12 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 
 		if (v == null)
 		{
-			v = LayoutInflater.from(context).inflate(R.layout.gridview_item, parent, false);
-			v.setTag(R.id.picture, v.findViewById(R.id.picture));
-			v.setTag(R.id.text, (TextView) v.findViewById(R.id.text));
+			v = LayoutInflater.from(context).inflate(R.layout.gridview_squared_image_item, parent, false);
+			v.setTag(R.id.squaredImage, v.findViewById(R.id.squaredImage));
+			v.setTag(R.id.textViewSquarePicture, (TextView) v.findViewById(R.id.textViewSquarePicture));
 		}
-		picture = (ImageView) v.getTag(R.id.picture);
-		name = (TextView) v.getTag(R.id.text);
+		picture = (ImageView) v.getTag(R.id.squaredImage);
+		name = (TextView) v.getTag(R.id.textViewSquarePicture);
 
 		ImagePreviewInformation item = getItem(position);
 

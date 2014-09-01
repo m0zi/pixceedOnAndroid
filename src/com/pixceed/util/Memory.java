@@ -89,7 +89,6 @@ public class Memory
 				return (bitmap.getRowBytes() * bitmap.getHeight()) / 1024;
 			}
 		};
-
 	}
 
 	public static void addBitmapToMemoryCache(String key, Bitmap bitmap)
@@ -109,10 +108,9 @@ public class Memory
 	{
 		if (imageView == null)
 			Log.e("BITMAP_MEMORY", "imageView is null.", new NullPointerException());
-		if (data == null)
+		if (data == null || data.isEmpty())
 		{
 			imageView.setImageResource(R.drawable.ic_launcher);
-			return;
 		}
 		final Bitmap bitmap = getBitmapFromMemCache(data);
 		if (bitmap != null) imageView.setImageBitmap(bitmap);
