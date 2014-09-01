@@ -8,12 +8,12 @@
     tools:ignore="MergeRootFrame" >
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/library_pager"
+        android:id="@+id/libraryPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
         <android.support.v4.view.PagerTitleStrip
-            android:id="@+id/pager_title_strip"
+            android:id="@+id/pagerTitleStrip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"

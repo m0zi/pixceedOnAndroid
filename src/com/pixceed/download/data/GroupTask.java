@@ -17,6 +17,8 @@ import com.pixceed.util.PixceedObjectsNamingStrategy;
 public class GroupTask extends TokenRequestTask<Void, Group>
 {
 
+	private static final String GROUP_TAG = "GROUP";
+
 	public GroupTask(Context context, OnPostExecuteInterface<Group> opei)
 	{
 		super(context, opei);
@@ -35,13 +37,15 @@ public class GroupTask extends TokenRequestTask<Void, Group>
 	{
 		try
 		{
+			Log.d(GROUP_TAG, "Start of JSON parsing");
 			Group readValue = PixceedObjectsNamingStrategy.getMapper(Group.class).readValue(stream, Group.class);
+			Log.d(GROUP_TAG, "End of JSON parsing");
 			Memory.addGroupToMemoryCache(readValue);
 			return readValue;
 		}
 		catch (Exception e)
 		{
-			Log.e("GROUP", "Error during parsing JSON", e);
+			Log.e(GROUP_TAG, "Error during parsing JSON", e);
 			return null;
 		}
 	}

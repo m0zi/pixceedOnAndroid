@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.pixceed.util.Memory;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -52,7 +54,7 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 	@Override
 	protected R doInBackground(String... params)
 	{
-		if (!checkConnection(context))
+		if (!checkConnection(context, Memory.isMobileDataAllowed))
 		{
 			Log.w(LOG_TAG, "No conntection to the internet.");
 			Toast.makeText(context, "No connection.", Toast.LENGTH_LONG).show();
@@ -74,10 +76,23 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 		}
 	}
 
-	public static boolean checkConnection(Context context)
+	/**
+	 * Check whether or not Internet connection is available.
+	 * 
+	 * @param context
+	 *            required to retrieve network and connectivity information.
+	 * @param isMobileDataAllowed
+	 *            flags whether or not mobile data is allowed to be used. Please note, that this will only make sure
+	 *            {@link ConnectivityManager#TYPE_MOBILE} will not be used. {@link ConnectivityManager#TYPE_MOBILE_DUN TYPE_MOBILE_...} are still
+	 *            possible since I don't have no idea what these other connections might be.
+	 * @return <code>true</code> if data connection to Internet is allowed and possible , <code>false</code> otherwise.
+	 */
+	public static boolean checkConnection(Context context, boolean isMobileDataAllowed)
 	{
 		ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
+		if (!isMobileDataAllowed && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE)
+			return false;
 		return networkInfo != null && networkInfo.isConnected();
 	}
 
@@ -102,6 +117,11 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 		catch (IOException e)
 		{
 			Log.e(LOG_TAG, "Error while reading input stream data.", e);
+
+			return null;
+		}
+		finally
+		{
 			try
 			{
 				if (is != null)
@@ -109,9 +129,9 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 			}
 			catch (IOException e1)
 			{
-				Log.e(LOG_TAG, "Error while closing input stream.", e1);
+				Log.e(LOG_TAG, "Error while closing input stream (probably already closed).", e1);
+				return null;
 			}
-			return null;
 		}
 	}
 

@@ -80,7 +80,7 @@ public class UserLibraryAdapter extends ArrayAdapter<AlbumPreview> implements On
 
 		name.setText(item.getAlbumName());
 
-		Memory.loadBitmap(item.getAlbumIcon(), picture);
+		Memory.loadAndSetBitmap(item.getAlbumIcon(), picture);
 		return v;
 	}
 

@@ -17,6 +17,8 @@ import com.pixceed.util.PixceedObjectsNamingStrategy;
 public class AlbumTask extends TokenRequestTask<Void, Album>
 {
 
+	private static final String ALBUM_TAG = "ALBUM";
+
 	public AlbumTask(Context context, OnPostExecuteInterface<Album> opei)
 	{
 		super(context, opei);
@@ -35,15 +37,15 @@ public class AlbumTask extends TokenRequestTask<Void, Album>
 	{
 		try
 		{
-			Log.d("LIBRARY", "Start JSON parsing");
+			Log.d(ALBUM_TAG, "Start of JSON parsing");
 			Album readValue = PixceedObjectsNamingStrategy.getMapper(Album.class).readValue(stream, Album.class);
+			Log.d(ALBUM_TAG, "End of JSON parsing");
 			Memory.addAlbumToMemoryCache(readValue);
-			Log.d("LIBRARY", "End JSON parsing");
 			return readValue;
 		}
 		catch (Exception e)
 		{
-			Log.e("LIBRARY", "Error during parsing JSON", e);
+			Log.e(ALBUM_TAG, "Error during parsing JSON", e);
 			return null;
 		}
 	}

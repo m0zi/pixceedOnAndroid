@@ -20,6 +20,8 @@ import com.pixceed.util.PixceedObjectsNamingStrategy;
 public class UserLibrariesTask extends TokenRequestTask<Void, Collection<LibraryMonth>>
 {
 
+	private static final String USER_LIBRARY_TAG = "USER_LIBRARY";
+
 	public UserLibrariesTask(Context context, OnPostExecuteInterface<Collection<LibraryMonth>> opei)
 	{
 		super(context, opei);
@@ -36,15 +38,17 @@ public class UserLibrariesTask extends TokenRequestTask<Void, Collection<Library
 	{
 		try
 		{
+			Log.d(USER_LIBRARY_TAG, "Start of JSON parsing");
 			final ArrayList<LibraryMonth> readValue = PixceedObjectsNamingStrategy.getMapper(LibraryMonth.class).readValue(stream, new TypeReference<ArrayList<LibraryMonth>>()
 			{});
+			Log.d(USER_LIBRARY_TAG, "Start of JSON parsing");
 			Memory.addLibraryToMemoryCache(readValue);
 			return readValue;
 		}
 
 		catch (Exception e)
 		{
-			Log.e("LIBRARY", "Error during parsing JSON", e);
+			Log.e(USER_LIBRARY_TAG, "Error during parsing JSON", e);
 			return null;
 		}
 	}

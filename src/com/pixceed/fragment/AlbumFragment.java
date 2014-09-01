@@ -34,9 +34,16 @@ import com.pixceed.util.Memory;
  */
 public class AlbumFragment extends Fragment implements OnItemClickListener, OnPostExecuteInterface<PixceedPicture>
 {
+	public static final String IS_PICTURE_EXTENDED_KEY = "isPictureExtended";
+	public static final String RECENT_ID_KEY = "recentId";
+
 	public static final String TAG = "com.pixceed.fragment.AlbumFragment";
 
-	private boolean isMaximizedPicture = false;
+	private boolean isPictureExtended = false;
+	/**
+	 * Do not rely on this value as a marker for whether or not the expanded view is shown as it will only be set and never unset.
+	 */
+	private long recentId;
 
 	/**
 	 * Hold a reference to the current animator, so that it can be canceled mid-way.
@@ -47,7 +54,7 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 	{}
 
 	/**
-	 * The system "short" animation time duration, in milliseconds. This /* duration is ideal for subtle animations or animations that occur very
+	 * The system "short" animation time duration, in milliseconds. This duration is ideal for subtle animations or animations that occur very
 	 * frequently.
 	 */
 	private int mShortAnimationDuration;
@@ -56,6 +63,8 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 
 	private AsyncTask<String, Void, PixceedPicture> currentTask;
 
+	private AlbumAdapter albumAdapter;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState)
@@ -63,35 +72,91 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		rootView = inflater.inflate(R.layout.fragment_album, container, false);
 
 		GridView gridViewAlbum = (GridView) rootView.findViewById(R.id.gridViewAlbum);
-		AlbumAdapter albumAdapter = new AlbumAdapter(rootView.getContext(), getArguments().getInt("id"));
+		albumAdapter = new AlbumAdapter(rootView.getContext(), getArguments().getInt("id"));
 		gridViewAlbum.setAdapter(albumAdapter);
 		gridViewAlbum.setOnItemClickListener(this);
+
+		if (savedInstanceState != null)
+		{
+			isPictureExtended = savedInstanceState.getBoolean(IS_PICTURE_EXTENDED_KEY);
+			recentId = savedInstanceState.getLong(RECENT_ID_KEY);
+		}
+		if (isPictureExtended) setMaximizedPicture();
 
 		// Retrieve and cache the system's default "short" animation time.
 		mShortAnimationDuration = getResources().getInteger(
 				android.R.integer.config_shortAnimTime);
 
+		setRetainInstance(true);
+
 		return rootView;
+	}
+
+	private void setMaximizedPicture()
+	{
+		final ImageView expandedView = (ImageView) rootView.findViewById(R.id.imageViewExpanded);
+		final PixceedPicture pixceedPictureFromMemoryCache = Memory.getPixceedPictureFromMemoryCache(recentId);
+		if (pixceedPictureFromMemoryCache == null)
+			return;
+		Memory.loadAndSetBitmap(pixceedPictureFromMemoryCache.getImage(), expandedView);
+		expandedView.setVisibility(View.VISIBLE);
+		expandedView.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				// Animate the four positioning/sizing properties in parallel,
+				// back to their original values.
+				AnimatorSet set = new AnimatorSet();
+				//@formatter:off
+				set.play(ObjectAnimator.ofFloat(expandedView, "scaleX", 0f))
+				   .with(ObjectAnimator.ofFloat(expandedView, "scaleY", 0f));
+				//@formatter:on
+				set.setDuration(mShortAnimationDuration);
+				set.setInterpolator(new DecelerateInterpolator());
+				set.addListener(new AnimatorListenerAdapter()
+				{
+					@Override
+					public void onAnimationEnd(Animator animation)
+					{
+						expandedView.setVisibility(View.GONE);
+						isPictureExtended = false;
+						currentAnimator = null;
+					}
+
+					@Override
+					public void onAnimationCancel(Animator animation)
+					{
+						expandedView.setVisibility(View.GONE);
+						isPictureExtended = false;
+						currentAnimator = null;
+					}
+				});
+				set.start();
+				currentAnimator = set;
+			}
+		});
 	}
 
 	public void onItemClick(AdapterView<? extends Adapter> parent, View itemView, int position, long id)
 	{
 		if (parent.getAdapter() instanceof AlbumAdapter)
 		{
-			final ImageView expandedIconView = (ImageView) rootView.findViewById(R.id.expandedView);
+			final ImageView expandedView = (ImageView) rootView.findViewById(R.id.imageViewExpanded);
 			final ImageView iconThumb = (ImageView) itemView.findViewById(R.id.picture);
 			final String imageBase64Encoded;
+			recentId = id;
 			PixceedPicture picture = Memory.getPixceedPictureFromMemoryCache(id);
 			if (picture == null)
 			{
-				// if picture is not in cache, take the icon and download afterwards
+				// if picture is not in cache, start the download and take the icon in the first hand
 				currentTask = new PictureTask(rootView.getContext(), this).execute("/" + id);
 				imageBase64Encoded = ((ImagePreviewInformation) parent.getAdapter().getItem(position)).getImageIcon();
 			}
 			// if picture is in cache, take the high res image
 			else imageBase64Encoded = picture.getImage();
 			// start the animation
-			zoomIcon(iconThumb, expandedIconView, imageBase64Encoded);
+			zoomIcon(iconThumb, expandedView, imageBase64Encoded);
 		}
 		else Log.e("ALBUM", String.format("Unexpected call to onItemClick. Given %s.getAdapter() does not return instance of %s.", parent.getClass(), AlbumAdapter.class.getName()));
 	}
@@ -105,19 +170,7 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 
 		// Load the low-resolution "zoomed-in" image/icon.
 		expandedView.setScaleType(ScaleType.FIT_CENTER);
-		Memory.loadBitmap(imageBase64Encoded, expandedView);
-		//@formatter:off
-		/*
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		byte[] imageByteArray = Base64.decode(imageBase64Encoded, Base64.DEFAULT);
-		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-		options.inSampleSize = BitmapWorkerTask.calculateInSampleSize(options, expandedView.getWidth(), expandedView.getHeight());
-		options.inJustDecodeBounds = false;
-		expandedView.setScaleType(ScaleType.FIT_CENTER);
-		expandedView.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
-		 */
-		//@formatter:on
+		Memory.loadAndSetBitmap(imageBase64Encoded, expandedView);
 
 		// Calculate the starting and ending bounds for the zoomed-in image.
 		// This step involves lots of math. Yay, math.
@@ -189,14 +242,14 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 			public void onAnimationEnd(Animator animation)
 			{
 				currentAnimator = null;
-				isMaximizedPicture = true;
+				isPictureExtended = true;
 			}
 
 			@Override
 			public void onAnimationCancel(Animator animation)
 			{
 				currentAnimator = null;
-				isMaximizedPicture = true;
+				isPictureExtended = true;
 			}
 		});
 
@@ -233,7 +286,7 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 					{
 						thumbView.setAlpha(1f);
 						expandedView.setVisibility(View.GONE);
-						isMaximizedPicture = false;
+						isPictureExtended = false;
 						currentAnimator = null;
 					}
 
@@ -242,7 +295,7 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 					{
 						thumbView.setAlpha(1f);
 						expandedView.setVisibility(View.GONE);
-						isMaximizedPicture = false;
+						isPictureExtended = false;
 						currentAnimator = null;
 					}
 				});
@@ -263,26 +316,20 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		// task has been done completely
 		currentTask = null;
 		// Load the high-resolution "zoomed-in" image.
-		final ImageView expandedView = (ImageView) rootView.findViewById(R.id.expandedView);
+		final ImageView expandedView = (ImageView) rootView.findViewById(R.id.imageViewExpanded);
 		// Load the low-resolution "zoomed-in" image/icon.
-		Memory.loadBitmap(result.getImage(), expandedView);
-		//@formatter:off
-		/*
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		byte[] imageByteArray = Base64.decode(result.getImage().getBytes(), Base64.DEFAULT);
-		BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-		options.inSampleSize = BitmapWorkerTask.calculateInSampleSize(options, expandedView.getWidth(), expandedView.getHeight());
-		options.inJustDecodeBounds = false;
-		expandedView.setScaleType(ScaleType.FIT_CENTER);
-		expandedView.setImageBitmap(BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length));
-		*/
-		//@formatter:on
+		Memory.loadAndSetBitmap(result.getImage(), expandedView);
 	}
 
-	public boolean isMaximizedPicture()
+	public boolean isPictureExtended()
 	{
-		return isMaximizedPicture;
+		return isPictureExtended;
+	}
+
+	public void setData(boolean isPictureExtended, long recentId)
+	{
+		this.isPictureExtended = isPictureExtended;
+		this.recentId = recentId;
 	}
 
 	/**
@@ -290,10 +337,20 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 	 */
 	public void minimizePicture()
 	{
-		if (isMaximizedPicture)
+		if (isPictureExtended)
 		{
-			final ImageView expandedView = (ImageView) rootView.findViewById(R.id.expandedView);
+			final ImageView expandedView = (ImageView) rootView.findViewById(R.id.imageViewExpanded);
 			expandedView.performClick();
 		}
+	}
+
+	public void update()
+	{
+		albumAdapter.update();
+	}
+
+	public long getRecentId()
+	{
+		return recentId;
 	}
 }

@@ -70,7 +70,7 @@ public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecut
 		return groupDescription.getName() + " (" + groupDescription.getFirstName() + " " + groupDescription.getLastName() + ")";
 	}
 
-	private void update()
+	public void update()
 	{
 		Collection<GroupDescription> groups = Memory.getGroupDescriptionsFromMemoryCache();
 		if (groups == null) new GroupDescriptionsTask(context, this).execute();

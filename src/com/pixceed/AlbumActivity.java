@@ -1,12 +1,15 @@
 package com.pixceed;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.pixceed.fragment.AlbumFragment;
+import com.pixceed.util.Memory;
 
 public class AlbumActivity extends ActionBarActivity
 {
@@ -34,11 +37,19 @@ public class AlbumActivity extends ActionBarActivity
 	}
 
 	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		outState.putBoolean(AlbumFragment.IS_PICTURE_EXTENDED_KEY, albumFragment.isPictureExtended());
+		outState.putLong(AlbumFragment.RECENT_ID_KEY, albumFragment.getRecentId());
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.album, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
@@ -50,13 +61,27 @@ public class AlbumActivity extends ActionBarActivity
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) { return true; }
+		if (id == R.id.action_refresh)
+		{
+			Memory.initCaches();
+			albumFragment.update();
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onBackPressed()
 	{
-		if (albumFragment.isMaximizedPicture()) albumFragment.minimizePicture();
+		if (albumFragment.isPictureExtended()) albumFragment.minimizePicture();
 		else super.onBackPressed();
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		Log.d("ALBUM", "save data");
+		Memory.save(getPreferences(Context.MODE_PRIVATE).edit()).commit();
 	}
 }

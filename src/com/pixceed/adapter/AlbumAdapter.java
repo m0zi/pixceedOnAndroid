@@ -80,7 +80,7 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 
 		name.setText(item.getName());
 
-		Memory.loadBitmap(item.getImageIcon(), picture);
+		Memory.loadAndSetBitmap(item.getImageIcon(), picture);
 		return v;
 	}
 

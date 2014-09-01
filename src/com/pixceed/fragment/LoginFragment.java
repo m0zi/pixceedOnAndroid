@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -37,7 +38,9 @@ public class LoginFragment extends Fragment
 
 		// show sample text
 		final Context context = rootView.getContext();
-		final OnPostExecuteInterface<Collection<Article>> showDemoText = new OnPostExecuteInterface<Collection<Article>>()
+		((TextView) rootView.findViewById(R.id.editTextLoginName)).setText(Memory.loginName);
+		((CheckBox) rootView.findViewById(R.id.checkBoxSaveLoginName)).setChecked(Memory.isRememberEmailChecked);
+		final OnPostExecuteInterface<Collection<Article>> showLoginText = new OnPostExecuteInterface<Collection<Article>>()
 		{
 			@Override
 			public void onPostExecute(Collection<Article> result)
@@ -48,11 +51,11 @@ public class LoginFragment extends Fragment
 				((TextView) rootView.findViewById(R.id.textViewArticle)).setText("");
 			}
 		};
-		new ArticlesTask(context, showDemoText).execute();
+		new ArticlesTask(context, showLoginText).execute();
 
 		// show sample image
 		final ImageView imageView = (ImageView) rootView.findViewById(R.id.imageViewRndPicture);
-		final OnPostExecuteInterface<Bitmap> showDemoPicture = new OnPostExecuteInterface<Bitmap>()
+		final OnPostExecuteInterface<Bitmap> showLoginPicture = new OnPostExecuteInterface<Bitmap>()
 		{
 			@Override
 			public void onPostExecute(Bitmap result)
@@ -68,7 +71,7 @@ public class LoginFragment extends Fragment
 			{
 				if (result == null || result.length < 1)
 					return;
-				new PublicPictureTask(context, showDemoPicture, imageView.getWidth(), imageView.getHeight()).execute("" + result[0]);
+				new PublicPictureTask(context, showLoginPicture, imageView.getWidth(), imageView.getHeight()).execute("" + result[0]);
 			}
 		};
 		new PublicPictureListTask(context, getRandomPublicPicture).execute();

@@ -3,9 +3,11 @@ package com.pixceed.util;
 import java.util.Collection;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.util.LruCache;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.pixceed.R;
@@ -18,8 +20,17 @@ import com.pixceed.util.BitmapWorkerTask.AsyncDrawable;
 
 public class Memory
 {
-	public static String token = "9QOAE_hGRZ3ikN82cXdl4PcRRqGjcbYoXPZQtRlWoXsxrXmhq2ubS5OCwjpReIUDAQMUrYzabpuo74IpKHnFsT1yqCbrGdfSOVUmL1BBCpy2IfuROluKFZKkY0lB7uFBWsFws8XT_shIZfM1ducghPUw2VePkoui2KpOWJYeBftmGG48rVzTQUN1KvqdG3ach7lix1Ja9Uag60FJjxhKUFcyc6ciMCumLZ60RYPCA9oCdEek2gbzERH5_eYOwbidnOKDDf08wHkFWcNyi8KLGIieJRhbeZ7e8bYlkxFuPfKt8CEtTSdSJvg2ji5IeT6LhZKiODtXqqf99PUeDflD0FeFC5ayTGKS82FMvFwffN7R5phsJWlxmZ0pwi-ss1uquNISqDH3UAqodI1JRkKD4pnLCp6xCEGA6ZaQLOsJL8v5rL22z8G23-vs5UZGIO_2bUUqO7TgxIy0YciGffPSCQ";
+	private static final String TOKEN_KEY = "token";
+	private static final String LOGIN_NAME_KEY = "loginName";
+	private static final String IS_MOBILE_DATA_ALLOWED_KEY = "isMobileDataAllowed";
+	private static final String IS_REMEMBER_EMAIL_CHECKED_KEY = "rememberEmail";
+
+	public static String token = null;
 	public static String loginName;
+	public static boolean isMobileDataAllowed = true;
+	public static boolean isRememberEmailChecked = false;
+
+	static Bitmap icLauncher;
 
 	private static LruCache<Integer, Bitmap> pictureCache;
 	private static LruCache<Long, PixceedPicture> pixceedCache;
@@ -28,17 +39,25 @@ public class Memory
 	private static Collection<LibraryMonth> userLibraryCache;
 	private static Collection<GroupDescription> groupDescriptionsCache;
 
-	static Bitmap icLauncher;
-
-	static Context appContext;
-
 	private Memory()
 	{}
 
-	public static void init(Context context)
+	public static SharedPreferences.Editor save(SharedPreferences.Editor nvmDataStore)
 	{
-		appContext = context;
+		nvmDataStore.putBoolean(IS_MOBILE_DATA_ALLOWED_KEY, isMobileDataAllowed);
+		nvmDataStore.putBoolean(IS_REMEMBER_EMAIL_CHECKED_KEY, isRememberEmailChecked);
+		nvmDataStore.putString(LOGIN_NAME_KEY, loginName);
+		nvmDataStore.putString(TOKEN_KEY, token);
+		return nvmDataStore;
+	}
+
+	public static void init(Context context, SharedPreferences nvmData)
+	{
 		icLauncher = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+		Memory.isMobileDataAllowed = nvmData.getBoolean(IS_MOBILE_DATA_ALLOWED_KEY, true);
+		Memory.isRememberEmailChecked = nvmData.getBoolean(IS_REMEMBER_EMAIL_CHECKED_KEY, false);
+		Memory.loginName = nvmData.getString(LOGIN_NAME_KEY, "");
+		Memory.token = nvmData.getString(TOKEN_KEY, "");
 		initCaches();
 	}
 
@@ -86,17 +105,22 @@ public class Memory
 		return pictureCache.get(key.hashCode());
 	}
 
-	public static void loadBitmap(String data, ImageView imageView)
+	public static void loadAndSetBitmap(String data, ImageView imageView)
 	{
+		if (imageView == null)
+			Log.e("BITMAP_MEMORY", "imageView is null.", new NullPointerException());
 		if (data == null)
+		{
 			imageView.setImageResource(R.drawable.ic_launcher);
+			return;
+		}
 		final Bitmap bitmap = getBitmapFromMemCache(data);
 		if (bitmap != null) imageView.setImageBitmap(bitmap);
 		else
 			if (BitmapWorkerTask.cancelPotentialWork(data, imageView))
 			{
 				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-				final AsyncDrawable asyncDrawable = new AsyncDrawable(task);
+				final AsyncDrawable asyncDrawable = new AsyncDrawable(imageView.getContext().getResources(), task);
 				imageView.setImageDrawable(asyncDrawable);
 				task.execute(data);
 			}

@@ -3,11 +3,13 @@
 
     <string name="app_name">Pixceed</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="loginName">E-Mail-Adresse:</string>
     <string name="loginPassword">Password:</string>
     <string name="saveLoginName">E-Mail-Adresse merken</string>
     <string name="login">Anmelden</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
 
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>

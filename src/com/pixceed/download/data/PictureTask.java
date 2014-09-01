@@ -17,6 +17,8 @@ import com.pixceed.util.PixceedObjectsNamingStrategy;
 public class PictureTask extends TokenRequestTask<Void, PixceedPicture>
 {
 
+	private static final String PICTURE_TAG = "PICTURE";
+
 	public PictureTask(Context context, OnPostExecuteInterface<PixceedPicture> opei)
 	{
 		super(context, opei);
@@ -35,7 +37,9 @@ public class PictureTask extends TokenRequestTask<Void, PixceedPicture>
 	{
 		try
 		{
+			Log.d(PICTURE_TAG, "Start of JSON parsing");
 			final PixceedPicture readValue = PixceedObjectsNamingStrategy.getMapper(PixceedPicture.class).readValue(stream, PixceedPicture.class);
+			Log.d(PICTURE_TAG, "End of JSON parsing");
 			Memory.addPixceedPictureToMemoryCache(readValue);
 			return readValue;
 		}
@@ -45,7 +49,7 @@ public class PictureTask extends TokenRequestTask<Void, PixceedPicture>
 		}
 		catch (Exception e)
 		{
-			Log.e("PUBLIC_PICTURE", "Error during parsing JSON", e);
+			Log.e(PICTURE_TAG, "Error during parsing JSON", e);
 			return null;
 		}
 	}

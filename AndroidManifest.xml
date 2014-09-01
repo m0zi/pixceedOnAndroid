@@ -28,10 +28,16 @@
         <activity
             android:name="com.pixceed.LibraryActivity"
             android:label="@string/app_name" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pixceed.LoginActivity" />
         </activity>
         <activity
             android:name="com.pixceed.AlbumActivity"
             android:label="@string/title_activity_album" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pixceed.LibraryActivity" />
         </activity>
     </application>
 

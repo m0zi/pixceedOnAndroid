@@ -1,6 +1,8 @@
 package com.pixceed;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -19,18 +21,33 @@ import com.pixceed.util.Memory;
 
 public class LoginActivity extends ActionBarActivity
 {
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		Memory.init(getApplicationContext());
+		SharedPreferences nvmData = getPreferences(Context.MODE_PRIVATE);
+
+		Memory.init(getApplicationContext(), nvmData);
 
 		if (savedInstanceState == null)
 		{
 			getSupportFragmentManager().beginTransaction().add(R.id.login, new LoginFragment()).commit();
+		}
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		// if token already available, login immediately
+		if (Memory.token != null && !Memory.token.isEmpty())
+		{
+			Log.d("LOGIN", "Token already exists. Perform login immediately");
+			Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
+			Toast.makeText(getApplicationContext(), "Automatic login successful.", Toast.LENGTH_LONG).show();
+			startActivity(intent);
 		}
 	}
 
@@ -41,7 +58,7 @@ public class LoginActivity extends ActionBarActivity
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -50,6 +67,11 @@ public class LoginActivity extends ActionBarActivity
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) { return true; }
+		if (id == R.id.action_refresh) 
+		{
+			Memory.initCaches();
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -62,23 +84,35 @@ public class LoginActivity extends ActionBarActivity
 			@Override
 			public void onPostExecute(Login result)
 			{
-				if (((CheckBox) findViewById(R.id.checkBoxSaveLoginName)).isChecked())
+				if (Memory.isRememberEmailChecked = ((CheckBox) findViewById(R.id.checkBoxSaveLoginName)).isChecked())
 					Memory.loginName = username;
 				if (result != null && result.getToken() != null)
 				{
 					// login successfully
 					Memory.token = result.getToken();
 					Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
-					Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_SHORT).show();
 					startActivity(intent);
 				}
 				else
 				{
-					Toast.makeText(getApplicationContext(), "Login failed.", Toast.LENGTH_LONG).show();
-					Log.e("LOGIN", "login failed");
+					Memory.token = null;
+					final String loginFailedMessage;
+					if (result == null || result.getErrorDescription().isEmpty()) loginFailedMessage = "Login failed. Make sure that internet connection is available and try again.";
+					else loginFailedMessage = result.getErrorDescription();
+					Toast.makeText(getApplicationContext(), loginFailedMessage, Toast.LENGTH_LONG).show();
+					Log.e("LOGIN", loginFailedMessage);
 				}
 			}
 		};
 		new LoginTask(getApplicationContext(), loginExecuter, username, password).execute();
+	}
+
+	protected void onPause()
+	{
+		super.onPause();
+		Log.d("LOGIN", "save data");
+		Memory.save(getPreferences(Context.MODE_PRIVATE).edit()).commit();
+
 	}
 }

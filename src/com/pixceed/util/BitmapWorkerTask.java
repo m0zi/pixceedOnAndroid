@@ -2,6 +2,7 @@ package com.pixceed.util;
 
 import java.lang.ref.WeakReference;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -33,6 +34,18 @@ public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap>
 			return null;
 		}
 		data = params[0];
+		if (data == null || imageViewReference == null || imageViewReference.get() == null)
+		{
+			String errorMsg = "";
+			if (data == null)
+				errorMsg += "data is null ";
+			if (imageViewReference == null)
+				errorMsg += "imageViewReference is null";
+			if (imageViewReference.get() == null)
+				errorMsg += "imageViewReference.get() is null";
+			Log.e("BITMAP_WORKER", errorMsg, new NullPointerException(errorMsg));
+			return null;
+		}
 		final Bitmap decodeSampledBitmapFromResource = decodeSampledBitmapFromResource(data.getBytes(), imageViewReference.get().getWidth(), imageViewReference.get().getHeight());
 		Memory.addBitmapToMemoryCache(data, decodeSampledBitmapFromResource);
 		return decodeSampledBitmapFromResource;
@@ -144,9 +157,9 @@ public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap>
 	{
 		private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
 
-		AsyncDrawable(BitmapWorkerTask bitmapWorkerTask)
+		AsyncDrawable(Resources resources, BitmapWorkerTask bitmapWorkerTask)
 		{
-			super(Memory.appContext.getResources(), Memory.icLauncher);
+			super(resources, Memory.icLauncher);
 			bitmapWorkerTaskReference = new WeakReference<BitmapWorkerTask>(bitmapWorkerTask);
 		}
 

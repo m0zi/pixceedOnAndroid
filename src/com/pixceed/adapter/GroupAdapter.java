@@ -80,7 +80,7 @@ public class GroupAdapter extends ArrayAdapter<GroupFolder> implements OnPostExe
 
 		name.setText(item.getName());
 
-		Memory.loadBitmap(item.getFolderIcon(), picture);
+		Memory.loadAndSetBitmap(item.getFolderIcon(), picture);
 		return v;
 	}
 

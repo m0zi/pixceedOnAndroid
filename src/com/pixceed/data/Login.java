@@ -18,12 +18,13 @@ public class Login
 	private String issuedOn;
 	private String expiresOn;
 	private String error;
-	private String error_description;
+	private String errorDescription;
 
 	/**
 	 * @return the token
 	 */
-	public String getToken() {
+	public String getToken()
+	{
 		return token;
 	}
 
@@ -31,14 +32,16 @@ public class Login
 	 * @param token
 	 *            the token to set
 	 */
-	public void setToken(String token) {
+	public void setToken(String token)
+	{
 		this.token = token;
 	}
 
 	/**
 	 * @return the tokenType
 	 */
-	public String getTokenType() {
+	public String getTokenType()
+	{
 		return tokenType;
 	}
 
@@ -46,14 +49,16 @@ public class Login
 	 * @param tokenType
 	 *            the tokenType to set
 	 */
-	public void setTokenType(String tokenType) {
+	public void setTokenType(String tokenType)
+	{
 		this.tokenType = tokenType;
 	}
 
 	/**
 	 * @return the expiresIn
 	 */
-	public int getExpiresIn() {
+	public int getExpiresIn()
+	{
 		return expiresIn;
 	}
 
@@ -61,14 +66,16 @@ public class Login
 	 * @param expiresIn
 	 *            the expiresIn to set
 	 */
-	public void setExpiresIn(int expiresIn) {
+	public void setExpiresIn(int expiresIn)
+	{
 		this.expiresIn = expiresIn;
 	}
 
 	/**
 	 * @return the userName
 	 */
-	public String getUserName() {
+	public String getUserName()
+	{
 		return userName;
 	}
 
@@ -76,14 +83,16 @@ public class Login
 	 * @param userName
 	 *            the userName to set
 	 */
-	public void setUserName(String userName) {
+	public void setUserName(String userName)
+	{
 		this.userName = userName;
 	}
 
 	/**
 	 * @return the issuedOn
 	 */
-	public String getIssuedOn() {
+	public String getIssuedOn()
+	{
 		return issuedOn;
 	}
 
@@ -91,14 +100,16 @@ public class Login
 	 * @param issuedOn
 	 *            the issuedOn to set
 	 */
-	public void setIssuedOn(String issuedOn) {
+	public void setIssuedOn(String issuedOn)
+	{
 		this.issuedOn = issuedOn;
 	}
 
 	/**
 	 * @return the expiresOn
 	 */
-	public String getExpiresOn() {
+	public String getExpiresOn()
+	{
 		return expiresOn;
 	}
 
@@ -106,14 +117,16 @@ public class Login
 	 * @param expiresOn
 	 *            the expiresOn to set
 	 */
-	public void setExpiresOn(String expiresOn) {
+	public void setExpiresOn(String expiresOn)
+	{
 		this.expiresOn = expiresOn;
 	}
 
 	/**
 	 * @return the error
 	 */
-	public String getError() {
+	public String getError()
+	{
 		return error;
 	}
 
@@ -121,23 +134,26 @@ public class Login
 	 * @param error
 	 *            the error to set
 	 */
-	public void setError(String error) {
+	public void setError(String error)
+	{
 		this.error = error;
 	}
 
 	/**
-	 * @return the error_description
+	 * @return the error description
 	 */
-	public String getError_description() {
-		return error_description;
+	public String getErrorDescription()
+	{
+		return errorDescription;
 	}
 
 	/**
-	 * @param error_description
-	 *            the error_description to set
+	 * @param errorDescription
+	 *            the error description to set
 	 */
-	public void setError_description(String error_description) {
-		this.error_description = error_description;
+	public void setErrorDescription(String errorDescription)
+	{
+		this.errorDescription = errorDescription;
 	}
 
 }
