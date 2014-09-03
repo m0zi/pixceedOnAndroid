@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">Pixceed</string>
+    <string name="album_view">Album</string>
+    <string name="library_view">Library</string>
     <string name="hello_world">Hello world!</string>
     <string name="loginName">E-Mail-Adresse:</string>
     <string name="loginPassword">Password:</string>

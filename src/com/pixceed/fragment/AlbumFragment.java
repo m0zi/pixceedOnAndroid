@@ -79,7 +79,7 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewPagerAlbumExpanded);
 		albumExpanedPagerAdapter = new AlbumExpandedPagerAdapter(getChildFragmentManager(), albumAdapter);
 		pager.setAdapter(albumExpanedPagerAdapter);
-		pager.setOffscreenPageLimit(5);
+		pager.setOffscreenPageLimit(0);
 
 //		if (savedInstanceState != null)
 //		{

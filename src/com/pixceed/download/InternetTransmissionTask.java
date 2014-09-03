@@ -5,14 +5,13 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.pixceed.util.Memory;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.pixceed.util.Memory;
 
 public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S, R>
 {
@@ -57,7 +56,6 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 		if (!checkConnection(context, Memory.isMobileDataAllowed))
 		{
 			Log.w(LOG_TAG, "No conntection to the internet.");
-			Toast.makeText(context, "No connection.", Toast.LENGTH_LONG).show();
 			return null;
 		}
 		try

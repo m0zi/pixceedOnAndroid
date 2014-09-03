@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.util.LruCache;
@@ -101,7 +102,37 @@ public class Memory
 
 	private static Bitmap getBitmapFromMemCache(String key)
 	{
+		if (key == null) return null;
 		return pictureCache.get(key.hashCode());
+	}
+
+	public static void loadAndSetBitmap(String data, ImageView imageView, String defaultImage)
+	{
+		if (imageView == null)
+			Log.e("BITMAP_MEMORY", "imageView is null.", new NullPointerException());
+		if (data == null || data.isEmpty())
+		{
+			imageView.setImageResource(R.drawable.ic_launcher);
+			return;
+		}
+		// try to retrieve image from cache
+		final Bitmap bitmap = getBitmapFromMemCache(data);
+		if (bitmap != null) imageView.setImageBitmap(bitmap);
+		else
+			// image not in cache
+			if (BitmapWorkerTask.cancelPotentialWork(data, imageView))
+			{
+				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+				Bitmap defaultBitmap = getBitmapFromMemCache(defaultImage);
+				final AsyncDrawable asyncDrawable;
+				final Resources resources = imageView.getContext().getResources();
+				//@formatter:off
+				if (defaultBitmap == null) asyncDrawable = new AsyncDrawable(resources, task);
+				else 					   asyncDrawable = new AsyncDrawable(resources, task, defaultBitmap);
+				//@formatter:on
+				imageView.setImageDrawable(asyncDrawable);
+				task.execute(data);
+			}
 	}
 
 	public static void loadAndSetBitmap(String data, ImageView imageView)
@@ -112,9 +143,11 @@ public class Memory
 		{
 			imageView.setImageResource(R.drawable.ic_launcher);
 		}
+		// try to retrieve image from cache
 		final Bitmap bitmap = getBitmapFromMemCache(data);
 		if (bitmap != null) imageView.setImageBitmap(bitmap);
 		else
+			// image not in cache
 			if (BitmapWorkerTask.cancelPotentialWork(data, imageView))
 			{
 				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);

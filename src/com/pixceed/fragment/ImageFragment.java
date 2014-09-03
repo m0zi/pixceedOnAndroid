@@ -20,6 +20,7 @@ public class ImageFragment extends Fragment implements OnPostExecuteInterface<Pi
 	public static final String IMAGE_ICON_KEY = "imageIcon";
 	private View rootView;
 	private PixceedPicture picture;
+	private String currentIcon;
 
 	public ImageFragment()
 	{}
@@ -33,7 +34,8 @@ public class ImageFragment extends Fragment implements OnPostExecuteInterface<Pi
 		ImageView imageView = (ImageView) rootView.findViewById(R.id.imageViewImagePicture);
 		if (picture == null)
 		{
-			Memory.loadAndSetBitmap(getArguments().getString(IMAGE_ICON_KEY), imageView);
+			currentIcon = getArguments().getString(IMAGE_ICON_KEY);
+			Memory.loadAndSetBitmap(currentIcon, imageView);
 			new PictureTask(rootView.getContext(), this).execute("/" + id);
 		}
 		else onPostExecute(picture);
@@ -44,7 +46,9 @@ public class ImageFragment extends Fragment implements OnPostExecuteInterface<Pi
 	public void onPostExecute(PixceedPicture result)
 	{
 		if (result == null) return;
-		Memory.loadAndSetBitmap(result.getImage(), ((ImageView) rootView.findViewById(R.id.imageViewImagePicture)));
-		((TextView) rootView.findViewById(R.id.textViewImageText)).setText(result.getImageInformation().getName());
+		Memory.loadAndSetBitmap(result.getImage(), ((ImageView) rootView.findViewById(R.id.imageViewImagePicture)), currentIcon);
+		final TextView textView = (TextView) rootView.findViewById(R.id.textViewImageText);
+		if (textView != null)
+			textView.setText(result.getImageInformation().getName());
 	}
 }

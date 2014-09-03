@@ -19,8 +19,8 @@ import com.pixceed.util.Memory;
 
 public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecuteInterface<Collection<GroupDescription>>
 {
-	private ArrayList<GroupDescription> groups;
-	private Context context;
+	private final ArrayList<GroupDescription> groups;
+	private final Context context;
 
 	public LibraryAdapter(Context context, FragmentManager fm)
 	{

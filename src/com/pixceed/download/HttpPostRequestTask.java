@@ -27,7 +27,8 @@ public abstract class HttpPostRequestTask<S, R> extends InternetTransmissionTask
 	}
 
 	@Override
-	protected InputStream createResponseInputStream(URL url) throws IOException {
+	protected InputStream createResponseInputStream(URL url) throws IOException
+	{
 		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		for (NameValuePair nameValuePair : requestProperties)
 			pairs.add(nameValuePair);
@@ -45,7 +46,7 @@ public abstract class HttpPostRequestTask<S, R> extends InternetTransmissionTask
 		post.setEntity(new UrlEncodedFormEntity(pairs));
 		post.setHeader("Accept", "application/json");
 
-		Log.i("HTTP_POST_SEND", pairs.toString());
+		Log.d("HTTP_POST_SEND", "Send Login data");
 		return new DefaultHttpClient().execute(post).getEntity().getContent();
 	}
 }

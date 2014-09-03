@@ -40,7 +40,6 @@ public class LoginActivity extends ActionBarActivity
 	@Override
 	protected void onResume()
 	{
-		super.onResume();
 		// if token already available, login immediately
 		if (Memory.token != null && !Memory.token.isEmpty())
 		{
@@ -49,6 +48,7 @@ public class LoginActivity extends ActionBarActivity
 			Toast.makeText(getApplicationContext(), "Automatic login successful.", Toast.LENGTH_LONG).show();
 			startActivity(intent);
 		}
+		super.onResume();
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class LoginActivity extends ActionBarActivity
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -67,7 +67,7 @@ public class LoginActivity extends ActionBarActivity
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) { return true; }
-		if (id == R.id.action_refresh) 
+		if (id == R.id.action_refresh)
 		{
 			Memory.initCaches();
 			return true;
@@ -84,7 +84,10 @@ public class LoginActivity extends ActionBarActivity
 			@Override
 			public void onPostExecute(Login result)
 			{
-				if (Memory.isRememberEmailChecked = ((CheckBox) findViewById(R.id.checkBoxSaveLoginName)).isChecked())
+				final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxSaveLoginName);
+				if (checkBox != null)
+					Memory.isRememberEmailChecked = checkBox.isChecked();
+				if (Memory.isRememberEmailChecked)
 					Memory.loginName = username;
 				if (result != null && result.getToken() != null)
 				{

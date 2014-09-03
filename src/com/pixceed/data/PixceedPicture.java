@@ -760,7 +760,203 @@ public class PixceedPicture
 
 		public static class Comment
 		{
-			// TODO Inhalt füllen
+			public static final String COMMENT_TAG = "Comment";
+			public static final String ID_TAG = "Id";
+			public static final String OWNER_TAG = "Owner";
+			public static final String TIME_AGO_TAG = "TimeAgo";
+			public static final String USER_TAG = "User";
+
+			private String comment;
+			private int id;
+			private boolean owner;
+			private String timeAgo;
+			private User user;
+
+			/**
+			 * @return the comment
+			 */
+			public String getComment()
+			{
+				return comment;
+			}
+
+			/**
+			 * @param comment
+			 *            the comment to set
+			 */
+			public void setComment(String comment)
+			{
+				this.comment = comment;
+			}
+
+			/**
+			 * @return the id
+			 */
+			public int getId()
+			{
+				return id;
+			}
+
+			/**
+			 * @param id
+			 *            the id to set
+			 */
+			public void setId(int id)
+			{
+				this.id = id;
+			}
+
+			/**
+			 * @return the owner
+			 */
+			public boolean isOwner()
+			{
+				return owner;
+			}
+
+			/**
+			 * @param owner
+			 *            the owner to set
+			 */
+			public void setOwner(boolean owner)
+			{
+				this.owner = owner;
+			}
+
+			/**
+			 * @return the timeAgo
+			 */
+			public String getTimeAgo()
+			{
+				return timeAgo;
+			}
+
+			/**
+			 * @param timeAgo
+			 *            the timeAgo to set
+			 */
+			public void setTimeAgo(String timeAgo)
+			{
+				this.timeAgo = timeAgo;
+			}
+
+			/**
+			 * @return the user
+			 */
+			public User getUser()
+			{
+				return user;
+			}
+
+			/**
+			 * @param user
+			 *            the user to set
+			 */
+			public void setUser(User user)
+			{
+				this.user = user;
+			}
+
+			public static class User
+			{
+				public static final String USER_ICON_TAG = "IconBase64";
+				public static final String EMAIL_TAG = "Email";
+				public static final String FIRST_NAME_TAG = "FirstName";
+				public static final String LAST_NAME_TAG = "LastName";
+				public static final String ID_TAG = "Id";
+
+				private String userIcon;
+				private String email;
+				private String firstName;
+				private String lastName;
+				private int id;
+
+				/**
+				 * @return the userIcon
+				 */
+				public String getUserIcon()
+				{
+					return userIcon;
+				}
+
+				/**
+				 * @param userIcon
+				 *            the userIcon to set
+				 */
+				public void setUserIcon(String userIcon)
+				{
+					this.userIcon = userIcon;
+				}
+
+				/**
+				 * @return the email
+				 */
+				public String getEmail()
+				{
+					return email;
+				}
+
+				/**
+				 * @param email
+				 *            the email to set
+				 */
+				public void setEmail(String email)
+				{
+					this.email = email;
+				}
+
+				/**
+				 * @return the firstName
+				 */
+				public String getFirstName()
+				{
+					return firstName;
+				}
+
+				/**
+				 * @param firstName
+				 *            the firstName to set
+				 */
+				public void setFirstName(String firstName)
+				{
+					this.firstName = firstName;
+				}
+
+				/**
+				 * @return the lastName
+				 */
+				public String getLastName()
+				{
+					return lastName;
+				}
+
+				/**
+				 * @param lastName
+				 *            the lastName to set
+				 */
+				public void setLastName(String lastName)
+				{
+					this.lastName = lastName;
+				}
+
+				/**
+				 * @return the id
+				 */
+				public int getId()
+				{
+					return id;
+				}
+
+				/**
+				 * @param id
+				 *            the id to set
+				 */
+				public void setId(int id)
+				{
+					this.id = id;
+				}
+
+			}
 		}
 
 		public static class Group
@@ -1201,8 +1397,7 @@ public class PixceedPicture
 			}
 
 			/**
-			 * @param public
-			 *            the public to set
+			 * @param public the public to set
 			 */
 			public void setPublic(boolean _public)
 			{
