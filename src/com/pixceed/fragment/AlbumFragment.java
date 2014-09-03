@@ -34,15 +34,10 @@ import com.pixceed.util.Memory;
 public class AlbumFragment extends Fragment implements OnItemClickListener, OnPostExecuteInterface<PixceedPicture>
 {
 	public static final String IS_PICTURE_EXTENDED_KEY = "isPictureExtended";
-	public static final String RECENT_ID_KEY = "recentId";
 
 	public static final String TAG = "com.pixceed.fragment.AlbumFragment";
 
 	private boolean isPictureExtended = false;
-//	/**
-//	 * Do not rely on this value as a marker for whether or not the expanded view is shown as it will only be set and never unset.
-//	 */
-//	private long recentId;
 
 	/**
 	 * Hold a reference to the current animator, so that it can be canceled mid-way.
@@ -81,12 +76,9 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		pager.setAdapter(albumExpanedPagerAdapter);
 		pager.setOffscreenPageLimit(0);
 
-//		if (savedInstanceState != null)
-//		{
-//			isPictureExtended = savedInstanceState.getBoolean(IS_PICTURE_EXTENDED_KEY);
-//			recentId = savedInstanceState.getLong(RECENT_ID_KEY);
-//		}
-//		if (isPictureExtended) setMaximizedPicture();
+		if (savedInstanceState != null)
+			isPictureExtended = savedInstanceState.getBoolean(IS_PICTURE_EXTENDED_KEY);
+		if (isPictureExtended) setMaximizedPicture();
 
 		// Retrieve and cache the system's default "short" animation time.
 		mShortAnimationDuration = getResources().getInteger(
@@ -97,51 +89,51 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		return rootView;
 	}
 
-//	private void setMaximizedPicture()
-//	{
-//		final ImageView expandedView = (ImageView) rootView.findViewById(R.id.imageViewImagePicture);
+	private void setMaximizedPicture()
+	{
+		final View expandedView = rootView.findViewById(R.id.viewPagerAlbumExpanded);
 //		final PixceedPicture pixceedPictureFromMemoryCache = Memory.getPixceedPictureFromMemoryCache(recentId);
 //		if (pixceedPictureFromMemoryCache == null)
 //			return;
 //		Memory.loadAndSetBitmap(pixceedPictureFromMemoryCache.getImage(), expandedView);
-//		expandedView.setVisibility(View.VISIBLE);
-//		expandedView.setOnClickListener(new View.OnClickListener()
-//		{
-//			@Override
-//			public void onClick(View view)
-//			{
-//				// Animate the four positioning/sizing properties in parallel,
-//				// back to their original values.
-//				AnimatorSet set = new AnimatorSet();
-//				//@formatter:off
-//				set.play(ObjectAnimator.ofFloat(expandedView, "scaleX", 0f))
-//				   .with(ObjectAnimator.ofFloat(expandedView, "scaleY", 0f));
-//				//@formatter:on
-//				set.setDuration(mShortAnimationDuration);
-//				set.setInterpolator(new DecelerateInterpolator());
-//				set.addListener(new AnimatorListenerAdapter()
-//				{
-//					@Override
-//					public void onAnimationEnd(Animator animation)
-//					{
-//						expandedView.setVisibility(View.GONE);
-//						isPictureExtended = false;
-//						currentAnimator = null;
-//					}
-//
-//					@Override
-//					public void onAnimationCancel(Animator animation)
-//					{
-//						expandedView.setVisibility(View.GONE);
-//						isPictureExtended = false;
-//						currentAnimator = null;
-//					}
-//				});
-//				set.start();
-//				currentAnimator = set;
-//			}
-//		});
-//	}
+		expandedView.setVisibility(View.VISIBLE);
+		expandedView.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				// Animate the four positioning/sizing properties in parallel,
+				// back to their original values.
+				AnimatorSet set = new AnimatorSet();
+				//@formatter:off
+				set.play(ObjectAnimator.ofFloat(expandedView, "scaleX", 0f))
+				   .with(ObjectAnimator.ofFloat(expandedView, "scaleY", 0f));
+				//@formatter:on
+				set.setDuration(mShortAnimationDuration);
+				set.setInterpolator(new DecelerateInterpolator());
+				set.addListener(new AnimatorListenerAdapter()
+				{
+					@Override
+					public void onAnimationEnd(Animator animation)
+					{
+						expandedView.setVisibility(View.GONE);
+						isPictureExtended = false;
+						currentAnimator = null;
+					}
+
+					@Override
+					public void onAnimationCancel(Animator animation)
+					{
+						expandedView.setVisibility(View.GONE);
+						isPictureExtended = false;
+						currentAnimator = null;
+					}
+				});
+				set.start();
+				currentAnimator = set;
+			}
+		});
+	}
 
 	public void onItemClick(AdapterView<? extends Adapter> parent, View itemView, int position, long id)
 	{

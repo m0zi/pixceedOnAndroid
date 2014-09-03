@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.widget.ImageView;
@@ -106,10 +107,13 @@ public class Memory
 		return pictureCache.get(key.hashCode());
 	}
 
-	public static void loadAndSetBitmap(String data, ImageView imageView, String defaultImage)
+	public static void loadAndSetBitmap(String data, ImageView imageView, String defaultImageData)
 	{
 		if (imageView == null)
+		{
 			Log.e("BITMAP_MEMORY", "imageView is null.", new NullPointerException());
+			return;
+		}
 		if (data == null || data.isEmpty())
 		{
 			imageView.setImageResource(R.drawable.ic_launcher);
@@ -117,44 +121,30 @@ public class Memory
 		}
 		// try to retrieve image from cache
 		final Bitmap bitmap = getBitmapFromMemCache(data);
-		if (bitmap != null) imageView.setImageBitmap(bitmap);
+		if (bitmap != null)
+		{
+			imageView.setImageBitmap(bitmap);
+		}
 		else
 			// image not in cache
 			if (BitmapWorkerTask.cancelPotentialWork(data, imageView))
 			{
 				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-				Bitmap defaultBitmap = getBitmapFromMemCache(defaultImage);
-				final AsyncDrawable asyncDrawable;
+				Bitmap defaultBitmap = getBitmapFromMemCache(defaultImageData);
 				final Resources resources = imageView.getContext().getResources();
+				final AsyncDrawable asyncDrawable;
 				//@formatter:off
 				if (defaultBitmap == null) asyncDrawable = new AsyncDrawable(resources, task);
 				else 					   asyncDrawable = new AsyncDrawable(resources, task, defaultBitmap);
 				//@formatter:on
 				imageView.setImageDrawable(asyncDrawable);
-				task.execute(data);
+				task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, data);
 			}
 	}
 
 	public static void loadAndSetBitmap(String data, ImageView imageView)
 	{
-		if (imageView == null)
-			Log.e("BITMAP_MEMORY", "imageView is null.", new NullPointerException());
-		if (data == null || data.isEmpty())
-		{
-			imageView.setImageResource(R.drawable.ic_launcher);
-		}
-		// try to retrieve image from cache
-		final Bitmap bitmap = getBitmapFromMemCache(data);
-		if (bitmap != null) imageView.setImageBitmap(bitmap);
-		else
-			// image not in cache
-			if (BitmapWorkerTask.cancelPotentialWork(data, imageView))
-			{
-				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-				final AsyncDrawable asyncDrawable = new AsyncDrawable(imageView.getContext().getResources(), task);
-				imageView.setImageDrawable(asyncDrawable);
-				task.execute(data);
-			}
+		loadAndSetBitmap(data, imageView, null);
 	}
 
 	public static void addPixceedPictureToMemoryCache(PixceedPicture picture)

@@ -40,7 +40,6 @@ public class AlbumActivity extends ActionBarActivity
 	protected void onSaveInstanceState(Bundle outState)
 	{
 		outState.putBoolean(AlbumFragment.IS_PICTURE_EXTENDED_KEY, albumFragment.isPictureExtended());
-//		outState.putLong(AlbumFragment.RECENT_ID_KEY, albumFragment.getRecentId());
 		super.onSaveInstanceState(outState);
 	}
 

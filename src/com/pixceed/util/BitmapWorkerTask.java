@@ -34,16 +34,9 @@ public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap>
 			return null;
 		}
 		data = params[0];
-		if (data == null || imageViewReference == null || imageViewReference.get() == null)
+		if (data == null || imageViewReference.get() == null)
 		{
-			String errorMsg = "";
-			if (data == null)
-				errorMsg += "data is null ";
-			if (imageViewReference == null)
-				errorMsg += "imageViewReference is null";
-			if (imageViewReference.get() == null)
-				errorMsg += "imageViewReference.get() is null";
-			Log.e("BITMAP_WORKER", errorMsg, new NullPointerException(errorMsg));
+			cancel(true);
 			return null;
 		}
 		final Bitmap decodeSampledBitmapFromResource = decodeSampledBitmapFromResource(data.getBytes(), imageViewReference.get().getWidth(), imageViewReference.get().getHeight());
@@ -145,10 +138,7 @@ public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap>
 		{
 			final Drawable drawable = imageView.getDrawable();
 			if (drawable instanceof AsyncDrawable)
-			{
-				final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-				return asyncDrawable.getBitmapWorkerTask();
-			}
+				return ((AsyncDrawable) drawable).getBitmapWorkerTask();
 		}
 		return null;
 	}
