@@ -34,7 +34,7 @@ public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap>
 			return null;
 		}
 		data = params[0];
-		if (data == null || imageViewReference.get() == null)
+		if (data == null || imageViewReference == null || imageViewReference.get() == null)
 		{
 			cancel(true);
 			return null;

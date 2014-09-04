@@ -1,12 +1,14 @@
 package com.pixceed;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.pixceed.adapter.LibraryAdapter;
 import com.pixceed.util.Memory;
@@ -15,6 +17,7 @@ public class LibraryActivity extends ActionBarActivity
 {
 	private ViewPager pager;
 	private LibraryAdapter adapter;
+	private boolean hasAskedForLogout = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -25,7 +28,7 @@ public class LibraryActivity extends ActionBarActivity
 		adapter = new LibraryAdapter(getApplicationContext(), getSupportFragmentManager());
 		pager = (ViewPager) findViewById(R.id.libraryPager);
 		pager.setAdapter(adapter);
-		
+
 		getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
@@ -51,12 +54,9 @@ public class LibraryActivity extends ActionBarActivity
 		case R.id.action_settings:
 			return true;
 		case android.R.id.home:
-			// this is a willingly logout
 			Memory.token = null;
-			logout();
-			return false;
+			return logout();
 		case R.id.action_refresh:
-			Memory.initCaches();
 			adapter.update();
 			return true;
 		default:
@@ -75,14 +75,49 @@ public class LibraryActivity extends ActionBarActivity
 	@Override
 	public void onBackPressed()
 	{
-		super.onBackPressed();
-		logout();
+		if (logout())
+			super.onBackPressed();
 	}
 
-	private void logout()
+	/**
+	 * Performs the logout if and only if user has confirmed.
+	 * 
+	 * @return <code>false</code> if real logout has occurred, <code>true</code> if only confirmation has been shown.
+	 */
+	private boolean logout()
 	{
-		Log.d("LIBRARY", "logout and save data");
-		Memory.token = null;
-		Memory.save(getPreferences(Context.MODE_PRIVATE).edit()).commit();
+		if (hasAskedForLogout)
+		{
+			Log.d("LIBRARY", "logout and save data");
+			Memory.token = null;
+			Memory.save(getPreferences(Context.MODE_PRIVATE).edit()).commit();
+			hasAskedForLogout = false;
+		}
+		else
+		{
+			Toast.makeText(getBaseContext(), "Zum Ausloggen Zurück-Taste noch einmal drücken.", Toast.LENGTH_LONG).show();
+			AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>()
+			{
+				@Override
+				protected Void doInBackground(Void... params)
+				{
+					try
+					{
+						Thread.sleep(4 * getResources().getInteger(android.R.integer.config_longAnimTime));
+						Log.d("LIBRARY", "logout not asked.");
+						hasAskedForLogout = false;
+					}
+					catch (InterruptedException e)
+					{
+						Log.e("LOGOUT_WAIT", "Wait for user to confirm logout interrupted.", e);
+					}
+					return null;
+				}
+			};
+			task.execute(new Void[0]);
+			hasAskedForLogout = true;
+			Log.d("LIBRARY", "logout asked.");
+		}
+		return !hasAskedForLogout;
 	}
 }

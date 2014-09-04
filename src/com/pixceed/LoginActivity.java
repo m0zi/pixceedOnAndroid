@@ -30,8 +30,7 @@ public class LoginActivity extends ActionBarActivity
 		SharedPreferences nvmData = getPreferences(Context.MODE_PRIVATE);
 
 		Memory.init(getApplicationContext(), nvmData);
-
-		if (savedInstanceState == null)
+		if (!checkLoginAndStartActivity() && savedInstanceState == null)
 		{
 			getSupportFragmentManager().beginTransaction().add(R.id.login, new LoginFragment()).commit();
 		}
@@ -40,6 +39,12 @@ public class LoginActivity extends ActionBarActivity
 	@Override
 	protected void onResume()
 	{
+		checkLoginAndStartActivity();
+		super.onResume();
+	}
+
+	private boolean checkLoginAndStartActivity()
+	{
 		// if token already available, login immediately
 		if (Memory.token != null && !Memory.token.isEmpty())
 		{
@@ -47,8 +52,9 @@ public class LoginActivity extends ActionBarActivity
 			Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
 			Toast.makeText(getApplicationContext(), "Automatic login successful.", Toast.LENGTH_LONG).show();
 			startActivity(intent);
+			return true;
 		}
-		super.onResume();
+		return false;
 	}
 
 	@Override

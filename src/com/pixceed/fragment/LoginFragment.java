@@ -38,8 +38,15 @@ public class LoginFragment extends Fragment
 
 		// show sample text
 		final Context context = rootView.getContext();
-		((TextView) rootView.findViewById(R.id.editTextLoginName)).setText(Memory.loginName);
-		((CheckBox) rootView.findViewById(R.id.checkBoxSaveLoginName)).setChecked(Memory.isRememberEmailChecked);
+		final TextView textViewLoginName = (TextView) rootView.findViewById(R.id.editTextLoginName);
+		final TextView textViewPassword = (TextView) rootView.findViewById(R.id.editTextPassword);
+		final CheckBox checkBox = (CheckBox) rootView.findViewById(R.id.checkBoxSaveLoginName);
+		
+		textViewLoginName.setText(Memory.loginName);
+		checkBox.setChecked(Memory.isRememberEmailChecked);
+		if(Memory.loginName != null &&  !Memory.loginName.isEmpty())
+			textViewPassword.requestFocus();
+		
 		final OnPostExecuteInterface<Collection<Article>> showLoginText = new OnPostExecuteInterface<Collection<Article>>()
 		{
 			@Override
