@@ -69,4 +69,9 @@ public class AlbumExpandedPagerAdapter extends FragmentStatePagerAdapter
 			if (albumExpandedPagerAdapter != null) albumExpandedPagerAdapter.notifyDataSetChanged();
 		}
 	}
+
+	public void update(boolean forceDownload)
+	{
+		notifyDataSetChanged();
+	}
 }

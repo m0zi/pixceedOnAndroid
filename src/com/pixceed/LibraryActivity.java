@@ -57,7 +57,7 @@ public class LibraryActivity extends ActionBarActivity
 			Memory.token = null;
 			return logout();
 		case R.id.action_refresh:
-			adapter.update();
+			adapter.update(true);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -67,9 +67,9 @@ public class LibraryActivity extends ActionBarActivity
 	@Override
 	protected void onPause()
 	{
-		super.onPause();
 		Log.d("LIBRARY", "save data");
-		Memory.save(getPreferences(Context.MODE_PRIVATE).edit()).commit();
+		Memory.save(getSharedPreferences(Memory.PIXCEED_TAG, Context.MODE_PRIVATE).edit()).commit();
+		super.onPause();
 	}
 
 	@Override
@@ -88,9 +88,9 @@ public class LibraryActivity extends ActionBarActivity
 	{
 		if (hasAskedForLogout)
 		{
-			Log.d("LIBRARY", "logout and save data");
+			Log.d("LIBRARY", "logout performed");
 			Memory.token = null;
-			Memory.save(getPreferences(Context.MODE_PRIVATE).edit()).commit();
+//			Memory.save(getPreferences(Context.MODE_PRIVATE).edit()).commit();
 			hasAskedForLogout = false;
 		}
 		else
@@ -104,7 +104,7 @@ public class LibraryActivity extends ActionBarActivity
 					try
 					{
 						Thread.sleep(4 * getResources().getInteger(android.R.integer.config_longAnimTime));
-						Log.d("LIBRARY", "logout not asked.");
+						Log.d("LIBRARY", "logout interrupted.");
 						hasAskedForLogout = false;
 					}
 					catch (InterruptedException e)

@@ -18,6 +18,7 @@ public class ImageFragment extends Fragment implements OnPostExecuteInterface<Pi
 {
 	public static final String ID_KEY = "id";
 	public static final String IMAGE_ICON_KEY = "imageIcon";
+	public static final String FORCE_DOWNLOAD_KEY = "forceDownload";
 	private View rootView;
 	private PixceedPicture picture;
 	private String currentIcon;

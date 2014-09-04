@@ -31,7 +31,7 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 		this.context = context;
 		this.albumImages = new ArrayList<ImagePreviewInformation>();
 		this.albumId = albumId;
-		update();
+		update(false);
 	}
 
 	@Override
@@ -84,10 +84,10 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 		return v;
 	}
 
-	public void update()
+	public void update(boolean forceDownload)
 	{
 		Album album = Memory.getAlbumFromMemoryCache(albumId);
-		if (album == null) new AlbumTask(context, this).execute("/" + albumId);
+		if (album == null || forceDownload) new AlbumTask(context, this).execute("/" + albumId);
 		else onPostExecute(album);
 	}
 

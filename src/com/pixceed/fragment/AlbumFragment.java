@@ -74,7 +74,7 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewPagerAlbumExpanded);
 		albumExpanedPagerAdapter = new AlbumExpandedPagerAdapter(getChildFragmentManager(), albumAdapter);
 		pager.setAdapter(albumExpanedPagerAdapter);
-		pager.setOffscreenPageLimit(0);
+		pager.setOffscreenPageLimit(3);
 
 		if (savedInstanceState != null)
 			isPictureExtended = savedInstanceState.getBoolean(IS_PICTURE_EXTENDED_KEY);
@@ -92,10 +92,10 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 	private void setMaximizedPicture()
 	{
 		final View expandedView = rootView.findViewById(R.id.viewPagerAlbumExpanded);
-//		final PixceedPicture pixceedPictureFromMemoryCache = Memory.getPixceedPictureFromMemoryCache(recentId);
-//		if (pixceedPictureFromMemoryCache == null)
-//			return;
-//		Memory.loadAndSetBitmap(pixceedPictureFromMemoryCache.getImage(), expandedView);
+		// final PixceedPicture pixceedPictureFromMemoryCache = Memory.getPixceedPictureFromMemoryCache(recentId);
+		// if (pixceedPictureFromMemoryCache == null)
+		// return;
+		// Memory.loadAndSetBitmap(pixceedPictureFromMemoryCache.getImage(), expandedView);
 		expandedView.setVisibility(View.VISIBLE);
 		expandedView.setOnClickListener(new View.OnClickListener()
 		{
@@ -141,9 +141,9 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		{
 			final ViewPager expandedView = (ViewPager) rootView.findViewById(R.id.viewPagerAlbumExpanded);
 			final ImageView iconThumb = (ImageView) itemView.findViewById(R.id.squaredImage);
-			
+
 			expandedView.setCurrentItem(position);
-//			recentId = id;
+			// recentId = id;
 			// start the animation
 			zoomIcon(iconThumb, expandedView);
 		}
@@ -314,7 +314,7 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 	public void setData(boolean isPictureExtended, long recentId)
 	{
 		this.isPictureExtended = isPictureExtended;
-//		this.recentId = recentId;
+		// this.recentId = recentId;
 	}
 
 	/**
@@ -331,11 +331,12 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 
 	public void update()
 	{
-		albumAdapter.update();
+		if (isPictureExtended) albumExpanedPagerAdapter.update(true);
+		else albumAdapter.update(true);
 	}
 
-//	public long getRecentId()
-//	{
-//		return recentId;
-//	}
+	// public long getRecentId()
+	// {
+	// return recentId;
+	// }
 }

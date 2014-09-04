@@ -27,7 +27,7 @@ public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecut
 		super(fm);
 		this.context = context;
 		groups = new ArrayList<GroupDescription>();
-		update();
+		update(false);
 	}
 
 	@Override
@@ -70,10 +70,11 @@ public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecut
 		return groupDescription.getName() + " (" + groupDescription.getFirstName() + " " + groupDescription.getLastName() + ")";
 	}
 
-	public void update()
+	public void update(boolean forceDownload)
 	{
+		
 		Collection<GroupDescription> groups = Memory.getGroupDescriptionsFromMemoryCache();
-		if (groups == null) new GroupDescriptionsTask(context, this).execute();
+		if (groups == null || forceDownload) new GroupDescriptionsTask(context, this).execute();
 		else onPostExecute(groups);
 	}
 

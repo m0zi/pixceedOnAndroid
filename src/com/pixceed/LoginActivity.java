@@ -27,7 +27,7 @@ public class LoginActivity extends ActionBarActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		SharedPreferences nvmData = getPreferences(Context.MODE_PRIVATE);
+		SharedPreferences nvmData = getSharedPreferences(Memory.PIXCEED_TAG, Context.MODE_PRIVATE);
 
 		Memory.init(getApplicationContext(), nvmData);
 		if (!checkLoginAndStartActivity() && savedInstanceState == null)
@@ -98,7 +98,7 @@ public class LoginActivity extends ActionBarActivity
 				if (result != null && result.getToken() != null)
 				{
 					// login successfully
-					Memory.token = result.getToken();
+					Memory.token = result.getToken().trim();
 					Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
 					Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_SHORT).show();
 					startActivity(intent);

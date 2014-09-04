@@ -62,7 +62,6 @@ public class AlbumActivity extends ActionBarActivity
 		if (id == R.id.action_settings) { return true; }
 		if (id == R.id.action_refresh)
 		{
-			Memory.initCaches();
 			albumFragment.update();
 			return true;
 		}
@@ -81,6 +80,6 @@ public class AlbumActivity extends ActionBarActivity
 	{
 		super.onPause();
 		Log.d("ALBUM", "save data");
-		Memory.save(getPreferences(Context.MODE_PRIVATE).edit()).commit();
+		Memory.save(getSharedPreferences(Memory.PIXCEED_TAG, Context.MODE_PRIVATE).edit()).commit();
 	}
 }

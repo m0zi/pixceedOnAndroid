@@ -22,6 +22,8 @@ import com.pixceed.util.BitmapWorkerTask.AsyncDrawable;
 
 public class Memory
 {
+	public static final String PIXCEED_TAG = "com.pixceed";
+	
 	private static final String TOKEN_KEY = "token";
 	private static final String LOGIN_NAME_KEY = "loginName";
 	private static final String IS_MOBILE_DATA_ALLOWED_KEY = "isMobileDataAllowed";
@@ -75,7 +77,7 @@ public class Memory
 
 		// clear cache if already initialized
 		if (pixceedCache != null) pixceedCache.evictAll();
-		else pixceedCache = new LruCache<Long, PixceedPicture>(200);
+		else pixceedCache = new LruCache<Long, PixceedPicture>(50);
 		if (albumCache != null) albumCache.evictAll();
 		else albumCache = new LruCache<Integer, Album>(10);
 		if (groupCache != null) groupCache.evictAll();
