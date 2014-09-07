@@ -41,7 +41,7 @@ public class UserLibrariesTask extends TokenRequestTask<Void, Collection<Library
 			Log.d(USER_LIBRARY_TAG, "Start of JSON parsing");
 			final ArrayList<LibraryMonth> readValue = PixceedObjectsNamingStrategy.getMapper(LibraryMonth.class).readValue(stream, new TypeReference<ArrayList<LibraryMonth>>()
 			{});
-			Log.d(USER_LIBRARY_TAG, "Start of JSON parsing");
+			Log.d(USER_LIBRARY_TAG, "End of JSON parsing");
 			Memory.addLibraryToMemoryCache(readValue);
 			return readValue;
 		}

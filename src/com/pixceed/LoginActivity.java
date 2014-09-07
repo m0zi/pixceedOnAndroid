@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -30,7 +31,7 @@ public class LoginActivity extends ActionBarActivity
 		SharedPreferences nvmData = getSharedPreferences(Memory.PIXCEED_TAG, Context.MODE_PRIVATE);
 
 		Memory.init(getApplicationContext(), nvmData);
-		if (!checkLoginAndStartActivity() && savedInstanceState == null)
+		if (!checkLoginAndStartActivity())
 		{
 			getSupportFragmentManager().beginTransaction().add(R.id.login, new LoginFragment()).commit();
 		}
@@ -85,6 +86,8 @@ public class LoginActivity extends ActionBarActivity
 	{
 		final String username = ((EditText) findViewById(R.id.editTextLoginName)).getText().toString();
 		final String password = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
+		final Button loginBtn = (Button) findViewById(R.id.buttonLogin);
+		loginBtn.setEnabled(false);
 		OnPostExecuteInterface<Login> loginExecuter = new OnPostExecuteInterface<Login>()
 		{
 			@Override
@@ -112,6 +115,7 @@ public class LoginActivity extends ActionBarActivity
 					Toast.makeText(getApplicationContext(), loginFailedMessage, Toast.LENGTH_LONG).show();
 					Log.e("LOGIN", loginFailedMessage);
 				}
+				loginBtn.setEnabled(true);
 			}
 		};
 		new LoginTask(getApplicationContext(), loginExecuter, username, password).execute();

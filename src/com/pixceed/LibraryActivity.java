@@ -103,7 +103,7 @@ public class LibraryActivity extends ActionBarActivity
 				{
 					try
 					{
-						Thread.sleep(4 * getResources().getInteger(android.R.integer.config_longAnimTime));
+						Thread.sleep(3000);
 						Log.d("LIBRARY", "logout interrupted.");
 						hasAskedForLogout = false;
 					}
@@ -114,9 +114,9 @@ public class LibraryActivity extends ActionBarActivity
 					return null;
 				}
 			};
-			task.execute(new Void[0]);
 			hasAskedForLogout = true;
 			Log.d("LIBRARY", "logout asked.");
+			task.execute(new Void[0]);
 		}
 		return !hasAskedForLogout;
 	}
