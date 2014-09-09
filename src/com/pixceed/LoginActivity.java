@@ -29,8 +29,8 @@ public class LoginActivity extends ActionBarActivity
 		setContentView(R.layout.activity_login);
 
 		SharedPreferences nvmData = getSharedPreferences(Memory.PIXCEED_TAG, Context.MODE_PRIVATE);
-
 		Memory.init(getApplicationContext(), nvmData);
+
 		if (!checkLoginAndStartActivity())
 		{
 			getSupportFragmentManager().beginTransaction().add(R.id.login, new LoginFragment()).commit();
@@ -40,21 +40,26 @@ public class LoginActivity extends ActionBarActivity
 	@Override
 	protected void onResume()
 	{
+		Log.d("LOGIN", "onResume");
 		checkLoginAndStartActivity();
 		super.onResume();
 	}
 
 	private boolean checkLoginAndStartActivity()
 	{
-		// if token already available, login immediately
 		if (Memory.token != null && !Memory.token.isEmpty())
 		{
+			// if token already available, login immediately
 			Log.d("LOGIN", "Token already exists. Perform login immediately");
 			Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
 			Toast.makeText(getApplicationContext(), "Automatic login successful.", Toast.LENGTH_LONG).show();
 			startActivity(intent);
 			return true;
 		}
+		else
+		// if there is no login data, initialize (clear) caches
+		Memory.initCaches();
+		Log.d("LOGIN", "No token for login");
 		return false;
 	}
 

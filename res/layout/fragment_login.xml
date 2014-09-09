@@ -76,7 +76,7 @@
         android:text="@string/login"
         android:textSize="@dimen/loginTextDimension" />
 
-    <TextView
+   <!--  <TextView
         android:id="@+id/textViewArticle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -94,6 +94,6 @@
         android:layout_alignRight="@+id/textViewArticle"
         android:layout_below="@+id/textViewArticle"
         android:contentDescription="@null"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher" /> -->
     
 </RelativeLayout>

@@ -30,7 +30,7 @@ public class GroupAdapter extends ArrayAdapter<GroupFolder> implements OnPostExe
 		this.context = context;
 		groupLibrary = new ArrayList<GroupFolder>();
 		this.groupId = groupId;
-		update();
+		update(false);
 	}
 
 	@Override
@@ -84,10 +84,10 @@ public class GroupAdapter extends ArrayAdapter<GroupFolder> implements OnPostExe
 		return v;
 	}
 
-	private void update()
+	private void update(boolean forceDownload)
 	{
 		Group group = Memory.getGroupFromMemoryCache(groupId);
-		if (group == null) new GroupTask(context, this).execute("/" + groupId);
+		if (group == null || forceDownload) new GroupTask(context, this).execute("/" + groupId);
 		else onPostExecute(group);
 	}
 

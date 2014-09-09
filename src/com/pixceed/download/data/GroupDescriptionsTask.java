@@ -41,7 +41,7 @@ public class GroupDescriptionsTask extends TokenRequestTask<Void, Collection<Gro
 			Collection<GroupDescription> readValue = PixceedObjectsNamingStrategy.getMapper(GroupDescription.class).readValue(stream, new TypeReference<Collection<GroupDescription>>()
 			{});
 			Log.d(GROUP_DESCS_TAG, "End of JSON parsing");
-			Memory.addGroupDescriptionsToMemoryCache(readValue);
+			Memory.setGroupDescriptionsToMemoryCache(readValue);
 			return readValue;
 		}
 		catch (IOException e)

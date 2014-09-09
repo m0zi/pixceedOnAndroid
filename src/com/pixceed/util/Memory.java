@@ -23,7 +23,7 @@ import com.pixceed.util.BitmapWorkerTask.AsyncDrawable;
 public class Memory
 {
 	public static final String PIXCEED_TAG = "com.pixceed";
-	
+
 	private static final String TOKEN_KEY = "token";
 	private static final String LOGIN_NAME_KEY = "loginName";
 	private static final String IS_MOBILE_DATA_ALLOWED_KEY = "isMobileDataAllowed";
@@ -76,6 +76,8 @@ public class Memory
 		final int cacheSize = maxMemory / 8;
 
 		// clear cache if already initialized
+		userLibraryCache = null;
+		groupDescriptionsCache = null;
 		if (pixceedCache != null) pixceedCache.evictAll();
 		else pixceedCache = new LruCache<Long, PixceedPicture>(50);
 		if (albumCache != null) albumCache.evictAll();
@@ -169,7 +171,7 @@ public class Memory
 		return albumCache.get(id);
 	}
 
-	public static void addLibraryToMemoryCache(Collection<LibraryMonth> library)
+	public static void setLibraryToMemoryCache(Collection<LibraryMonth> library)
 	{
 		userLibraryCache = library;
 	}
@@ -179,7 +181,7 @@ public class Memory
 		return userLibraryCache;
 	}
 
-	public static void addGroupDescriptionsToMemoryCache(Collection<GroupDescription> groupDescriptions)
+	public static void setGroupDescriptionsToMemoryCache(Collection<GroupDescription> groupDescriptions)
 	{
 		groupDescriptionsCache = groupDescriptions;
 	}

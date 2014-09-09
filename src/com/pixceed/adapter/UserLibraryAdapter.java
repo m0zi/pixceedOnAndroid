@@ -30,7 +30,7 @@ public class UserLibraryAdapter extends ArrayAdapter<AlbumPreview> implements On
 		super(context, R.drawable.ic_launcher);
 		this.context = context;
 		this.userLibrary = new ArrayList<AlbumPreview>();
-		update();
+		update(false);
 	}
 
 	@Override
@@ -84,10 +84,10 @@ public class UserLibraryAdapter extends ArrayAdapter<AlbumPreview> implements On
 		return v;
 	}
 
-	public void update()
+	public void update(boolean forceDownload)
 	{
 		Collection<LibraryMonth> library = Memory.getUserLibraryFromMemoryCache();
-		if (library == null) new UserLibrariesTask(context, this).execute();
+		if (library == null || forceDownload) new UserLibrariesTask(context, this).execute();
 		else onPostExecute(library);
 	}
 

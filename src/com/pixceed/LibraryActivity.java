@@ -54,8 +54,8 @@ public class LibraryActivity extends ActionBarActivity
 		case R.id.action_settings:
 			return true;
 		case android.R.id.home:
-			Memory.token = null;
-			return logout();
+			// if logout does not occured --> click should be consumed (return true) with no further actions taking place
+			return !logout();
 		case R.id.action_refresh:
 			adapter.update(true);
 			return true;
@@ -73,6 +73,13 @@ public class LibraryActivity extends ActionBarActivity
 	}
 
 	@Override
+	protected void onDestroy()
+	{
+		Log.d("LIBRARY", "destroyed");
+		super.onDestroy();
+	}
+	
+	@Override
 	public void onBackPressed()
 	{
 		if (logout())
@@ -82,16 +89,18 @@ public class LibraryActivity extends ActionBarActivity
 	/**
 	 * Performs the logout if and only if user has confirmed.
 	 * 
-	 * @return <code>false</code> if real logout has occurred, <code>true</code> if only confirmation has been shown.
+	 * @return <code>true</code> if real logout has occurred, <code>false</code> if only confirmation has been shown.
 	 */
 	private boolean logout()
 	{
+		if (Memory.token == null)
+			return true;
 		if (hasAskedForLogout)
 		{
 			Log.d("LIBRARY", "logout performed");
 			Memory.token = null;
-//			Memory.save(getPreferences(Context.MODE_PRIVATE).edit()).commit();
 			hasAskedForLogout = false;
+			finish();
 		}
 		else
 		{
@@ -116,7 +125,7 @@ public class LibraryActivity extends ActionBarActivity
 			};
 			hasAskedForLogout = true;
 			Log.d("LIBRARY", "logout asked.");
-			task.execute(new Void[0]);
+			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new Void[0]);
 		}
 		return !hasAskedForLogout;
 	}

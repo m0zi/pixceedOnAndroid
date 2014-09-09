@@ -90,5 +90,4 @@ public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecut
 		this.groups.addAll(groups);
 		notifyDataSetChanged();
 	}
-
 }
