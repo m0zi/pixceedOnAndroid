@@ -12,11 +12,12 @@ import android.widget.Toast;
 
 import com.pixceed.adapter.LibraryAdapter;
 import com.pixceed.util.Memory;
+import com.pixceed.util.Updateable;
 
 public class LibraryActivity extends ActionBarActivity
 {
 	private ViewPager pager;
-	private LibraryAdapter adapter;
+	private Updateable updateDelegate;
 	private boolean hasAskedForLogout = false;
 
 	@Override
@@ -25,7 +26,8 @@ public class LibraryActivity extends ActionBarActivity
 		super.onCreate(savedInstanceState);
 		// final ActionBar actionBar = getActionBar();
 		setContentView(R.layout.activity_library);
-		adapter = new LibraryAdapter(getApplicationContext(), getSupportFragmentManager());
+		LibraryAdapter adapter = new LibraryAdapter(getApplicationContext(), getSupportFragmentManager());
+		updateDelegate = adapter;
 		pager = (ViewPager) findViewById(R.id.libraryPager);
 		pager.setAdapter(adapter);
 
@@ -57,7 +59,7 @@ public class LibraryActivity extends ActionBarActivity
 			// if logout does not occured --> click should be consumed (return true) with no further actions taking place
 			return !logout();
 		case R.id.action_refresh:
-			adapter.update(true);
+			updateDelegate.update(true);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -99,6 +101,7 @@ public class LibraryActivity extends ActionBarActivity
 		{
 			Log.d("LIBRARY", "logout performed");
 			Memory.token = null;
+			Memory.initCaches();
 			hasAskedForLogout = false;
 			finish();
 		}

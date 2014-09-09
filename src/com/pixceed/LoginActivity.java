@@ -56,9 +56,6 @@ public class LoginActivity extends ActionBarActivity
 			startActivity(intent);
 			return true;
 		}
-		else
-		// if there is no login data, initialize (clear) caches
-		Memory.initCaches();
 		Log.d("LOGIN", "No token for login");
 		return false;
 	}

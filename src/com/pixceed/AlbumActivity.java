@@ -13,7 +13,6 @@ import com.pixceed.util.Memory;
 
 public class AlbumActivity extends ActionBarActivity
 {
-
 	private AlbumFragment albumFragment;
 
 	@Override
@@ -62,7 +61,7 @@ public class AlbumActivity extends ActionBarActivity
 		if (id == R.id.action_settings) { return true; }
 		if (id == R.id.action_refresh)
 		{
-			albumFragment.update();
+			albumFragment.update(true);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

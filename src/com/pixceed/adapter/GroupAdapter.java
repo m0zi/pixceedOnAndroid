@@ -17,8 +17,9 @@ import com.pixceed.data.Group.GroupFolder;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.data.GroupTask;
 import com.pixceed.util.Memory;
+import com.pixceed.util.Updateable;
 
-public class GroupAdapter extends ArrayAdapter<GroupFolder> implements OnPostExecuteInterface<Group>
+public class GroupAdapter extends ArrayAdapter<GroupFolder> implements OnPostExecuteInterface<Group>, Updateable
 {
 	private ArrayList<GroupFolder> groupLibrary;
 	private Context context;
@@ -84,7 +85,7 @@ public class GroupAdapter extends ArrayAdapter<GroupFolder> implements OnPostExe
 		return v;
 	}
 
-	private void update(boolean forceDownload)
+	public void update(boolean forceDownload)
 	{
 		Group group = Memory.getGroupFromMemoryCache(groupId);
 		if (group == null || forceDownload) new GroupTask(context, this).execute("/" + groupId);

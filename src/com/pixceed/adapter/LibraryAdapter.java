@@ -2,8 +2,10 @@ package com.pixceed.adapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,10 +18,12 @@ import com.pixceed.download.data.GroupDescriptionsTask;
 import com.pixceed.fragment.GroupFragment;
 import com.pixceed.fragment.UserLibraryFragment;
 import com.pixceed.util.Memory;
+import com.pixceed.util.Updateable;
 
-public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecuteInterface<Collection<GroupDescription>>
+public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecuteInterface<Collection<GroupDescription>>, Updateable
 {
 	private final ArrayList<GroupDescription> groups;
+	private final List<Updateable> updateables;
 	private final Context context;
 
 	public LibraryAdapter(Context context, FragmentManager fm)
@@ -27,6 +31,8 @@ public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecut
 		super(fm);
 		this.context = context;
 		groups = new ArrayList<GroupDescription>();
+		updateables = new ArrayList<>();
+		registerDataSetObserver(new DelegateDataSetObserver());
 		update(false);
 	}
 
@@ -42,6 +48,7 @@ public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecut
 			bundle.putLong("id", getItemId(position));
 			fragment.setArguments(bundle);
 		}
+		updateables.add((Updateable) fragment);
 		return fragment;
 	}
 
@@ -72,7 +79,7 @@ public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecut
 
 	public void update(boolean forceDownload)
 	{
-		
+
 		Collection<GroupDescription> groups = Memory.getGroupDescriptionsFromMemoryCache();
 		if (groups == null || forceDownload) new GroupDescriptionsTask(context, this).execute();
 		else onPostExecute(groups);
@@ -89,5 +96,15 @@ public class LibraryAdapter extends FragmentPagerAdapter implements OnPostExecut
 		this.groups.clear();
 		this.groups.addAll(groups);
 		notifyDataSetChanged();
+	}
+
+	private class DelegateDataSetObserver extends DataSetObserver
+	{
+		@Override
+		public void onChanged()
+		{
+			for (Updateable updateable : updateables)
+				updateable.update(true);
+		}
 	}
 }

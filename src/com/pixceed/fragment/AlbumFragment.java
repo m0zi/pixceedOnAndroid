@@ -27,11 +27,12 @@ import com.pixceed.adapter.AlbumExpandedPagerAdapter;
 import com.pixceed.data.PixceedPicture;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.util.Memory;
+import com.pixceed.util.Updateable;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AlbumFragment extends Fragment implements OnItemClickListener, OnPostExecuteInterface<PixceedPicture>
+public class AlbumFragment extends Fragment implements OnItemClickListener, OnPostExecuteInterface<PixceedPicture>, Updateable
 {
 	public static final String IS_PICTURE_EXTENDED_KEY = "isPictureExtended";
 
@@ -329,10 +330,10 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		}
 	}
 
-	public void update()
+	public void update(boolean forceDownload)
 	{
-		if (isPictureExtended) albumExpanedPagerAdapter.update(true);
-		else albumAdapter.update(true);
+		if (isPictureExtended) albumExpanedPagerAdapter.update(forceDownload);
+		else albumAdapter.update(forceDownload);
 	}
 
 	// public long getRecentId()

@@ -13,11 +13,12 @@ import android.widget.GridView;
 import com.pixceed.AlbumActivity;
 import com.pixceed.R;
 import com.pixceed.adapter.GroupAdapter;
+import com.pixceed.util.Updateable;
 
-public class GroupFragment extends Fragment implements OnItemClickListener
+public class GroupFragment extends Fragment implements OnItemClickListener, Updateable
 {
-
 	private View rootView;
+	private Updateable updateDelegate;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -26,6 +27,7 @@ public class GroupFragment extends Fragment implements OnItemClickListener
 		
 		GridView gridViewGroup = (GridView) rootView.findViewById(R.id.gridViewGroup);
 		GroupAdapter albumAdapter = new GroupAdapter(rootView.getContext(), getArguments().getLong("id"));
+		updateDelegate = albumAdapter;
 		gridViewGroup.setAdapter(albumAdapter);
 		gridViewGroup.setOnItemClickListener(this);
 		
@@ -38,6 +40,12 @@ public class GroupFragment extends Fragment implements OnItemClickListener
 		Intent intent = new Intent(rootView.getContext(), AlbumActivity.class);
 		intent.putExtra("com.pixceed.AlbumId", (int)id);
 		startActivity(intent);		
+	}
+
+	@Override
+	public void update(boolean forceDownload)
+	{
+		updateDelegate.update(forceDownload);
 	}
 
 }

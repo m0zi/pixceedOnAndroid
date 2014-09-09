@@ -13,11 +13,13 @@ import android.widget.GridView;
 import com.pixceed.AlbumActivity;
 import com.pixceed.R;
 import com.pixceed.adapter.UserLibraryAdapter;
+import com.pixceed.util.Updateable;
 
-public class UserLibraryFragment extends Fragment implements OnItemClickListener
+public class UserLibraryFragment extends Fragment implements OnItemClickListener, Updateable
 {
 	private View rootView;
 	private GridView gridViewLibrary;
+	private Updateable delegateUpdate;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,6 +29,7 @@ public class UserLibraryFragment extends Fragment implements OnItemClickListener
 
 		gridViewLibrary = (GridView) rootView.findViewById(R.id.gridViewUserLibrary);
 		UserLibraryAdapter albumAdapter = new UserLibraryAdapter(rootView.getContext());
+		delegateUpdate = albumAdapter;
 		gridViewLibrary.setAdapter(albumAdapter);
 		gridViewLibrary.setOnItemClickListener(this);
 		
@@ -39,5 +42,11 @@ public class UserLibraryFragment extends Fragment implements OnItemClickListener
 		Intent intent = new Intent(rootView.getContext(), AlbumActivity.class);
 		intent.putExtra("com.pixceed.AlbumId", (int)id);
 		startActivity(intent);
+	}
+
+	@Override
+	public void update(boolean forceDownload)
+	{
+		delegateUpdate.update(forceDownload);
 	}
 }

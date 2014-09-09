@@ -18,10 +18,10 @@ import com.pixceed.data.LibraryMonth.AlbumPreview;
 import com.pixceed.download.OnPostExecuteInterface;
 import com.pixceed.download.data.UserLibrariesTask;
 import com.pixceed.util.Memory;
+import com.pixceed.util.Updateable;
 
-public class UserLibraryAdapter extends ArrayAdapter<AlbumPreview> implements OnPostExecuteInterface<Collection<LibraryMonth>>
+public class UserLibraryAdapter extends ArrayAdapter<AlbumPreview> implements OnPostExecuteInterface<Collection<LibraryMonth>>, Updateable
 {
-
 	private Context context;
 	private ArrayList<AlbumPreview> userLibrary;
 
