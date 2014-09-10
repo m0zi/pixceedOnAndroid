@@ -4,9 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -20,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
-
 import com.pixceed.R;
 import com.pixceed.adapter.AlbumAdapter;
 import com.pixceed.adapter.AlbumExpandedPagerAdapter;
@@ -79,7 +80,15 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 
 		if (savedInstanceState != null)
 			isPictureExtended = savedInstanceState.getBoolean(IS_PICTURE_EXTENDED_KEY);
-		if (isPictureExtended) setMaximizedPicture();
+		if (isPictureExtended)
+		{
+			//@formatter:off
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD) 
+				setMaximized();
+			else
+				setMaximizedPictureAPIlowerThan11();
+			//@formatter:on
+		}
 
 		// Retrieve and cache the system's default "short" animation time.
 		mShortAnimationDuration = getResources().getInteger(
@@ -90,7 +99,14 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		return rootView;
 	}
 
-	private void setMaximizedPicture()
+	private void setMaximizedPictureAPIlowerThan11()
+	{
+		final View expandedView = rootView.findViewById(R.id.viewPagerAlbumExpanded);
+		expandedView.setVisibility(View.GONE);
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void setMaximized()
 	{
 		final View expandedView = rootView.findViewById(R.id.viewPagerAlbumExpanded);
 		// final PixceedPicture pixceedPictureFromMemoryCache = Memory.getPixceedPictureFromMemoryCache(recentId);
@@ -144,13 +160,17 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 			final ImageView iconThumb = (ImageView) itemView.findViewById(R.id.squaredImage);
 
 			expandedView.setCurrentItem(position);
-			// recentId = id;
-			// start the animation
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD)
+			// for 2.3.3 higher
 			zoomIcon(iconThumb, expandedView);
+			else
+			// for 2.3.3 or lower
+			expandedView.setVisibility(View.VISIBLE);
 		}
 		else Log.e("ALBUM", String.format("Unexpected call to onItemClick. Given %s.getAdapter() does not return instance of %s.", parent.getClass(), AlbumAdapter.class.getName()));
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void zoomIcon(final ImageView thumbView, final View expandedView)
 	{
 		// If there's an animation in progress, cancel it
