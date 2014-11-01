@@ -149,7 +149,7 @@ public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap>
 
 		AsyncDrawable(Resources resources, BitmapWorkerTask bitmapWorkerTask)
 		{
-			this(resources, bitmapWorkerTask, Memory.icLauncher);
+			this(resources, bitmapWorkerTask, null);
 		}
 
 		AsyncDrawable(Resources resources, BitmapWorkerTask bitmapWorkerTask, Bitmap defaultImage)
