@@ -58,14 +58,43 @@ public class Memory
 	public static void init(Context context, SharedPreferences nvmData)
 	{
 		icLauncher = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
-		Memory.isMobileDataAllowed = nvmData.getBoolean(IS_MOBILE_DATA_ALLOWED_KEY, true);
-		Memory.isRememberEmailChecked = nvmData.getBoolean(IS_REMEMBER_EMAIL_CHECKED_KEY, false);
-		Memory.loginName = nvmData.getString(LOGIN_NAME_KEY, "");
-		Memory.token = nvmData.getString(TOKEN_KEY, "");
+		isMobileDataAllowed = nvmData.getBoolean(IS_MOBILE_DATA_ALLOWED_KEY, true);
+		isRememberEmailChecked = nvmData.getBoolean(IS_REMEMBER_EMAIL_CHECKED_KEY, false);
+		loginName = nvmData.getString(LOGIN_NAME_KEY, "");
+		token = nvmData.getString(TOKEN_KEY, "");
 		initCaches();
 	}
 
 	public static void initCaches()
+	{
+		// clear cache if already initialized
+		userLibraryCache = null;
+		groupDescriptionsCache = null;
+		initPixceedCache();
+		initAlbumCache();
+		initGroupCache();
+		initPictureCache();
+	}
+
+	private static void initPixceedCache()
+	{
+		if (pixceedCache != null) pixceedCache.evictAll();
+		else pixceedCache = new LruCache<Long, PixceedPicture>(50);
+	}
+
+	private static void initAlbumCache()
+	{
+		if (albumCache != null) albumCache.evictAll();
+		else albumCache = new LruCache<Integer, Album>(10);
+	}
+
+	private static void initGroupCache()
+	{
+		if (groupCache != null) groupCache.evictAll();
+		else groupCache = new LruCache<Long, Group>(10);
+	}
+
+	private static void initPictureCache()
 	{
 		// Get max available VM memory, exceeding this amount will throw an
 		// OutOfMemory exception. Stored in kilobytes as LruCache takes an
@@ -75,15 +104,6 @@ public class Memory
 		// Use 1/8th of the available memory for this memory cache.
 		final int cacheSize = maxMemory / 8;
 
-		// clear cache if already initialized
-		userLibraryCache = null;
-		groupDescriptionsCache = null;
-		if (pixceedCache != null) pixceedCache.evictAll();
-		else pixceedCache = new LruCache<Long, PixceedPicture>(50);
-		if (albumCache != null) albumCache.evictAll();
-		else albumCache = new LruCache<Integer, Album>(10);
-		if (groupCache != null) groupCache.evictAll();
-		else groupCache = new LruCache<Long, Group>(10);
 		if (pictureCache != null) pictureCache.evictAll();
 		else pictureCache = new LruCache<Integer, Bitmap>(cacheSize)
 		{
@@ -108,6 +128,7 @@ public class Memory
 	private static Bitmap getBitmapFromMemCache(String key)
 	{
 		if (key == null) return null;
+		if (pictureCache == null) initPictureCache();
 		return pictureCache.get(key.hashCode());
 	}
 
@@ -153,21 +174,25 @@ public class Memory
 
 	public static void addPixceedPictureToMemoryCache(PixceedPicture picture)
 	{
+		if (pixceedCache == null) initPixceedCache();
 		pixceedCache.put(picture.getImageInformation().getId(), picture);
 	}
 
 	public static PixceedPicture getPixceedPictureFromMemoryCache(long id)
 	{
+		if (pixceedCache == null) initPixceedCache();
 		return pixceedCache.get(id);
 	}
 
 	public static void addAlbumToMemoryCache(Album album)
 	{
+		if (albumCache == null) initAlbumCache();
 		albumCache.put(album.getId(), album);
 	}
 
 	public static Album getAlbumFromMemoryCache(int id)
 	{
+		if (albumCache == null) initAlbumCache();
 		return albumCache.get(id);
 	}
 
@@ -193,11 +218,13 @@ public class Memory
 
 	public static void addGroupToMemoryCache(Group group)
 	{
+		if (groupCache == null) initGroupCache();
 		groupCache.put(group.getGroupId(), group);
 	}
 
 	public static Group getGroupFromMemoryCache(long groupId)
 	{
+		if (groupCache == null) initGroupCache();
 		return groupCache.get(groupId);
 	}
 }

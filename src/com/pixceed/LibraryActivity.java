@@ -56,7 +56,7 @@ public class LibraryActivity extends ActionBarActivity
 		case R.id.action_settings:
 			return true;
 		case android.R.id.home:
-			// if logout does not occured --> click should be consumed (return true) with no further actions taking place
+			// if not logged out --> click should be consumed (return true) with no further actions taking place
 			return !logout();
 		case R.id.action_refresh:
 			updateDelegate.update(true);

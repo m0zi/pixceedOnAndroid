@@ -45,7 +45,10 @@ public class UserLibrariesTask extends TokenRequestTask<Void, Collection<Library
 			Memory.setLibraryToMemoryCache(readValue);
 			return readValue;
 		}
-
+		catch (IOException e)
+		{
+			throw e;
+		}
 		catch (Exception e)
 		{
 			Log.e(USER_LIBRARY_TAG, "Error during parsing JSON", e);

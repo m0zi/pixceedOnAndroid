@@ -36,42 +36,6 @@ public class LoginFragment extends Fragment
 		if (Memory.loginName != null && !Memory.loginName.isEmpty())
 			textViewPassword.requestFocus();
 
-		// final OnPostExecuteInterface<Collection<Article>> showLoginText = new OnPostExecuteInterface<Collection<Article>>()
-		// {
-		// @Override
-		// public void onPostExecute(Collection<Article> result)
-		// {
-		// if (result != null)
-		// ((TextView) rootView.findViewById(R.id.textViewArticle)).setText(result.iterator().next().getHtml());
-		// else
-		// ((TextView) rootView.findViewById(R.id.textViewArticle)).setText("");
-		// }
-		// };
-		// new ArticlesTask(context, showLoginText).execute();
-
-		// show sample image
-		// final ImageView imageView = (ImageView) rootView.findViewById(R.id.imageViewRndPicture);
-		// final OnPostExecuteInterface<Bitmap> showLoginPicture = new OnPostExecuteInterface<Bitmap>()
-		// {
-		// @Override
-		// public void onPostExecute(Bitmap result)
-		// {
-		// imageView.setScaleType(ScaleType.CENTER_CROP);
-		// imageView.setImageBitmap(result);
-		// }
-		// };
-		// final OnPostExecuteInterface<int[]> getRandomPublicPicture = new OnPostExecuteInterface<int[]>()
-		// {
-		// @Override
-		// public void onPostExecute(int[] result)
-		// {
-		// if (result == null || result.length < 1)
-		// return;
-		// new PublicPictureTask(context, showLoginPicture, imageView.getWidth(), imageView.getHeight()).execute("" + result[0]);
-		// }
-		// };
-		// new PublicPictureListTask(context, getRandomPublicPicture).execute();
-
 		return rootView;
 	}
 

@@ -43,6 +43,10 @@ public class GroupTask extends TokenRequestTask<Void, Group>
 			Memory.addGroupToMemoryCache(readValue);
 			return readValue;
 		}
+		catch (IOException e)
+		{
+			throw e;
+		}
 		catch (Exception e)
 		{
 			Log.e(GROUP_TAG, "Error during parsing JSON", e);

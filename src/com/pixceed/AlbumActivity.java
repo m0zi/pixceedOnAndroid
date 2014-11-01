@@ -58,13 +58,19 @@ public class AlbumActivity extends ActionBarActivity
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) { return true; }
-		if (id == R.id.action_refresh)
+		switch (id)
 		{
+		case R.id.action_settings:
+			return true;
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		case R.id.action_refresh:
 			albumFragment.update(true);
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

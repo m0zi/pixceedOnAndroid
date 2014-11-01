@@ -43,6 +43,10 @@ public class AlbumTask extends TokenRequestTask<Void, Album>
 			Memory.addAlbumToMemoryCache(readValue);
 			return readValue;
 		}
+		catch (IOException e)
+		{
+			throw e;
+		}
 		catch (Exception e)
 		{
 			Log.e(ALBUM_TAG, "Error during parsing JSON", e);

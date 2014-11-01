@@ -44,6 +44,7 @@ public class PixceedObjectsNamingStrategy extends PropertyNamingStrategy
 
 	/**
 	 * Gets the name of the field in Java class and returns the String which occurs in the JSON object.
+	 * 
 	 * @param defaultName
 	 * @return
 	 */
@@ -102,8 +103,7 @@ public class PixceedObjectsNamingStrategy extends PropertyNamingStrategy
 
 	public static ObjectMapper getMapper(Class<?> clazz)
 	{
-		ObjectMapper objectMapper = new ObjectMapper();
-		return objectMapper.setPropertyNamingStrategy(new PixceedObjectsNamingStrategy(clazz));
+		return new ObjectMapper().setPropertyNamingStrategy(new PixceedObjectsNamingStrategy(clazz));
 	}
 
 }

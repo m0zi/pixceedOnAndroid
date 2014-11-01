@@ -31,6 +31,8 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 	public static final String URL_FOLDERS = URL_API + "/folder";
 	/* groups */
 	public static final String URL_GROUPS = URL_API + "/group";
+	/* activity */
+	public static final String URL_ACTIVITY = URL_API + "/activity";
 
 	private static final String LOG_TAG = "DOWNLOAD";
 

@@ -20,8 +20,10 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
+
 import com.pixceed.R;
 import com.pixceed.adapter.AlbumAdapter;
 import com.pixceed.adapter.AlbumExpandedPagerAdapter;
@@ -33,7 +35,7 @@ import com.pixceed.util.Updateable;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AlbumFragment extends Fragment implements OnItemClickListener, OnPostExecuteInterface<PixceedPicture>, Updateable
+public class AlbumFragment extends Fragment implements OnItemClickListener, OnPostExecuteInterface<PixceedPicture>, Updateable, OnItemLongClickListener
 {
 	public static final String IS_PICTURE_EXTENDED_KEY = "isPictureExtended";
 
@@ -72,6 +74,7 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		albumAdapter = new AlbumAdapter(rootView.getContext(), getArguments().getInt("id"));
 		gridViewAlbum.setAdapter(albumAdapter);
 		gridViewAlbum.setOnItemClickListener(this);
+		gridViewAlbum.setOnItemLongClickListener(this);
 
 		ViewPager pager = (ViewPager) rootView.findViewById(R.id.viewPagerAlbumExpanded);
 		albumExpanedPagerAdapter = new AlbumExpandedPagerAdapter(getChildFragmentManager(), albumAdapter);
@@ -91,8 +94,7 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		}
 
 		// Retrieve and cache the system's default "short" animation time.
-		mShortAnimationDuration = getResources().getInteger(
-				android.R.integer.config_shortAnimTime);
+		mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
 		setRetainInstance(true);
 
@@ -109,10 +111,6 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 	private void setMaximized()
 	{
 		final View expandedView = rootView.findViewById(R.id.viewPagerAlbumExpanded);
-		// final PixceedPicture pixceedPictureFromMemoryCache = Memory.getPixceedPictureFromMemoryCache(recentId);
-		// if (pixceedPictureFromMemoryCache == null)
-		// return;
-		// Memory.loadAndSetBitmap(pixceedPictureFromMemoryCache.getImage(), expandedView);
 		expandedView.setVisibility(View.VISIBLE);
 		expandedView.setOnClickListener(new View.OnClickListener()
 		{
@@ -150,6 +148,13 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 				currentAnimator = set;
 			}
 		});
+	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<? extends Adapter> parent, View itemView, int position, long id)
+	{
+		// TODO implement long click behavior like show set as album picture or just selecting more than one picture
+		return false;
 	}
 
 	public void onItemClick(AdapterView<? extends Adapter> parent, View itemView, int position, long id)
@@ -355,9 +360,4 @@ public class AlbumFragment extends Fragment implements OnItemClickListener, OnPo
 		if (isPictureExtended) albumExpanedPagerAdapter.update(forceDownload);
 		else albumAdapter.update(forceDownload);
 	}
-
-	// public long getRecentId()
-	// {
-	// return recentId;
-	// }
 }
