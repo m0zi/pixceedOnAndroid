@@ -23,9 +23,9 @@
         android:id="@+id/editTextLoginName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textViewLoginName"
+        android:layout_alignBaseline="@id/textViewLoginName"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/textViewLoginName"
+        android:layout_toRightOf="@id/textViewLoginName"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:textSize="@dimen/loginTextDimension" >
@@ -49,19 +49,19 @@
         android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextLoginName"
-        android:layout_alignRight="@+id/editTextLoginName"
-        android:layout_below="@+id/editTextLoginName"
+        android:layout_alignLeft="@id/editTextLoginName"
+        android:layout_alignRight="@id/editTextLoginName"
+        android:layout_below="@id/editTextLoginName"
         android:ems="10"
         android:inputType="textPassword"
         android:textSize="@dimen/loginTextDimension" />
 
     <CheckBox
-        android:id="@+id/checkBoxSaveLoginName"
+        android:id="@+id/checkBoxSaveLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editTextPassword"
+        android:layout_below="@id/editTextPassword"
         android:text="@string/saveLoginName"
         android:textSize="@dimen/loginTextDimension" />
 
@@ -69,9 +69,9 @@
         android:id="@+id/buttonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBoxSaveLoginName"
-        android:layout_alignRight="@+id/editTextPassword"
-        android:layout_below="@+id/checkBoxSaveLoginName"
+        android:layout_alignLeft="@id/checkBoxSaveLogin"
+        android:layout_alignRight="@id/editTextPassword"
+        android:layout_below="@id/checkBoxSaveLogin"
         android:onClick="login"
         android:text="@string/login"
         android:textSize="@dimen/loginTextDimension" />

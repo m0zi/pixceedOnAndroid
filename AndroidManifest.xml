@@ -29,9 +29,6 @@
         <activity
             android:name="com.pixceed.LibraryActivity"
             android:label="@string/title_activity_library" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.pixceed.LoginActivity" />
         </activity>
         <activity
             android:name="com.pixceed.AlbumActivity"
@@ -50,7 +47,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
+        </receiver>
         -->
     </application>
 

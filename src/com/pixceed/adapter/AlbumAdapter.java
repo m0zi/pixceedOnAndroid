@@ -66,20 +66,47 @@ public class AlbumAdapter extends ArrayAdapter<ImagePreviewInformation> implemen
 		View v = convertView;
 		ImageView picture;
 		TextView name;
+		ImageView sharedTypeImage;
+		TextView commentsCount;
 
 		if (v == null)
 		{
 			v = LayoutInflater.from(context).inflate(R.layout.gridview_squared_image_item, parent, false);
 			v.setTag(R.id.squaredImage, v.findViewById(R.id.squaredImage));
 			v.setTag(R.id.textViewSquarePicture, (TextView) v.findViewById(R.id.textViewSquarePicture));
+			v.setTag(R.id.squaredImageSharedType, (ImageView)v.findViewById(R.id.squaredImageSharedType));
+			v.setTag(R.id.squaredImageCommentsCount, (TextView) v.findViewById(R.id.squaredImageCommentsCount));
 		}
 		picture = (ImageView) v.getTag(R.id.squaredImage);
 		name = (TextView) v.getTag(R.id.textViewSquarePicture);
-
+		sharedTypeImage = (ImageView)v.getTag(R.id.squaredImageSharedType);
+		commentsCount = (TextView) v.getTag(R.id.squaredImageCommentsCount);
+		
 		ImagePreviewInformation item = getItem(position);
 
 		name.setText(item.getName());
 
+		// set icon according to shareType
+		int shareTypeImageResourceId;
+		switch (item.getShareType())
+		{
+		case PUBLIC:
+			shareTypeImageResourceId = R.drawable.ic_action_web_site;
+			break;
+		case GROUP_SHARED:
+			shareTypeImageResourceId = R.drawable.ic_action_group;
+			break;
+		case PRIVATE:
+			shareTypeImageResourceId = R.drawable.ic_action_secure;
+			break;
+		default:
+			shareTypeImageResourceId = R.drawable.ic_action_warning;
+			break;
+		}
+		sharedTypeImage.setImageResource(shareTypeImageResourceId);
+		
+		commentsCount.setText(""+item.getCommentCount());
+		
 		Memory.loadAndSetBitmap(item.getImageIcon(), picture);
 		return v;
 	}

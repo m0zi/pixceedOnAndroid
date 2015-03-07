@@ -54,8 +54,11 @@ public class LoginActivity extends ActionBarActivity
 		case R.id.action_settings:
 			startActivity(new Intent(LoginActivity.this, SettingsActivity.class));
 			return true;
+		case R.id.action_logout:
+			Memory.token = null;
 		case R.id.action_refresh:
-			Memory.initCaches();
+			finish();
+			startActivity(new Intent(LoginActivity.this, LoginActivity.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -64,7 +67,12 @@ public class LoginActivity extends ActionBarActivity
 
 	public void login(View view)
 	{
-		if (Memory.token != null && !Memory.token.trim().isEmpty())
+		final String username = ((EditText) findViewById(R.id.editTextLoginName)).getText().toString();
+		final String password = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
+		final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxSaveLogin);
+		final Button loginButton = (Button) findViewById(R.id.buttonLogin);
+		Memory.isRememberLogin = checkBox.isChecked();
+		if (isThereAToken())
 		{
 			// we already have a token, so use this one
 			Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
@@ -74,20 +82,12 @@ public class LoginActivity extends ActionBarActivity
 		else
 		{
 			// no token available, so send a login request
-			final String username = ((EditText) findViewById(R.id.editTextLoginName)).getText().toString();
-			final String password = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
-			final Button loginBtn = (Button) findViewById(R.id.buttonLogin);
-			loginBtn.setEnabled(false);
+			loginButton.setEnabled(false);
 			OnPostExecuteInterface<Login> loginExecuter = new OnPostExecuteInterface<Login>()
 			{
 				@Override
 				public void onPostExecute(Login result)
 				{
-					final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxSaveLoginName);
-					if (checkBox != null)
-						Memory.isRememberEmailChecked = checkBox.isChecked();
-					if (Memory.isRememberEmailChecked)
-						Memory.loginName = username;
 					if (result != null && result.getToken() != null)
 					{
 						// login successfully
@@ -98,6 +98,7 @@ public class LoginActivity extends ActionBarActivity
 					}
 					else
 					{
+						// no token received --> failed login
 						Memory.token = null;
 						final String loginFailedMessage;
 						if (result == null || result.getErrorDescription().isEmpty()) loginFailedMessage = "Login failed. Make sure that internet connection is available and try again.";
@@ -105,7 +106,7 @@ public class LoginActivity extends ActionBarActivity
 						Toast.makeText(getApplicationContext(), loginFailedMessage, Toast.LENGTH_LONG).show();
 						Log.e("LOGIN", loginFailedMessage);
 					}
-					loginBtn.setEnabled(true);
+					loginButton.setEnabled(true);
 				}
 			};
 			new LoginTask(getApplicationContext(), loginExecuter, username, password).execute();
@@ -116,17 +117,19 @@ public class LoginActivity extends ActionBarActivity
 	protected void onResume()
 	{
 		super.onResume();
-		final Button loginBtn = (Button) findViewById(R.id.buttonLogin);
-		if (Memory.token != null && !Memory.token.trim().isEmpty())
-		{
-			Log.d("LOGIN", "resume login with token");
-			loginBtn.setText(R.string.relogin);
-		}
-		else
-		{
-			Log.d("LOGIN", "resume login without token");
-			loginBtn.setText(R.string.login);
-		}
+		final Button loginButton = (Button) findViewById(R.id.buttonLogin);
+		final EditText username = (EditText) findViewById(R.id.editTextLoginName);
+		final EditText password = (EditText) findViewById(R.id.editTextPassword);
+		final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxSaveLogin);
+		final boolean hasToLogIn = !isThereAToken();
+		Log.d("LOGIN", "resume login" + (hasToLogIn ? "without" : "with") + "token");
+		
+		// enable all things if we really have to login
+		// disable otherwise
+		username.setEnabled(hasToLogIn);
+		password.setEnabled(hasToLogIn);
+		checkBox.setEnabled(hasToLogIn);
+		loginButton.setText(hasToLogIn ? R.string.login : R.string.relogin);
 	}
 
 	protected void onPause()
@@ -135,4 +138,10 @@ public class LoginActivity extends ActionBarActivity
 		Log.d("LOGIN", "save data");
 		Memory.save(getPreferences(Context.MODE_PRIVATE).edit()).commit();
 	}
+
+	private boolean isThereAToken()
+	{
+		return Memory.token != null && !Memory.token.trim().isEmpty();
+	}
+
 }

@@ -72,6 +72,7 @@ public class UserLibraryAdapter extends ArrayAdapter<AlbumPreview> implements On
 			v = LayoutInflater.from(context).inflate(R.layout.gridview_squared_image_item, parent, false);
 			v.setTag(R.id.squaredImage, v.findViewById(R.id.squaredImage));
 			v.setTag(R.id.textViewSquarePicture, (TextView) v.findViewById(R.id.textViewSquarePicture));
+			((View)v.findViewById(R.id.squaredImageComments)).setVisibility(View.INVISIBLE);
 		}
 		picture = (ImageView) v.getTag(R.id.squaredImage);
 		name = (TextView) v.getTag(R.id.textViewSquarePicture);

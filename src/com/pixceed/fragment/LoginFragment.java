@@ -15,24 +15,26 @@ import com.pixceed.util.Memory;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class LoginFragment extends Fragment
+public class LoginFragment extends Fragment 
 {
+	private View rootView;
+
 	public LoginFragment()
 	{}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState)
 	{
-		final View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+		rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
 		// show sample text
 		// final Context context = rootView.getContext();
 		final TextView textViewLoginName = (TextView) rootView.findViewById(R.id.editTextLoginName);
 		final TextView textViewPassword = (TextView) rootView.findViewById(R.id.editTextPassword);
-		final CheckBox checkBox = (CheckBox) rootView.findViewById(R.id.checkBoxSaveLoginName);
+		final CheckBox checkBox = (CheckBox) rootView.findViewById(R.id.checkBoxSaveLogin);
 
 		textViewLoginName.setText(Memory.loginName);
-		checkBox.setChecked(Memory.isRememberEmailChecked);
+		checkBox.setChecked(Memory.isRememberLogin);
 		if (Memory.loginName != null && !Memory.loginName.isEmpty())
 			textViewPassword.requestFocus();
 

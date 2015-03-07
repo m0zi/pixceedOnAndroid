@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -13,7 +13,7 @@
         android:id="@+id/textViewSquarePicture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_alignBottom="@id/squaredImage"
         android:background="@color/black_transparent"
         android:paddingBottom="3dp"
         android:paddingLeft="3dp"
@@ -22,4 +22,36 @@
         android:singleLine="true"
         android:textColor="@android:color/white" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/squaredImageCommentsCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/black_transparent"
+        android:singleLine="true"
+        android:textColor="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/squaredImageComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/squaredImageCommentsCount"
+        android:layout_alignTop="@id/squaredImageCommentsCount"
+        android:layout_toLeftOf="@id/squaredImageCommentsCount"
+        android:background="@color/black_transparent"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_action_chat" />
+
+    <ImageView
+        android:id="@+id/squaredImageSharedType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/squaredImageCommentsCount"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignTop="@id/squaredImageCommentsCount"
+        android:background="@color/black_transparent"
+        android:contentDescription="@null" />
+
+</RelativeLayout>

@@ -11,11 +11,13 @@
     <!-- login -->
     <string name="loginName">E-Mail-Adresse:</string>
     <string name="loginPassword">Password:</string>
-    <string name="saveLoginName">E-Mail-Adresse merken</string>
+    <string name="saveLoginName">Eingeloggt bleiben</string>
     <string name="login">Anmelden</string>
     <string name="relogin">Wiederanmelden</string>
 
 	<!-- menu -->
+    <string name="action_forward">Vor</string>
+    <string name="action_back">Zurück</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_refresh">Neu laden</string>
     <string name="action_logout">Ausloggen</string>

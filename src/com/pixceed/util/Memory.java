@@ -30,7 +30,7 @@ public class Memory
 
 	public static String token = null;
 	public static String loginName;
-	public static boolean isRememberEmailChecked = false;
+	public static boolean isRememberLogin = false;
 
 	static Bitmap icLauncher;
 
@@ -46,16 +46,17 @@ public class Memory
 
 	public static SharedPreferences.Editor save(SharedPreferences.Editor nvmDataStore)
 	{
-		nvmDataStore.putBoolean(IS_REMEMBER_EMAIL_CHECKED_KEY, isRememberEmailChecked);
+		nvmDataStore.putBoolean(IS_REMEMBER_EMAIL_CHECKED_KEY, isRememberLogin);
 		nvmDataStore.putString(LOGIN_NAME_KEY, loginName);
-		nvmDataStore.putString(TOKEN_KEY, token);
+		if (isRememberLogin) nvmDataStore.putString(TOKEN_KEY, token);
+		else nvmDataStore.putString(TOKEN_KEY, null);
 		return nvmDataStore;
 	}
 
 	public static void init(Context context, SharedPreferences nvmData)
 	{
 		icLauncher = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
-		isRememberEmailChecked = nvmData.getBoolean(IS_REMEMBER_EMAIL_CHECKED_KEY, false);
+		isRememberLogin = nvmData.getBoolean(IS_REMEMBER_EMAIL_CHECKED_KEY, false);
 		loginName = nvmData.getString(LOGIN_NAME_KEY, "");
 		token = nvmData.getString(TOKEN_KEY, null);
 		initCaches();
