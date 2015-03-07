@@ -1,6 +1,7 @@
 package com.pixceed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -49,8 +50,8 @@ public class LibraryActivity extends ActionBarActivity
 		int id = item.getItemId();
 		switch (id)
 		{
-
 		case R.id.action_settings:
+			startActivity(new Intent(LibraryActivity.this, SettingsActivity.class));
 			return true;
 		case R.id.action_logout:
 			Memory.token = null;

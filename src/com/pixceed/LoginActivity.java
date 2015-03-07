@@ -49,18 +49,22 @@ public class LoginActivity extends ActionBarActivity
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) { return true; }
-		if (id == R.id.action_refresh)
+		switch (id)
 		{
+		case R.id.action_settings:
+			startActivity(new Intent(LoginActivity.this, SettingsActivity.class));
+			return true;
+		case R.id.action_refresh:
 			Memory.initCaches();
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	public void login(View view)
 	{
-		if (Memory.token != null)
+		if (Memory.token != null && !Memory.token.trim().isEmpty())
 		{
 			// we already have a token, so use this one
 			Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
@@ -113,7 +117,7 @@ public class LoginActivity extends ActionBarActivity
 	{
 		super.onResume();
 		final Button loginBtn = (Button) findViewById(R.id.buttonLogin);
-		if (Memory.token != null)
+		if (Memory.token != null && !Memory.token.trim().isEmpty())
 		{
 			Log.d("LOGIN", "resume login with token");
 			loginBtn.setText(R.string.relogin);

@@ -1,6 +1,7 @@
 package com.pixceed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
@@ -61,6 +62,7 @@ public class AlbumActivity extends ActionBarActivity
 		switch (id)
 		{
 		case R.id.action_settings:
+			startActivity(new Intent(AlbumActivity.this, SettingsActivity.class));
 			return true;
 		case android.R.id.home:
 			onBackPressed();

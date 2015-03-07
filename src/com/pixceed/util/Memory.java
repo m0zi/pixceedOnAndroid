@@ -26,12 +26,10 @@ public class Memory
 
 	private static final String TOKEN_KEY = "token";
 	private static final String LOGIN_NAME_KEY = "loginName";
-	private static final String IS_MOBILE_DATA_ALLOWED_KEY = "isMobileDataAllowed";
 	private static final String IS_REMEMBER_EMAIL_CHECKED_KEY = "rememberEmail";
 
 	public static String token = null;
 	public static String loginName;
-	public static boolean isMobileDataAllowed = true;
 	public static boolean isRememberEmailChecked = false;
 
 	static Bitmap icLauncher;
@@ -48,7 +46,6 @@ public class Memory
 
 	public static SharedPreferences.Editor save(SharedPreferences.Editor nvmDataStore)
 	{
-		nvmDataStore.putBoolean(IS_MOBILE_DATA_ALLOWED_KEY, isMobileDataAllowed);
 		nvmDataStore.putBoolean(IS_REMEMBER_EMAIL_CHECKED_KEY, isRememberEmailChecked);
 		nvmDataStore.putString(LOGIN_NAME_KEY, loginName);
 		nvmDataStore.putString(TOKEN_KEY, token);
@@ -58,10 +55,9 @@ public class Memory
 	public static void init(Context context, SharedPreferences nvmData)
 	{
 		icLauncher = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
-		isMobileDataAllowed = nvmData.getBoolean(IS_MOBILE_DATA_ALLOWED_KEY, true);
 		isRememberEmailChecked = nvmData.getBoolean(IS_REMEMBER_EMAIL_CHECKED_KEY, false);
 		loginName = nvmData.getString(LOGIN_NAME_KEY, "");
-		token = nvmData.getString(TOKEN_KEY, "");
+		token = nvmData.getString(TOKEN_KEY, null);
 		initCaches();
 	}
 
@@ -121,7 +117,7 @@ public class Memory
 	{
 		if (getBitmapFromMemCache(key) == null)
 		{
-			// no need initialize cache here because method in if-statement has already done it 
+			// no need initialize cache here because method in if-statement has already done it
 			pictureCache.put(key.hashCode(), bitmap);
 		}
 	}

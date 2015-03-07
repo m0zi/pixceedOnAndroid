@@ -9,9 +9,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.Log;
-
-import com.pixceed.util.Memory;
+import android.widget.Toast;
 
 public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S, R>
 {
@@ -55,9 +56,12 @@ public abstract class InternetTransmissionTask<S, R> extends AsyncTask<String, S
 	@Override
 	protected R doInBackground(String... params)
 	{
-		if (!checkConnection(context, Memory.isMobileDataAllowed))
+		if (!checkConnection(context, !PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(com.pixceed.R.string.pref_wifi), true)))
 		{
 			Log.w(LOG_TAG, "No conntection to the internet.");
+			Looper.prepare();
+			Toast.makeText(context, "Keine Internetverbindung. Prüf eventuell die Einstellungen zum WLAN.", Toast.LENGTH_LONG).show();
+			Looper.loop();
 			return null;
 		}
 		try

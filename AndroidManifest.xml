@@ -10,7 +10,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> -->
+    <!-- uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> -->
 
     <application
         android:allowBackup="true"
@@ -28,25 +28,30 @@
         </activity>
         <activity
             android:name="com.pixceed.LibraryActivity"
-            android:label="@string/library_view" >
+            android:label="@string/title_activity_library" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pixceed.LoginActivity" />
         </activity>
         <activity
             android:name="com.pixceed.AlbumActivity"
-            android:label="@string/album_view" >
+            android:label="@string/title_activity_album" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pixceed.LibraryActivity" />
         </activity>
+        <activity
+            android:name="com.pixceed.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
 
-        <!-- <receiver android:name="com.pixceed.ActivityPollingReceiver" >
+        <!--
+        <receiver android:name="com.pixceed.ActivityPollingReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
-         -->
+        </receiver>
+        -->
     </application>
 
 </manifest>
