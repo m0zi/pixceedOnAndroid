@@ -121,6 +121,7 @@ public class Memory
 	{
 		if (getBitmapFromMemCache(key) == null)
 		{
+			// no need initialize cache here because method in if-statement has already done it 
 			pictureCache.put(key.hashCode(), bitmap);
 		}
 	}

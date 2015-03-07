@@ -4,16 +4,23 @@
     tools:context="com.pixceed.LoginActivity" >
 
     <item
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:orderInCategory="25"
+        android:title="@string/action_refresh"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="50"
         android:title="@string/action_settings"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_refresh"
-        android:icon="@drawable/ic_action_refresh"
-        android:orderInCategory="80"
-        android:title="@string/action_refresh"
+        android:id="@+id/action_logout"
+        android:icon="@drawable/ic_action_cancel"
+        android:orderInCategory="75"
+        android:title="@string/action_logout"
         app:showAsAction="ifRoom"/>
+        
     
 </menu>

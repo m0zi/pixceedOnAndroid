@@ -1,14 +1,12 @@
 package com.pixceed;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.pixceed.adapter.LibraryAdapter;
 import com.pixceed.util.Memory;
@@ -18,7 +16,6 @@ public class LibraryActivity extends ActionBarActivity
 {
 	private ViewPager pager;
 	private Updateable updateDelegate;
-	private boolean hasAskedForLogout = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -55,9 +52,10 @@ public class LibraryActivity extends ActionBarActivity
 
 		case R.id.action_settings:
 			return true;
+		case R.id.action_logout:
+			Memory.token = null;
 		case android.R.id.home:
-			// if not logged out --> click should be consumed (return true) with no further actions taking place
-			return !logout();
+			return logout();
 		case R.id.action_refresh:
 			updateDelegate.update(true);
 			return true;
@@ -80,7 +78,7 @@ public class LibraryActivity extends ActionBarActivity
 		Log.d("LIBRARY", "destroyed");
 		super.onDestroy();
 	}
-	
+
 	@Override
 	public void onBackPressed()
 	{
@@ -89,47 +87,15 @@ public class LibraryActivity extends ActionBarActivity
 	}
 
 	/**
-	 * Performs the logout if and only if user has confirmed.
+	 * Performs the logout. This function always logs you out and reinitialize the caches.
 	 * 
 	 * @return <code>true</code> if real logout has occurred, <code>false</code> if only confirmation has been shown.
 	 */
 	private boolean logout()
 	{
-		if (Memory.token == null)
-			return true;
-		if (hasAskedForLogout)
-		{
-			Log.d("LIBRARY", "logout performed");
-			Memory.token = null;
-			Memory.initCaches();
-			hasAskedForLogout = false;
-			finish();
-		}
-		else
-		{
-			Toast.makeText(getBaseContext(), "Zum Ausloggen Zurück-Taste noch einmal drücken.", Toast.LENGTH_LONG).show();
-			AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>()
-			{
-				@Override
-				protected Void doInBackground(Void... params)
-				{
-					try
-					{
-						Thread.sleep(3000);
-						Log.d("LIBRARY", "logout interrupted.");
-						hasAskedForLogout = false;
-					}
-					catch (InterruptedException e)
-					{
-						Log.e("LOGOUT_WAIT", "Wait for user to confirm logout interrupted.", e);
-					}
-					return null;
-				}
-			};
-			hasAskedForLogout = true;
-			Log.d("LIBRARY", "logout asked.");
-			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new Void[0]);
-		}
-		return !hasAskedForLogout;
+		Log.d("LIBRARY", "logout performed");
+		Memory.initCaches();
+		finish();
+		return true;
 	}
 }

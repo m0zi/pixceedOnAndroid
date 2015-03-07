@@ -1,5 +1,6 @@
 package com.pixceed;
 
+import android.R.color;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,33 +32,7 @@ public class LoginActivity extends ActionBarActivity
 		SharedPreferences nvmData = getSharedPreferences(Memory.PIXCEED_TAG, Context.MODE_PRIVATE);
 		Memory.init(getApplicationContext(), nvmData);
 
-		if (!checkLoginAndStartActivity())
-		{
-			getSupportFragmentManager().beginTransaction().add(R.id.login, new LoginFragment()).commit();
-		}
-	}
-
-	@Override
-	protected void onResume()
-	{
-		Log.d("LOGIN", "onResume");
-		checkLoginAndStartActivity();
-		super.onResume();
-	}
-
-	private boolean checkLoginAndStartActivity()
-	{
-		if (Memory.token != null && !Memory.token.isEmpty())
-		{
-			// if token already available, login immediately
-			Log.d("LOGIN", "Token already exists. Perform login immediately");
-			Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
-			Toast.makeText(getApplicationContext(), "Automatic login successful.", Toast.LENGTH_LONG).show();
-			startActivity(intent);
-			return true;
-		}
-		Log.d("LOGIN", "No token for login");
-		return false;
+		getSupportFragmentManager().beginTransaction().add(R.id.login, new LoginFragment()).commit();
 	}
 
 	@Override
@@ -86,41 +61,69 @@ public class LoginActivity extends ActionBarActivity
 
 	public void login(View view)
 	{
-		final String username = ((EditText) findViewById(R.id.editTextLoginName)).getText().toString();
-		final String password = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
-		final Button loginBtn = (Button) findViewById(R.id.buttonLogin);
-		loginBtn.setEnabled(false);
-		OnPostExecuteInterface<Login> loginExecuter = new OnPostExecuteInterface<Login>()
+		if (Memory.token != null)
 		{
-			@Override
-			public void onPostExecute(Login result)
+			// we already have a token, so use this one
+			Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
+			Toast.makeText(getApplicationContext(), "Login resumed.", Toast.LENGTH_SHORT).show();
+			startActivity(intent);
+		}
+		else
+		{
+			// no token available, so send a login request
+			final String username = ((EditText) findViewById(R.id.editTextLoginName)).getText().toString();
+			final String password = ((EditText) findViewById(R.id.editTextPassword)).getText().toString();
+			final Button loginBtn = (Button) findViewById(R.id.buttonLogin);
+			loginBtn.setEnabled(false);
+			OnPostExecuteInterface<Login> loginExecuter = new OnPostExecuteInterface<Login>()
 			{
-				final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxSaveLoginName);
-				if (checkBox != null)
-					Memory.isRememberEmailChecked = checkBox.isChecked();
-				if (Memory.isRememberEmailChecked)
-					Memory.loginName = username;
-				if (result != null && result.getToken() != null)
+				@Override
+				public void onPostExecute(Login result)
 				{
-					// login successfully
-					Memory.token = result.getToken().trim();
-					Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
-					Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_SHORT).show();
-					startActivity(intent);
+					final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxSaveLoginName);
+					if (checkBox != null)
+						Memory.isRememberEmailChecked = checkBox.isChecked();
+					if (Memory.isRememberEmailChecked)
+						Memory.loginName = username;
+					if (result != null && result.getToken() != null)
+					{
+						// login successfully
+						Memory.token = result.getToken().trim();
+						Intent intent = new Intent(LoginActivity.this, LibraryActivity.class);
+						Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_SHORT).show();
+						startActivity(intent);
+					}
+					else
+					{
+						Memory.token = null;
+						final String loginFailedMessage;
+						if (result == null || result.getErrorDescription().isEmpty()) loginFailedMessage = "Login failed. Make sure that internet connection is available and try again.";
+						else loginFailedMessage = result.getErrorDescription();
+						Toast.makeText(getApplicationContext(), loginFailedMessage, Toast.LENGTH_LONG).show();
+						Log.e("LOGIN", loginFailedMessage);
+					}
+					loginBtn.setEnabled(true);
 				}
-				else
-				{
-					Memory.token = null;
-					final String loginFailedMessage;
-					if (result == null || result.getErrorDescription().isEmpty()) loginFailedMessage = "Login failed. Make sure that internet connection is available and try again.";
-					else loginFailedMessage = result.getErrorDescription();
-					Toast.makeText(getApplicationContext(), loginFailedMessage, Toast.LENGTH_LONG).show();
-					Log.e("LOGIN", loginFailedMessage);
-				}
-				loginBtn.setEnabled(true);
-			}
-		};
-		new LoginTask(getApplicationContext(), loginExecuter, username, password).execute();
+			};
+			new LoginTask(getApplicationContext(), loginExecuter, username, password).execute();
+		}
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		final Button loginBtn = (Button) findViewById(R.id.buttonLogin);
+		if (Memory.token != null)
+		{
+			Log.d("LOGIN", "resume login with token");
+			loginBtn.setText(R.string.relogin);
+		}
+		else
+		{
+			Log.d("LOGIN", "resume login without token");
+			loginBtn.setText(R.string.login);
+		}
 	}
 
 	protected void onPause()
@@ -128,6 +131,5 @@ public class LoginActivity extends ActionBarActivity
 		super.onPause();
 		Log.d("LOGIN", "save data");
 		Memory.save(getPreferences(Context.MODE_PRIVATE).edit()).commit();
-
 	}
 }

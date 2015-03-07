@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class ActivityPollingReceiver extends BroadcastReceiver
 {
@@ -14,6 +15,8 @@ public class ActivityPollingReceiver extends BroadcastReceiver
 	{
 		Intent service = new Intent(context, PollActivityService.class);
 		PendingIntent pendingService = PendingIntent.getService(context, 0, service, PendingIntent.FLAG_UPDATE_CURRENT);
+		
+		Log.d("POLLING_BROADCAST_RECEIVER", "Create Alarm");
 		
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		long intervalHour = AlarmManager.INTERVAL_HOUR;
